@@ -7,16 +7,17 @@ use Modules\Seo\Enums\SeoSettingsEnum;
 
 class SeoSettings extends Model
 {
-
     protected $fillable = ['key', 'value'];
+
     protected $casts = ['value' => 'array'];
 
     /**
      * Update or create SEO setting by key and value
      *
-     * @param string $key The setting key (must be from SeoSettingsEnum)
-     * @param string|null $value The setting value
+     * @param  string  $key  The setting key (must be from SeoSettingsEnum)
+     * @param  string|null  $value  The setting value
      * @return SeoSettings
+     *
      * @throws \InvalidArgumentException If key is not valid
      *
      * @example
@@ -27,7 +28,7 @@ class SeoSettings extends Model
     {
         // Validate that the key exists in the enum
         $validKeys = array_column(SeoSettingsEnum::cases(), 'value');
-        if (!in_array($key, $validKeys)) {
+        if (! in_array($key, $validKeys)) {
             throw new \InvalidArgumentException("Invalid SEO setting key: {$key}");
         }
 
@@ -37,7 +38,7 @@ class SeoSettings extends Model
     /**
      * Update multiple SEO settings at once
      *
-     * @param array $settings Array of key-value pairs
+     * @param  array  $settings  Array of key-value pairs
      * @return array Array of updated SeoSettings models
      *
      * @example

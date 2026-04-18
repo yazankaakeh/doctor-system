@@ -34,6 +34,9 @@ class RegisterAction
         // Log the patient in
         Auth::guard('web')->login($patient);
 
+        // Regenerate session for security
+        session()->regenerate();
+
         return $patient;
     }
 }

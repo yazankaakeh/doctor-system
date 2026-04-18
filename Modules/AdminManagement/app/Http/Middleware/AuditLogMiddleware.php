@@ -3,7 +3,6 @@
 namespace Modules\AdminManagement\Http\Middleware;
 
 use App\Models\User;
-use Carbon\Carbon;
 use Closure;
 use Exception;
 use Illuminate\Http\Request;
@@ -24,7 +23,7 @@ class AuditLogMiddleware
         $exceptRoutes = RouteName::ImportantRoutesWithGetMethod();
 
         if ($request->method() == 'GET' &&
-            !array_key_exists($currentRouteName, $exceptRoutes)) {
+            ! array_key_exists($currentRouteName, $exceptRoutes)) {
             return $next($request);
         }
 
@@ -35,7 +34,7 @@ class AuditLogMiddleware
             return $next($request);
         }
 
-        if (!Auth::check()) {
+        if (! Auth::check()) {
             return $next($request);
         }
 
@@ -61,18 +60,19 @@ class AuditLogMiddleware
                     AuditLog::query()->create([
                         'auditable_type' => get_class($user),
                         'auditable_id' => $user->id,
-                        ...$auditLogData
+                        ...$auditLogData,
                     ]);
                 }
             } catch (Exception $e) {
                 // Log the error instead of dd() for production
-                Log::error('AuditLog creation failed: ' . $e->getMessage(), [
+                Log::error('AuditLog creation failed: '.$e->getMessage(), [
                     'user_id' => $user->id,
                     'route' => $currentRouteName,
                     'url' => $request->url(),
                 ]);
             }
         }
+
         return $next($request);
     }
 }

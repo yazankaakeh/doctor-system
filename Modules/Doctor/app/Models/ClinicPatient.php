@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class ClinicPatient extends Pivot
 {
-
     /**
      * The attributes that are mass assignable.
      */
@@ -15,5 +14,4 @@ class ClinicPatient extends Pivot
         'clinic_id',
         'patient_id',
     ];
-
 }

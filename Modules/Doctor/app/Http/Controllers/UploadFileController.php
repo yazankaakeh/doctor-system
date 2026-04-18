@@ -9,7 +9,6 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class UploadFileController extends Controller
 {
-
     /**
      * Store a newly created resource in storage.
      */
@@ -26,6 +25,7 @@ class UploadFileController extends Controller
                 ])
                 ->toMediaCollection('attachments');
         }
+
         return redirect()->back()->with('success', trans('customer.card.savedSuccessfully'));
     }
 
@@ -33,8 +33,7 @@ class UploadFileController extends Controller
     {
         $media = Media::findOrFail($id);
         $media->delete();
+
         return redirect()->back()->with('success', 'File deleted successfully');
     }
-
-
 }

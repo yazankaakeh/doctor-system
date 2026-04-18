@@ -17,5 +17,3 @@ class FeaturesPanel extends Component
         ]);
     }
 }
-
-

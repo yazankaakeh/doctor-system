@@ -3,7 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use Modules\Core\app\Http\Controllers\ContactUsController;
 use Modules\Core\app\Http\Controllers\EnvController;
+use Modules\Core\App\Http\Controllers\SecureFileController;
 use Modules\Core\App\Http\Controllers\ThemeSettingsController;
+use Modules\Core\Http\Controllers\VideoConsultationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,3 +40,38 @@ Route::middleware(['auth:doctor', 'doctorMenu', 'admin-enabled', 'setLocale', 'a
     Route::post('theme-settings/reset', [ThemeSettingsController::class, 'reset'])->name('theme.settings.reset');
 });
 Route::post('submitContactUs', [ContactUsController::class, 'submitContactForm'])->name('env.submitContactForm');
+
+/*
+|--------------------------------------------------------------------------
+| Video Consultation Routes
+|--------------------------------------------------------------------------
+|
+| These routes handle video consultation functionality using Jitsi or other
+| video providers. Routes are protected by authentication middleware.
+|
+*/
+Route::middleware(['auth:doctor,patient,web', 'setLocale'])->prefix('video')->name('video.')->group(function () {
+    // Join a video consultation room
+    Route::get('join/{roomName}', [VideoConsultationController::class, 'join'])->name('join');
+
+    // Create a new meeting room (for authenticated users)
+    Route::post('create', [VideoConsultationController::class, 'create'])->name('create');
+
+    // Get room information (API)
+    Route::get('info/{roomName}', [VideoConsultationController::class, 'info'])->name('info');
+});
+
+/*
+|--------------------------------------------------------------------------
+| Secure File Download Routes
+|--------------------------------------------------------------------------
+|
+| These routes handle secure file downloads for medical documents, payment
+| proofs, and meeting recordings. Access is restricted based on user role
+| and ownership.
+|
+*/
+Route::middleware(['auth:doctor,patient,web', 'setLocale'])->prefix('secure-file')->name('secure-file.')->group(function () {
+    Route::get('download/{mediaId}', [SecureFileController::class, 'download'])->name('download')
+        ->where('mediaId', '[0-9]+');
+});

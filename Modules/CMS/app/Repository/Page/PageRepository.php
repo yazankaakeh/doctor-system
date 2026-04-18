@@ -6,7 +6,6 @@ use App\Enum\Pagination;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 use Modules\CMS\Models\Page;
 use Modules\Seo\Models\SeoMeta;
 
@@ -26,7 +25,7 @@ class PageRepository implements PageInterface
         $validated = $request->validated();
 
         return DB::transaction(function () use ($request, $validated) {
-            $page = new Page();
+            $page = new Page;
             $page->title = $validated['title'];
             $page->slug = $validated['slug'];
             $page->content = $validated['content'] ?? [];
@@ -56,7 +55,7 @@ class PageRepository implements PageInterface
         $metaDescription = $validated['meta_description'] ?? null;
 
         if ($metaTitle || $metaDescription) {
-            $seo = $page->seo ?: new SeoMeta();
+            $seo = $page->seo ?: new SeoMeta;
             if ($metaTitle) {
                 $seo->title = $metaTitle;
             }
@@ -119,7 +118,8 @@ class PageRepository implements PageInterface
             ->get()
             ->mapWithKeys(function (Page $page) {
                 $title = $page->getTranslation('title', app()->getLocale());
-                return [$page->id => is_string($title) ? $title : (json_encode($title) ?: 'Page ' . $page->id)];
+
+                return [$page->id => is_string($title) ? $title : (json_encode($title) ?: 'Page '.$page->id)];
             })->toArray();
     }
 

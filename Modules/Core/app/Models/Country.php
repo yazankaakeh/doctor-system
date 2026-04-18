@@ -7,16 +7,15 @@ use Illuminate\Support\Collection;
 
 class Country extends Model
 {
+    protected $table = 'countries';
 
-  protected $table = 'countries';
+    /**
+     * The attributes that are mass assignable.
+     */
+    protected $fillable = ['name', 'code'];
 
-  /**
-   * The attributes that are mass assignable.
-   */
-  protected $fillable = ['name', 'code'];
-
-  public static function getCountriesSelect2(): Collection
-  {
-    return Country::query()->pluck('name', 'id');
-  }
+    public static function getCountriesSelect2(): Collection
+    {
+        return Country::query()->pluck('name', 'id');
+    }
 }

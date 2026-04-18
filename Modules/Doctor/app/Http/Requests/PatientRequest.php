@@ -20,6 +20,7 @@ class PatientRequest extends FormRequest
     {
         $isUpdate = $this->routeIs('doctor.patients.update');
         $required = $isUpdate ? 'required' : 'nullable';
+
         return [
             'id' => [$required, 'integer', 'exists:patients,id'],
             'nationality_id' => ['required', 'integer', 'exists:countries,id'],

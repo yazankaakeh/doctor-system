@@ -21,5 +21,3 @@ interface PostInterface
     /** @return array<int,string> id => localized title */
     public function getRelatedOptions($id = null): array;
 }
-
-

@@ -78,7 +78,8 @@ $page = 'sales-dashboard'; ?>
                                         <thead>
                                         <tr>
                                             <th>{{trans('doctor::doctor.id')}}</th>
-                                            <th>{{trans('doctor::doctor.medicine.name')}}</th>
+                                            <th>{{trans('doctor::doctor.vitalSign.name')}}</th>
+                                            <th>{{trans('doctor::doctor.vitalSign.normal_range')}}</th>
                                             <th>{{trans('customer.account.status')}}</th>
                                             <th>{{trans('admin.audits.action')}}</th>
                                         </tr>
@@ -88,6 +89,7 @@ $page = 'sales-dashboard'; ?>
                                             <tr>
                                                 <td>{{$vitalSign->id}}</td>
                                                 <td>{{$vitalSign->name}}</td>
+                                                <td>{{$vitalSign->normal_range ?? '-'}}</td>
                                                 <td>
                                                     <span class="badge text-bg-{{$vitalSign->is_active->class()}} me-1">{{$vitalSign->is_active->label()}} </span>
                                                 </td>
@@ -99,6 +101,9 @@ $page = 'sales-dashboard'; ?>
                                                                class="me-2 btn btn-outline-primary text-primary p-2 btn-sm EditModalBTN"
                                                                data-id="{{$vitalSign->id}}"
                                                                data-name='@json($vitalSign->getTranslations('name'))'
+                                                               data-min-value="{{$vitalSign->min_value}}"
+                                                               data-max-value="{{$vitalSign->max_value}}"
+                                                               data-unit="{{$vitalSign->unit}}"
                                                                data-active="{{$vitalSign->is_active}}">
                                                                 <i data-feather="edit"
                                                                    class="ti tabler-edit icon-base"></i>

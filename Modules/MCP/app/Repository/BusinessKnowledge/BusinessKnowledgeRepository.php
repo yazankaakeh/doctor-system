@@ -2,9 +2,9 @@
 
 namespace Modules\MCP\Repository\BusinessKnowledge;
 
-use Modules\MCP\Models\BusinessKnowledge;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
+use Modules\MCP\Models\BusinessKnowledge;
 
 class BusinessKnowledgeRepository implements BusinessKnowledgeInterface
 {
@@ -103,6 +103,7 @@ class BusinessKnowledgeRepository implements BusinessKnowledgeInterface
     public function toggleActive(int $id): bool
     {
         $knowledge = $this->find($id);
+
         return $knowledge->toggleActive();
     }
 }

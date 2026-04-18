@@ -17,5 +17,3 @@ class CustomPanel extends Component
         ]);
     }
 }
-
-

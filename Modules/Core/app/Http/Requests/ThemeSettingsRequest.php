@@ -40,6 +40,8 @@ class ThemeSettingsRequest extends FormRequest
 
             // Typography
             'font_family' => 'required|string|max:255',
+            'font_import_url' => 'nullable|url|max:500',
+            'custom_fonts' => 'nullable|string|max:65535',
             'font_size_base' => 'required|string|max:20',
             'headings_font_family' => 'nullable|string|max:255',
             'headings_font_weight' => 'nullable|string|max:20',

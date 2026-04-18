@@ -14,13 +14,15 @@ readonly class UploadFileRule implements ValidationRule
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         $class = $this->model;
-        if (!$class || !class_exists($class)) {
+        if (! $class || ! class_exists($class)) {
             $fail('Invalid model.');
+
             return;
         }
 
-        if (!$class::whereKey($value)->exists()) {
+        if (! $class::whereKey($value)->exists()) {
             $fail('Record not found for the given model.');
+
             return;
         }
     }

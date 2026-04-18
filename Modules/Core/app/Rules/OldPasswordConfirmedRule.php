@@ -16,7 +16,7 @@ class OldPasswordConfirmedRule implements ValidationRule
     {
         /** @var User $user */
         $user = auth()->user();
-        if (!Hash::check($value, $user->password)) {
+        if (! Hash::check($value, $user->password)) {
             $fail(trans('core::core.validation.password_mismatch'));
         }
     }

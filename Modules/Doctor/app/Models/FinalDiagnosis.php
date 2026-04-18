@@ -12,10 +12,10 @@ use Spatie\Translatable\HasTranslations;
 
 class FinalDiagnosis extends Model
 {
-
     use HasTranslations;
 
     public array $translatable = ['name'];
+
     /**
      * The attributes that are mass assignable.
      */
@@ -39,8 +39,7 @@ class FinalDiagnosis extends Model
         return FinalDiagnosis::query()
             ->whereHas(
                 'medicalExaminations',
-                fn($q)
-                    => $q->where('medical_examinations.patient_id', $patientId),
+                fn ($q) => $q->where('medical_examinations.patient_id', $patientId),
             )
             ->select('final_diagnoses.name')
             ->distinct()

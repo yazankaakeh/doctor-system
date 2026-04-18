@@ -57,11 +57,25 @@
 
         @includeIf('theme::user.layouts.sections.navbar.navbar-languages')
 
-        @if ($configData['hasCustomizer'])
-            <!-- Style Switcher -->
-            @includeIf('theme::user.layouts.sections.navbar.navbar-theme-switcher')
-            <!-- / Style Switcher-->
+        <!-- Messaging Icon -->
+        {{-- Temporarily disabled until Livewire component discovery is configured
+        @if(class_exists(\Modules\Messaging\Livewire\GlobalMessagingIconThemed::class))
+            <li class="nav-item me-2 me-xl-1">
+                <livewire:messaging-global-icon-themed />
+            </li>
         @endif
+        --}}
+        <!-- / Messaging Icon -->
+
+        <!-- Notifications -->
+        @if(class_exists(\Modules\Notification\Livewire\NotificationDropdown::class))
+            <livewire:notification-dropdown />
+        @endif
+        <!-- / Notifications -->
+
+        <!-- Style Switcher -->
+        @includeIf('theme::user.layouts.sections.navbar.navbar-theme-switcher')
+        <!-- / Style Switcher-->
 
         <!-- User -->
         <li class="nav-item navbar-dropdown dropdown-user dropdown">
@@ -100,11 +114,15 @@
                     <div class="dropdown-divider my-1 mx-n2"></div>
                 </li>
                 <li>
-                    <a class="dropdown-item"
-                       href="{{ Route::has('profile.show') ? route('profile.show') : url('pages/profile-user') }}">
-                        <i class="icon-base ti tabler-user me-3 icon-md"></i><span class="align-middle">
-              {{trans('customer.profile')}}
-            </span> </a>
+                    @if(Auth::guard('web')->check() && Route::has('patient.profile.index'))
+                        <a class="dropdown-item" href="{{ route('patient.profile.index') }}">
+                            <i class="icon-base ti tabler-user me-3 icon-md"></i><span class="align-middle">{{ trans('customer.profile') }}</span>
+                        </a>
+                    @else
+                        <a class="dropdown-item" href="{{ Route::has('profile.show') ? route('profile.show') : url('pages/profile-user') }}">
+                            <i class="icon-base ti tabler-user me-3 icon-md"></i><span class="align-middle">{{ trans('customer.profile') }}</span>
+                        </a>
+                    @endif
                 </li>
                 @if(Auth::check() && Route::has('doctor.theme.settings.index'))
                 <li>
@@ -117,14 +135,24 @@
                 <li>
                     <div class="dropdown-divider my-1 mx-n2"></div>
                 </li>
-                @if (Auth::check())
+                @if (Auth::guard('doctor')->check())
                     <li>
-                        <a class="dropdown-item" href="{{ route('admin.logout.post') }}"
+                        <a class="dropdown-item" href="{{ route('doctor.logout') }}"
                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                            <i class="icon-base bx bx-power-off icon-md me-3"></i><span>Logout</span>
+                            <i class="icon-base bx bx-power-off icon-md me-3"></i><span>{{ trans('auth.logout') }}</span>
                         </a>
                     </li>
-                    <form method="POST" id="logout-form" action="{{ route('admin.logout.post') }}">
+                    <form method="POST" id="logout-form" action="{{ route('doctor.logout') }}">
+                        @csrf
+                    </form>
+                @elseif (Auth::guard('web')->check())
+                    <li>
+                        <a class="dropdown-item" href="{{ route('patient.logout') }}"
+                           onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            <i class="icon-base bx bx-power-off icon-md me-3"></i><span>{{ trans('auth.logout') }}</span>
+                        </a>
+                    </li>
+                    <form method="POST" id="logout-form" action="{{ route('patient.logout') }}">
                         @csrf
                     </form>
                 @else

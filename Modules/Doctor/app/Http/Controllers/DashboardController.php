@@ -14,8 +14,7 @@ class DashboardController extends Controller
     {
         $doctorId = auth()->user()->id;
         $data = ReportAction::getReports($doctorId);
+
         return view('doctor::dashboard', compact('data'));
     }
-
-
 }

@@ -2,12 +2,11 @@
 
 namespace Modules\Doctor\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
-
 
 class MedicalExaminationVitalSign extends Pivot
 {
-
     protected $table = 'medical_examination_vital_sign';
 
     /**
@@ -18,8 +17,16 @@ class MedicalExaminationVitalSign extends Pivot
         'medical_examination_id',
         'value',
     ];
+
     protected $casts = [
         'value' => 'string',
     ];
 
+    /**
+     * Get the vital sign for this measurement.
+     */
+    public function vitalSign(): BelongsTo
+    {
+        return $this->belongsTo(VitalSign::class, 'vital_sign_id');
+    }
 }

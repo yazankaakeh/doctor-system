@@ -11,7 +11,6 @@ use Modules\Notification\App\Actions\PushNotificationAction;
 
 class FirebaseNotificationController extends Controller
 {
-
     public function push_notification(Request $request): JsonResponse
     {
         $user = Auth::user();

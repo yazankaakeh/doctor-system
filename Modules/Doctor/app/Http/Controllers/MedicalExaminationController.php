@@ -27,6 +27,7 @@ class MedicalExaminationController extends Controller
     public function index()
     {
         $data = MedicalExamination::query()->with('patient')->paginate(Pagination::PAG->value);
+
         return view('doctor::doctor.medicalExamination.index', compact('data'));
     }
 
@@ -37,13 +38,30 @@ class MedicalExaminationController extends Controller
     {
         $patient = Patient::query()
             ->with('clinics')
-            ->where(['id' => $patientId/*, 'is_active' => ActiveEnum::ACTIVE->value*/])
+            ->where(['id' => $patientId/* , 'is_active' => ActiveEnum::ACTIVE->value */])
             ->first();
+
+        // Try to get clinic from patient first, otherwise use the first active clinic
+        $clinicId = $patient?->clinics?->first()?->id;
+
+        if (!$clinicId) {
+            // Fallback to the first active clinic
+            $clinic = \Modules\Doctor\Models\Clinic::where('is_active', \Modules\Core\App\Enums\ActiveEnum::ACTIVE->value)
+                ->first();
+
+            if (!$clinic) {
+                return redirect()->back()->with('error', 'No active clinic found. Please contact the administrator.');
+            }
+
+            $clinicId = $clinic->id;
+        }
+
         $medicalExamination = MedicalExamination::query()->updateOrCreate([
             'patient_id' => $patientId,
             'status' => MedicalExaminationStatusEnum::PENDING->value,
             'doctor_id' => auth()->id(),
-        ], ['clinic_id' => $patient?->clinics?->first()->id]);
+        ], ['clinic_id' => $clinicId]);
+
         return redirect()->route('doctor.medicalExamination.create', $medicalExamination->id);
     }
 
@@ -61,9 +79,22 @@ class MedicalExaminationController extends Controller
             $patient->id,
             $medicalExamination->id,
         )->get();
+
+        // Find active booking for this patient and doctor if Booking module exists
+        $booking = null;
+        if (class_exists('\Modules\Booking\Models\Booking')) {
+            $booking = \Modules\Booking\Models\Booking::where([
+                'patient_id' => $patient->id,
+                'doctor_id' => auth()->id(),
+            ])
+            ->where('status', \Modules\Booking\Enums\BookingStatusEnum::CONFIRMED)
+            ->latest()
+            ->first();
+        }
+
         return view(
             'doctor::doctor.medicalExamination.create',
-            compact('patient', 'medicalExamination', 'medicalExaminations'),
+            compact('patient', 'medicalExamination', 'medicalExaminations', 'booking'),
         );
     }
 

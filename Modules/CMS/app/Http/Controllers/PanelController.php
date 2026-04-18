@@ -49,14 +49,14 @@ class PanelController extends Controller
                                 'is_active' => $item->is_active,
                                 'order' => $item->order,
                             ];
-                        })
+                        }),
                     ];
-                })
+                }),
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 500);
         }
     }
@@ -82,13 +82,13 @@ class PanelController extends Controller
                     'is_active' => $panel->is_active,
                     'order' => $panel->order,
                     'settings' => $panel->settings,
-                    'items' => $panel->items
-                ]
+                    'items' => $panel->items,
+                ],
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 404);
         }
     }
@@ -109,12 +109,12 @@ class PanelController extends Controller
                     'type' => $panel->type->value,
                     'type_label' => $panel->type->label(),
                     'title' => $panel->title,
-                ]
+                ],
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 500);
         }
     }
@@ -135,12 +135,12 @@ class PanelController extends Controller
                     'type' => $panel->type->value,
                     'type_label' => $panel->type->label(),
                     'title' => $panel->title,
-                ]
+                ],
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 500);
         }
     }
@@ -155,12 +155,12 @@ class PanelController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Panel deleted successfully'
+                'message' => 'Panel deleted successfully',
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 500);
         }
     }
@@ -176,12 +176,12 @@ class PanelController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Panel status toggled successfully',
-                'is_active' => $panel->is_active
+                'is_active' => $panel->is_active,
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 500);
         }
     }
@@ -200,12 +200,12 @@ class PanelController extends Controller
                 'panel' => [
                     'id' => $newPanel->id,
                     'title' => $newPanel->title,
-                ]
+                ],
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 500);
         }
     }
@@ -218,19 +218,19 @@ class PanelController extends Controller
         try {
             $request->validate([
                 'panel_ids' => 'required|array',
-                'panel_ids.*' => 'required|integer|exists:cms_panels,id'
+                'panel_ids.*' => 'required|integer|exists:cms_panels,id',
             ]);
 
             $action->handle($request->panel_ids);
 
             return response()->json([
                 'success' => true,
-                'message' => 'Panels reordered successfully'
+                'message' => 'Panels reordered successfully',
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 500);
         }
     }

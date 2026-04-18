@@ -16,6 +16,7 @@ class SeoSettingsController extends Controller
     public function index()
     {
         $data = SeoSettings::query()->get();
+
         return view('seo::index', compact('data'));
     }
 
@@ -29,8 +30,8 @@ class SeoSettingsController extends Controller
             $validatedData = $request->validated();
 
             // Filter out null/empty values to avoid unnecessary updates
-            $settingsToUpdate = array_filter($validatedData, function($value) {
-                return !is_null($value) && $value !== '';
+            $settingsToUpdate = array_filter($validatedData, function ($value) {
+                return ! is_null($value) && $value !== '';
             });
 
             // Update settings using the model helper method
@@ -46,7 +47,7 @@ class SeoSettingsController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()
                 ->withInput()
-                ->with('error', 'Failed to update SEO settings: ' . $e->getMessage());
+                ->with('error', 'Failed to update SEO settings: '.$e->getMessage());
         }
     }
 }

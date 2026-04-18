@@ -17,6 +17,7 @@ class PostController extends Controller
     public function index()
     {
         $data = $this->posts->index();
+
         return view('blog::posts.index', compact('data'));
     }
 
@@ -27,6 +28,7 @@ class PostController extends Controller
     {
         $relatedPostsOptions = $this->posts->getRelatedOptions();
         $tagOptions = $this->getTagOptions();
+
         return view('blog::posts.create', compact('relatedPostsOptions', 'tagOptions'));
     }
 
@@ -36,6 +38,7 @@ class PostController extends Controller
     public function store(PostRequest $request)
     {
         $this->posts->store($request);
+
         return redirect()->route('doctor.posts.index')->with('success', trans('core::core.env.save'));
     }
 
@@ -55,6 +58,7 @@ class PostController extends Controller
         $post = $this->posts->find($id);
         $relatedPostsOptions = $this->posts->getRelatedOptions($id);
         $tagOptions = $this->getTagOptions();
+
         return view('blog::posts.edit', compact('post', 'relatedPostsOptions', 'tagOptions'));
     }
 
@@ -64,6 +68,7 @@ class PostController extends Controller
     public function update(PostRequest $request, $id)
     {
         $this->posts->update($id, $request);
+
         return redirect()->route('doctor.posts.index')->with('success', trans('core::core.env.save'));
     }
 
@@ -73,6 +78,7 @@ class PostController extends Controller
     public function destroy($id)
     {
         $this->posts->destroy($id);
+
         return redirect()->route('doctor.posts.index')->with('success', trans('core::core.env.save'));
     }
 
@@ -83,7 +89,8 @@ class PostController extends Controller
     {
         return BlogPostTags::all()->mapWithKeys(function ($tag) {
             $name = $tag->getTranslation('name', app()->getLocale());
-            return [$tag->id => $name ?: 'Tag ' . $tag->id];
+
+            return [$tag->id => $name ?: 'Tag '.$tag->id];
         })->toArray();
     }
 }

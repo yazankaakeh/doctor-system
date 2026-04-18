@@ -2,8 +2,8 @@
 
 namespace Modules\Doctor\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
-
 
 class MedicalExaminationMedicine extends Pivot
 {
@@ -22,5 +22,11 @@ class MedicalExaminationMedicine extends Pivot
         'note',
     ];
 
-
+    /**
+     * Get the dosage form for this medicine prescription.
+     */
+    public function dosageForm(): BelongsTo
+    {
+        return $this->belongsTo(DosageForm::class, 'dosage_form_id');
+    }
 }

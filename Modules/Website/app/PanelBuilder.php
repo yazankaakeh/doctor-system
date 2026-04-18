@@ -26,7 +26,7 @@ class PanelBuilder
                 'items' => $this->buildItems($panel->items),
                 'media' => [
                     'panel_image' => $panel->getFirstMediaUrl('panel_image'),
-                    'panel_gallery' => $panel->getMedia('panel_gallery')->map(fn($media) => $media->getUrl()),
+                    'panel_gallery' => $panel->getMedia('panel_gallery')->map(fn ($media) => $media->getUrl()),
                 ],
             ];
         });
@@ -48,11 +48,9 @@ class PanelBuilder
                 'data' => $item->data,
                 'media' => [
                     'item_image' => $item->getFirstMediaUrl('item_image'),
-                    'item_gallery' => $item->getMedia('item_gallery')->map(fn($media) => $media->getUrl()),
+                    'item_gallery' => $item->getMedia('item_gallery')->map(fn ($media) => $media->getUrl()),
                 ],
             ];
         });
     }
 }
-
-

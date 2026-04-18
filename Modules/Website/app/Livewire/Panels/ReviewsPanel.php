@@ -17,5 +17,3 @@ class ReviewsPanel extends Component
         ]);
     }
 }
-
-

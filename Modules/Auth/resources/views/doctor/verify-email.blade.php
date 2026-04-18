@@ -1,6 +1,18 @@
+@php
+    $customizerHidden = 'customizer-hide';
+@endphp
+
 @extends('theme::user.layouts.layoutFront')
 
 @section('title', trans('auth::auth.verify_email'))
+
+@section('vendor-style')
+    @vite(['resources/assets/vendor/libs/@form-validation/form-validation.scss'], 'build/modules/theme')
+@endsection
+
+@section('page-style')
+    @vite(['resources/assets/vendor/scss/pages/page-auth.scss'], 'build/modules/theme')
+@endsection
 
 @section('content')
     <div class="container-xxl">
@@ -10,11 +22,14 @@
                 <div class="card">
                     <div class="card-body">
                         <!-- Logo -->
-                        <div class="app-brand justify-content-center mb-4">
-                            <span class="app-brand-text demo text-body fw-bold">{{ config('app.name') }}</span>
+                        <div class="app-brand justify-content-center mb-4 mt-2">
+                            <a href="{{ url('/') }}" class="app-brand-link gap-2">
+                                <img src="{{ asset('landing/assets/img/tagiy.svg') }}" alt="{{ config('app.name') }}">
+                            </a>
                         </div>
                         <!-- /Logo -->
-                        <h4 class="mb-2">{{ trans('auth::auth.verify_email') }}</h4>
+
+                        <h4 class="mb-1 pt-2">{{ trans('auth::auth.verify_email') }}</h4>
                         <p class="mb-4">
                             {{ trans('auth::auth.verify_email_message') }}
                             {{ trans('auth::auth.did_not_receive_email') }}
@@ -26,9 +41,15 @@
                             </div>
                         @endif
 
-                        <form class="d-inline" method="POST" action="{{ route('doctor.verification.resend') }}">
+                        @if (session('status'))
+                            <div class="alert alert-success" role="alert">
+                                {{ session('status') }}
+                            </div>
+                        @endif
+
+                        <form class="mb-3" method="POST" action="{{ route('doctor.verification.resend') }}">
                             @csrf
-                            <button type="submit" class="btn btn-primary d-grid w-100 mb-3">
+                            <button type="submit" class="btn btn-primary d-grid w-100">
                                 {{ trans('auth::auth.request_another') }}
                             </button>
                         </form>
@@ -36,7 +57,8 @@
                         <div class="text-center">
                             <form method="POST" action="{{ route('doctor.logout') }}">
                                 @csrf
-                                <button type="submit" class="btn btn-link">
+                                <button type="submit" class="btn btn-link text-muted">
+                                    <i class="ti tabler-logout me-1"></i>
                                     {{ trans('auth::auth.logout') }}
                                 </button>
                             </form>

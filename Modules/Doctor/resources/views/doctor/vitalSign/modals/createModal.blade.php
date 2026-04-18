@@ -20,6 +20,35 @@
                                                              label="doctor::doctor.vitalSign.name"
                                                              name="name"
                                                              type="text" id="create_name"/>
+                        <div class="col-4 mb-3">
+                            <x-core::input
+                                    :label="trans('doctor::doctor.vitalSign.min_value')"
+                                    :placeholder="trans('doctor::doctor.vitalSign.min_value')"
+                                    id="create_min_value"
+                                    name="min_value"
+                                    type="number"
+                                    step="0.01"
+                                    value="{{old('min_value')}}"/>
+                        </div>
+                        <div class="col-4 mb-3">
+                            <x-core::input
+                                    :label="trans('doctor::doctor.vitalSign.max_value')"
+                                    :placeholder="trans('doctor::doctor.vitalSign.max_value')"
+                                    id="create_max_value"
+                                    name="max_value"
+                                    type="number"
+                                    step="0.01"
+                                    value="{{old('max_value')}}"/>
+                        </div>
+                        <div class="col-4 mb-3">
+                            <x-core::input
+                                    :label="trans('doctor::doctor.vitalSign.unit')"
+                                    :placeholder="trans('doctor::doctor.vitalSign.unit_placeholder')"
+                                    id="create_unit"
+                                    name="unit"
+                                    type="text"
+                                    value="{{old('unit')}}"/>
+                        </div>
                         <div class="col-6 mb-3">
                             <x-core::select :label="trans('doctor::doctor.patients.active')"
                                             :placeholder="trans('doctor::doctor.patients.active')"

@@ -11,7 +11,7 @@ class PostRequest extends FormRequest
      */
     public function rules(): array
     {
-        //dd($this->all());
+        // dd($this->all());
         return [
             'title' => ['required', 'array'],
             'title.*' => ['required', 'string', 'max:255'],

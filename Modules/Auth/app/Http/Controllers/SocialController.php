@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Auth\app\Http\Controllers;
+namespace Modules\Auth\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 use Modules\AdminManagement\app\Models\Admin;
-use Modules\Auth\app\Models\SocialAccount;
+use Modules\Auth\Models\SocialAccount;
 use Modules\Core\App\Enums\ActiveEnum;
 use Modules\Doctor\Models\Doctor;
 use Modules\Doctor\Models\Patient;
@@ -23,7 +23,7 @@ class SocialController extends Controller
     public function redirect(string $provider, Request $request)
     {
         // Validate provider
-        if (!in_array($provider, ['google', 'facebook', 'x'])) {
+        if (! in_array($provider, ['google', 'facebook', 'x'])) {
             abort(404, 'Unsupported social provider');
         }
 
@@ -71,7 +71,7 @@ class SocialController extends Controller
                 // Try to find user by email
                 $user = $this->findUserByEmail($oauthUser->getEmail(), $userType);
 
-                if (!$user) {
+                if (! $user) {
                     // Create new user
                     $user = $this->createUser($oauthUser, $userType);
                 }
@@ -79,7 +79,7 @@ class SocialController extends Controller
                 // Create social account
                 $user->socialAccounts()->create([
                     'provider' => $provider,
-                    'provider_user_id' => (string)$oauthUser->getId(),
+                    'provider_user_id' => (string) $oauthUser->getId(),
                     'token' => $oauthUser->token ?? null,
                     'refresh_token' => $oauthUser->refreshToken ?? null,
                     'expires_in' => $oauthUser->expiresIn ?? null,
@@ -94,7 +94,7 @@ class SocialController extends Controller
 
         } catch (\Exception $e) {
             return redirect()->route('admin.login')
-                ->with('error', 'Social login failed: ' . $e->getMessage());
+                ->with('error', 'Social login failed: '.$e->getMessage());
         }
     }
 
@@ -103,7 +103,7 @@ class SocialController extends Controller
      */
     private function findUserByEmail(?string $email, string $userType): ?object
     {
-        if (!$email) {
+        if (! $email) {
             return null;
         }
 

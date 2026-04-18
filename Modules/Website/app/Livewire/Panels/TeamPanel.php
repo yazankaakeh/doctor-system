@@ -17,5 +17,3 @@ class TeamPanel extends Component
         ]);
     }
 }
-
-

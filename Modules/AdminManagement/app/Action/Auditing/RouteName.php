@@ -10,6 +10,7 @@ class RouteName
     public static function GetRouteName($routeName)
     {
         $routeNames = self::Routes();
+
         return $routeNames[$routeName] ?? $routeName;
     }
 
@@ -21,7 +22,7 @@ class RouteName
         $newRoutes = [];
         $routes = Route::getRoutes()->getRoutes();
         foreach ($routes as $route) {
-            if (!empty($route->getName())
+            if (! empty($route->getName())
                 && isset($route->getAction()['middleware'])
                 && $route->methods[0] !== 'GET'
                 && in_array('admin-enabled', $route->getAction()['middleware'])
@@ -30,11 +31,11 @@ class RouteName
                 $newRoutes[$route->getName()] = $route->getName();
             }
         }
+
         return $newRoutes;
     }
 
-
-    #[ArrayShape(['master-confirm-sorting' => "mixed"])]
+    #[ArrayShape(['master-confirm-sorting' => 'mixed'])]
     public static function ImportantRoutesWithGetMethod(): array
     {
         return [

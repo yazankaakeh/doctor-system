@@ -2,11 +2,11 @@
 
 namespace Modules\Blog\Repository\Category;
 
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Http\Request;
-use Modules\Blog\Models\BlogCategory;
 use App\Enum\Pagination;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Modules\Blog\Models\BlogCategory;
 use Modules\Seo\Models\SeoMeta;
 
 class CategoryRepository implements CategoryInterface
@@ -21,7 +21,7 @@ class CategoryRepository implements CategoryInterface
         $validated = $request->validated();
 
         return DB::transaction(function () use ($request, $validated) {
-            $category = new BlogCategory();
+            $category = new BlogCategory;
             $category->title = $validated['title'];
             $category->description = $validated['description'] ?? [];
             $category->is_active = $request->boolean('is_active') ? 1 : 0;
@@ -74,7 +74,7 @@ class CategoryRepository implements CategoryInterface
         $metaTitle = $validated['meta_title'] ?? null;
         $metaDescription = $validated['meta_description'] ?? null;
         if ($metaTitle || $metaDescription) {
-            $seo = $category->seo ?: new SeoMeta();
+            $seo = $category->seo ?: new SeoMeta;
             if ($metaTitle) {
                 $seo->title = $metaTitle;
             }
@@ -85,5 +85,3 @@ class CategoryRepository implements CategoryInterface
         }
     }
 }
-
-

@@ -3,9 +3,9 @@
 namespace Modules\CMS\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 use Modules\CMS\Enums\PanelItemTypeEnum;
 use Modules\Core\App\Enums\LanguageEnum;
-use Illuminate\Validation\Rule;
 
 class PanelItemRequest extends FormRequest
 {
@@ -69,7 +69,7 @@ class PanelItemRequest extends FormRequest
         $messages = [];
 
         foreach (LanguageEnum::values() as $lang) {
-            $messages["title.{$lang}.max"] = "Title in " . strtoupper($lang) . " must not exceed 500 characters";
+            $messages["title.{$lang}.max"] = 'Title in '.strtoupper($lang).' must not exceed 500 characters';
         }
 
         return $messages;

@@ -46,7 +46,7 @@ class MedicalExamination extends Model implements HasMedia
     public static function patientMedicalExaminationsWithoutId($patientId, $id = null): Builder
     {
         return self::query()->where('patient_id', $patientId)
-            ->when($id ?? null, fn($q, $v) => $q->whereNot('id', $v))
+            ->when($id ?? null, fn ($q, $v) => $q->whereNot('id', $v))
             ->with('vitalSigns')
             ->with('medicines')
             ->with('medicalTests')
@@ -66,6 +66,11 @@ class MedicalExamination extends Model implements HasMedia
     public function doctor(): BelongsTo
     {
         return $this->belongsTo(Doctor::class, 'doctor_id');
+    }
+
+    public function clinic(): BelongsTo
+    {
+        return $this->belongsTo(Clinic::class, 'clinic_id');
     }
 
     public function vitalSigns(): BelongsToMany
@@ -119,7 +124,6 @@ class MedicalExamination extends Model implements HasMedia
             ->withTimestamps();
     }
 
-
     public function radiologyTests(): BelongsToMany
     {
         return $this
@@ -138,7 +142,15 @@ class MedicalExamination extends Model implements HasMedia
                     'image/webp',
                     'application/pdf',
                 ], true);
-            });
+            })
+            ->useDisk('secure'); // Store medical examination files in secure (private) storage
     }
 
+    /**
+     * Get secure URL for media download.
+     */
+    public function getSecureMediaUrl($mediaItem): string
+    {
+        return route('secure-file.download', ['mediaId' => $mediaItem->id]);
+    }
 }

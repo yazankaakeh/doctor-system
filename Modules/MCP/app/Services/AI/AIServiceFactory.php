@@ -11,8 +11,8 @@ class AIServiceFactory
         $provider = $provider ?? config('mcp.ai_provider');
 
         return match ($provider) {
-            'anthropic' => new AnthropicService(),
-            'openai' => new OpenAIService(),
+            'anthropic' => new AnthropicService,
+            'openai' => new OpenAIService,
             default => throw new InvalidArgumentException("Unsupported AI provider: {$provider}"),
         };
     }

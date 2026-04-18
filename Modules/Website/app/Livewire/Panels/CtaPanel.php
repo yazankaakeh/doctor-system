@@ -17,5 +17,3 @@ class CtaPanel extends Component
         ]);
     }
 }
-
-

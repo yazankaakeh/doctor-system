@@ -24,6 +24,7 @@ class RoleManagementController extends Controller
         /* @var RoleRepository $repo */
         $repo = $this->roleRepository;
         $roles = $repo->index();
+
         return view('adminmanagement::roles.index', compact('roles'));
     }
 
@@ -35,6 +36,7 @@ class RoleManagementController extends Controller
         /* @var RoleRepository $repo */
         $repo = $this->roleRepository;
         $permissions = $repo->create();
+
         return view('adminmanagement::roles.create', compact('permissions'));
     }
 
@@ -46,6 +48,7 @@ class RoleManagementController extends Controller
         $permissions = $data['permissions'];
         $userPermissions = $data['userPermissions'];
         $item = $data['item'];
+
         return view(
             'adminmanagement::roles.edit',
             compact('permissions', 'userPermissions', 'item'),
@@ -61,6 +64,7 @@ class RoleManagementController extends Controller
         $repo = $this->roleRepository;
         $repo->update($request, $id);
         $request->session()->flash('success', 'created Successfully');
+
         return redirect()->route('admin.role_management.index')->with(
             'success',
             trans('mps::mps.success.updatedSuccess'),
@@ -76,6 +80,7 @@ class RoleManagementController extends Controller
         $repo = $this->roleRepository;
         $repo->destroy($id);
         $request->session()->flash('success', 'created Successfully');
+
         return redirect()->route('admin.role_management.index')->with(
             'success',
             trans('mps::mps.success.deletedSuccess'),
@@ -91,6 +96,7 @@ class RoleManagementController extends Controller
         $repo = $this->roleRepository;
         $repo->store($request);
         $request->session()->flash('success', 'created Successfully');
+
         return redirect()->route('admin.role_management.index')->with(
             'success',
             trans('mps::mps.success.createdSuccess'),

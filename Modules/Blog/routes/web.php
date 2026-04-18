@@ -11,7 +11,7 @@ Route::middleware(['auth:doctor', 'audit', 'admin-enabled', 'authorize', 'setLoc
 )->prefix(
     'doctor',
 )->group(function () {
-    //Route::resource('blogs', BlogController::class)->names('blog');
+    // Route::resource('blogs', BlogController::class)->names('blog');
     Route::resource('category', CategoryController::class)->names('categories');
     Route::resource('posts', PostController::class)->names('posts');
     Route::post('quillUpload/store', [QuillUploadController::class, 'store'])->name('quillUpload.store');

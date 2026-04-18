@@ -2,8 +2,6 @@
 
 namespace Modules\MCP\Actions;
 
-use Modules\MCP\Models\ChatMessage;
-
 class ProcessChatMessageAction
 {
     public function __construct(

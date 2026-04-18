@@ -9,5 +9,9 @@
     "CMS": true,
     "Website": true,
     "Auth": true,
-    "MCP": true
+    "MCP": true,
+    "Patient": true,
+    "Booking": true,
+    "Payment": true,
+    "Messaging": true
 }

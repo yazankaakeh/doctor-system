@@ -8,7 +8,6 @@ use Modules\AdminManagement\Http\Requests\UpdateStatusAminRequest;
 
 interface DoctorInterface
 {
-
     public function index();
 
     public function store(DoctorRequest $request);

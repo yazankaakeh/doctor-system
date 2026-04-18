@@ -5,12 +5,12 @@ namespace Modules\MCP\Http\Controllers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Modules\MCP\Http\Requests\CreateConversationRequest;
-use Modules\MCP\Http\Requests\SendMessageRequest;
-use Modules\MCP\Http\Requests\StoreFeedbackRequest;
 use Modules\MCP\Actions\CreateConversationAction;
 use Modules\MCP\Actions\ProcessChatMessageAction;
 use Modules\MCP\Actions\StoreFeedbackAction;
+use Modules\MCP\Http\Requests\CreateConversationRequest;
+use Modules\MCP\Http\Requests\SendMessageRequest;
+use Modules\MCP\Http\Requests\StoreFeedbackRequest;
 use Modules\MCP\Repository\ChatConversation\ChatConversationInterface;
 use Modules\MCP\Repository\ChatMessage\ChatMessageInterface;
 
@@ -84,7 +84,7 @@ class ChatBotController extends Controller
         $sessionId = $request->input('session_id');
         $conversation = $this->conversationRepository->findBySessionId($sessionId);
 
-        if (!$conversation) {
+        if (! $conversation) {
             return response()->json([
                 'success' => false,
                 'message' => 'Conversation not found',

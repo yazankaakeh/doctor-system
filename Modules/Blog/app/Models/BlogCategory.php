@@ -3,8 +3,8 @@
 namespace Modules\Blog\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Core\App\Enums\ActiveEnum;
 use Modules\Seo\Traits\HasSeo;
 use Spatie\MediaLibrary\HasMedia;
@@ -14,13 +14,13 @@ use Spatie\Translatable\HasTranslations;
 
 class BlogCategory extends Model implements HasMedia
 {
-
-    use InteractsWithMedia, HasSeo, HasTranslations, SoftDeletes;
+    use HasSeo, HasTranslations, InteractsWithMedia, SoftDeletes;
 
     public array $translatable = [
         'title',
         'description',
     ];
+
     /**
      * The attributes that are mass assignable.
      */
@@ -53,5 +53,4 @@ class BlogCategory extends Model implements HasMedia
                 ], true);
             })->singleFile();
     }
-
 }

@@ -25,5 +25,3 @@ class NewLandingPage extends Component
         return view('website::livewire.new-landing-page');
     }
 }
-
-

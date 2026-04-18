@@ -20,4 +20,3 @@ class MedicalExaminationFactory extends Factory
         return [];
     }
 }
-

@@ -17,5 +17,3 @@ class HeroPanel extends Component
         ]);
     }
 }
-
-

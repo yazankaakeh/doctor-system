@@ -54,6 +54,8 @@ class ThemeSettingsController extends Controller
                 'dark_danger_color' => '#ff3e1d',
                 // Typography
                 'font_family' => 'Public Sans',
+                'font_import_url' => 'https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&display=swap',
+                'custom_fonts' => null,
                 'font_size_base' => '0.9375rem',
                 'headings_font_family' => 'Public Sans',
                 'headings_font_weight' => '500',
@@ -63,7 +65,7 @@ class ThemeSettingsController extends Controller
                 'dark_body_bg' => '#232333',
                 'dark_card_bg' => '#2b2c40',
                 'border_radius' => '0.375rem',
-                'site_title' => 'Doctor System Admin',
+                'site_title' => 'Base Project Admin',
                 'custom_css' => null,
                 'dark_custom_css' => null,
             ] : [
@@ -81,6 +83,8 @@ class ThemeSettingsController extends Controller
                 'dark_warning_color' => '#ffab00',
                 'dark_danger_color' => '#ff3e1d',
                 'font_family' => 'Poppins',
+                'font_import_url' => 'https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap',
+                'custom_fonts' => null,
                 'font_size_base' => '1rem',
                 'headings_font_family' => 'Poppins',
                 'headings_font_weight' => '600',
@@ -89,7 +93,7 @@ class ThemeSettingsController extends Controller
                 'dark_body_bg' => '#1a1a2e',
                 'dark_card_bg' => '#16213e',
                 'border_radius' => '0.5rem',
-                'site_title' => 'Doctor System',
+                'site_title' => 'Base Project',
                 'custom_css' => null,
                 'dark_custom_css' => null,
             ];

@@ -4,6 +4,8 @@ namespace Modules\Notification\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Livewire\Livewire;
+use Modules\Notification\Livewire\NotificationDropdown;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -35,6 +37,9 @@ class NotificationServiceProvider extends ServiceProvider
             __DIR__.'/../../config/notifications.php',
             'notification_firebase',
         );
+
+        // Register Livewire components
+        Livewire::component('notification-dropdown', NotificationDropdown::class);
     }
 
     /**

@@ -4,7 +4,11 @@ namespace Modules\Core\app\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Livewire\Livewire;
 use Modules\Core\App\View\Composers\ThemeSettingsComposer;
+use Modules\Core\Contracts\VideoServiceInterface;
+use Modules\Core\Livewire\VideoRoom;
+use Modules\Core\Services\Video\VideoServiceManager;
 
 class CoreServiceProvider extends ServiceProvider
 {
@@ -23,12 +27,21 @@ class CoreServiceProvider extends ServiceProvider
         $this->registerConfig();
         $this->registerViews();
         $this->registerViewComposers();
+        $this->registerLivewireComponents();
         $this->loadMigrationsFrom(module_path($this->moduleName, 'database/migrations'));
         $this->publishes([
             module_path('Core', 'resources/assets/flags/svg') => public_path('assets/flags'),
             module_path('Core', 'resources/assets/js/intlTelInput') => public_path('intlTelInput'),
             module_path('Core', 'resources/assets/js/livewire-select2') => public_path('livewire-select2'),
         ], 'core-assets');
+    }
+
+    /**
+     * Register Livewire components.
+     */
+    protected function registerLivewireComponents(): void
+    {
+        Livewire::component('core::video-room', VideoRoom::class);
     }
 
     /**
@@ -77,6 +90,7 @@ class CoreServiceProvider extends ServiceProvider
         );
         $this->mergeConfigFrom(module_path($this->moduleName, 'config/config.php'), $this->moduleNameLower);
         $this->mergeConfigFrom(module_path($this->moduleName, 'config/services.php'), $this->moduleNameLower);
+        $this->mergeConfigFrom(module_path($this->moduleName, 'config/video.php'), $this->moduleNameLower . '.video');
     }
 
     /**
@@ -127,6 +141,23 @@ class CoreServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->register(RouteServiceProvider::class);
+        $this->registerVideoService();
+    }
+
+    /**
+     * Register video service bindings.
+     */
+    protected function registerVideoService(): void
+    {
+        // Register the Video Service Manager as singleton
+        $this->app->singleton('video.service', function ($app) {
+            return new VideoServiceManager();
+        });
+
+        // Bind the interface to the default driver
+        $this->app->bind(VideoServiceInterface::class, function ($app) {
+            return $app->make('video.service')->driver();
+        });
     }
 
     /**

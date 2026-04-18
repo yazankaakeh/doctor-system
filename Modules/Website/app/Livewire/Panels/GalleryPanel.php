@@ -17,5 +17,3 @@ class GalleryPanel extends Component
         ]);
     }
 }
-
-

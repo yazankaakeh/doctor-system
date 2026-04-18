@@ -15,6 +15,7 @@ class MedicineRequest extends FormRequest
     {
         $isUpdate = $this->routeIs('doctor.medicine.update'); // true/false
         $required = $isUpdate ? 'required' : 'nullable';
+
         return [
             'id' => [$required, 'integer', 'exists:medicines,id'],
             'is_active' => ['required', new Enum(ActiveEnum::class)],           // must be true/false

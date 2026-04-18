@@ -15,16 +15,22 @@ class VitalSign extends Model
     use HasFactory, HasTranslations;
 
     public array $translatable = ['name'];
+
     /**
      * The attributes that are mass assignable.
      */
     protected $fillable = [
         'name',
+        'min_value',
+        'max_value',
+        'unit',
         'is_active',
     ];
 
     protected $casts = [
         'is_active' => ActiveEnum::class,
+        'min_value' => 'decimal:2',
+        'max_value' => 'decimal:2',
     ];
 
     public static function getVitalSignsSelect2(): Collection
@@ -44,5 +50,53 @@ class VitalSign extends Model
             ->withPivot('value')
             ->withTimestamps()
             ->using(MedicalExaminationVitalSign::class); // optional
+    }
+
+    /**
+     * Get the normal range display string.
+     */
+    public function getNormalRangeAttribute(): ?string
+    {
+        if ($this->min_value === null && $this->max_value === null) {
+            return null;
+        }
+
+        $unit = $this->unit ? " {$this->unit}" : '';
+
+        if ($this->min_value !== null && $this->max_value !== null) {
+            return "{$this->min_value} - {$this->max_value}{$unit}";
+        }
+
+        if ($this->min_value !== null) {
+            return ">= {$this->min_value}{$unit}";
+        }
+
+        return "<= {$this->max_value}{$unit}";
+    }
+
+    /**
+     * Check if a given value is within the normal range.
+     */
+    public function isValueInRange(float|int|null $value): ?bool
+    {
+        if ($value === null) {
+            return null;
+        }
+
+        if ($this->min_value === null && $this->max_value === null) {
+            return null;
+        }
+
+        $inRange = true;
+
+        if ($this->min_value !== null && $value < $this->min_value) {
+            $inRange = false;
+        }
+
+        if ($this->max_value !== null && $value > $this->max_value) {
+            $inRange = false;
+        }
+
+        return $inRange;
     }
 }

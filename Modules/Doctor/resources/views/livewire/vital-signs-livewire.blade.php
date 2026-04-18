@@ -87,17 +87,38 @@
     <div class="collapse {{ $isOpen ? 'show' : '' }}" id="collapseExample">
         <div class="row mb-5">
             @foreach($vitalSigns as $vitalSign)
+                @php
+                    $currentValue = $values[$vitalSign->id] ?? null;
+                    $numericValue = is_numeric($currentValue) ? (float) $currentValue : null;
+                    $isInRange = $vitalSign->isValueInRange($numericValue);
+                    $borderClass = '';
+                    if ($numericValue !== null && $isInRange !== null) {
+                        $borderClass = $isInRange ? 'border-success' : 'border-danger';
+                    }
+                @endphp
                 <div class="col-2 my-2">
-                    <div class="card">
+                    <div class="card {{ $borderClass }}">
                         <div class="card-body">
                             <div class="card-content">
                                 <x-core::input
-                                        :label="$vitalSign->name"
+                                        :label="$vitalSign->name . ($vitalSign->unit ? ' (' . $vitalSign->unit . ')' : '')"
                                         :id="'vital-'.$vitalSign->id"
                                         :name="'values['.$vitalSign->id.']'"
                                         type="text"
                                         model="values.{{ $vitalSign->id }}"
+                                        :placeholder="$vitalSign->normal_range ?? ''"
                                 />
+                                @if($vitalSign->normal_range)
+                                    <small class="text-muted d-block mt-1">
+                                        {{ trans('doctor::doctor.vitalSign.normal_range') }}: {{ $vitalSign->normal_range }}
+                                    </small>
+                                @endif
+                                @if($numericValue !== null && $isInRange === false)
+                                    <small class="text-danger d-block mt-1">
+                                        <i class="ti tabler-alert-triangle"></i>
+                                        {{ trans('doctor::doctor.vitalSign.out_of_range') }}
+                                    </small>
+                                @endif
                                 <div class="text-end mt-3">
                                     <button
                                             class="btn btn-sm btn-primary"

@@ -11,8 +11,8 @@ use Modules\Doctor\Models\Doctor;
 
 class AuditLog extends Model
 {
-
     public $timestamps = true;
+
     protected $fillable = [
         'auditable_type',
         'auditable_id',
@@ -62,20 +62,21 @@ class AuditLog extends Model
 
             $logins->whereBetween('created_at', [$request['start_date'], $request['end_date']]);
         }
+
         return $logins;
     }
 
     public static function filter($logins, $request)
     {
-        if (!is_null($request['auditable_type'])) {
+        if (! is_null($request['auditable_type'])) {
             $logins->where('auditable_type', $request['auditable_type']);
         }
 
-        if (!is_null($request['auditable_id'])) {
+        if (! is_null($request['auditable_id'])) {
             $logins->where('auditable_id', $request['auditable_id']);
         }
 
-        if (!is_null($request['created_at'])) {
+        if (! is_null($request['created_at'])) {
             $logins->whereDate('created_at', '>=', $request['created_at']);
         }
 
@@ -106,6 +107,7 @@ class AuditLog extends Model
 
     /**
      * Legacy method for backward compatibility
+     *
      * @deprecated Use auditable() instead
      */
     public function doctor(): BelongsTo

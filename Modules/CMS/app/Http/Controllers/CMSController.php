@@ -20,6 +20,7 @@ class CMSController extends Controller
     public function index()
     {
         $data = $this->pages->index();
+
         return view('cms::pages.index', compact('data'));
     }
 
@@ -31,6 +32,7 @@ class CMSController extends Controller
         $parentOptions = $this->pages->getParentOptions();
         $statusOptions = PageStatusEnum::getAllEnumValuesKeysLabel();
         $templateOptions = PageTemplateEnum::getAllEnumValuesKeysLabel();
+
         return view('cms::pages.create', compact('parentOptions', 'statusOptions', 'templateOptions'));
     }
 
@@ -40,6 +42,7 @@ class CMSController extends Controller
     public function store(PageRequest $request)
     {
         $page = $this->pages->store($request);
+
         return redirect()->route('cms.edit', $page->id)->with('success', trans('core::core.env.save'));
     }
 
@@ -49,6 +52,7 @@ class CMSController extends Controller
     public function show($id)
     {
         $page = $this->pages->find($id);
+
         return view('cms::pages.show', compact('page'));
     }
 
@@ -61,6 +65,7 @@ class CMSController extends Controller
         $parentOptions = $this->pages->getParentOptions();
         $statusOptions = PageStatusEnum::getAllEnumValuesKeysLabel();
         $templateOptions = PageTemplateEnum::getAllEnumValuesKeysLabel();
+
         return view('cms::pages.edit', compact('page', 'parentOptions', 'statusOptions', 'templateOptions'));
     }
 
@@ -70,6 +75,7 @@ class CMSController extends Controller
     public function update(PageRequest $request, $id)
     {
         $this->pages->update($id, $request);
+
         return redirect()->route('cms.index')->with('success', trans('core::core.env.save'));
     }
 
@@ -79,6 +85,7 @@ class CMSController extends Controller
     public function destroy($id)
     {
         $this->pages->destroy($id);
+
         return redirect()->route('cms.index')->with('success', trans('core::core.env.save'));
     }
 
@@ -89,7 +96,7 @@ class CMSController extends Controller
     {
         $page = $this->pages->getHomePage();
 
-        if (!$page) {
+        if (! $page) {
             return redirect()->route('cms.index')
                 ->with('error', 'Home page not found. Please run the seeder first.');
         }
@@ -104,11 +111,12 @@ class CMSController extends Controller
     {
         try {
             $action->handle($request);
+
             return redirect()->route('cms.home.edit')
                 ->with('success', trans('core::core.env.save'));
         } catch (\Exception $e) {
             return redirect()->back()
-                ->with('error', 'Error updating home page: ' . $e->getMessage())
+                ->with('error', 'Error updating home page: '.$e->getMessage())
                 ->withInput();
         }
     }

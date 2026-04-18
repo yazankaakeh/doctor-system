@@ -18,42 +18,73 @@ class DoctorSeeder extends Seeder
      */
     public function run(): void
     {
-        Role::create([
-            'name' => Roles::SUPER_ADMIN->value,
-            'guard_name' => 'doctor',
-        ]);
+        // Create or get the SUPER_ADMIN role for doctor guard
+        $role = Role::firstOrCreate(
+            [
+                'name' => Roles::SUPER_ADMIN->value,
+                'guard_name' => 'doctor',
+            ]
+        );
+
+        // Create or get the medical specialty
         $names = [
             'en' => 'Internal Medicine And Endocrinology',
             'ar' => 'الطب الباطني والغدد الصماء',
         ];
-        /** @var MedicalSpecialty $medical */
-        $medical = MedicalSpecialty::query()->create([
-            'name' => $names,
-            'code' => MedicalSpecialtyCodeEnum::INTERNAL_MEDICINE_AND_ENDOCRINOLOGY,
 
-        ]);
-        /** @var Doctor $adminYazan */
-        $adminYazan = Doctor::query()->create([
-            'name' => 'Yazan Kaakeh',
-            'email' => 'yazanka187@gmail.com',
-            'gender' => Gender::MALE->value,
-            'medical_specialty_id' => $medical->id,
-            'age' => 30,
-            'is_active' => 1,
-            'phone' => '05522998130',
-            'password' => Hash::make('D1207forever#'),
-        ]);
-        $adminDoctor = Doctor::query()->create([
-            'name' => 'Bassam Jawish',
-            'email' => 'dr.bassam@gmail.com',
-            'gender' => Gender::MALE->value,
-            'medical_specialty_id' => $medical->id,
-            'age' => 30,
-            'is_active' => 1,
-            'phone' => '05386002771',
-            'password' => Hash::make('D1207forever#'),
-        ]);
-        $adminYazan->assignRole(Roles::SUPER_ADMIN->value);
-        $adminDoctor->assignRole(Roles::SUPER_ADMIN->value);
+        /** @var MedicalSpecialty $medical */
+        $medical = MedicalSpecialty::query()->firstOrCreate(
+            [
+                'code' => MedicalSpecialtyCodeEnum::INTERNAL_MEDICINE_AND_ENDOCRINOLOGY,
+            ],
+            [
+                'name' => $names,
+            ]
+        );
+
+        // Create or update demo doctor 1
+        /** @var Doctor $demoDoctor1 */
+        $demoDoctor1 = Doctor::query()->updateOrCreate(
+            [
+                'email' => 'doctor@demo.com',
+            ],
+            [
+                'name' => 'Dr. John Smith',
+                'gender' => Gender::MALE->value,
+                'medical_specialty_id' => $medical->id,
+                'age' => 35,
+                'is_active' => 1,
+                'phone' => '1234567890',
+                'password' => Hash::make('password'),
+            ]
+        );
+
+        // Create or update demo doctor 2
+        /** @var Doctor $demoDoctor2 */
+        $demoDoctor2 = Doctor::query()->updateOrCreate(
+            [
+                'email' => 'doctor2@demo.com',
+            ],
+            [
+                'name' => 'Dr. Sarah Johnson',
+                'gender' => Gender::FEMALE->value,
+                'medical_specialty_id' => $medical->id,
+                'age' => 32,
+                'is_active' => 1,
+                'phone' => '0987654321',
+                'password' => Hash::make('password'),
+            ]
+        );
+
+        // Assign role if not already assigned
+        if (! $demoDoctor1->hasRole(Roles::SUPER_ADMIN->value)) {
+            $demoDoctor1->assignRole(Roles::SUPER_ADMIN->value);
+        }
+
+        if (! $demoDoctor2->hasRole(Roles::SUPER_ADMIN->value)) {
+            $demoDoctor2->assignRole(Roles::SUPER_ADMIN->value);
+        }
+
+        $this->command->info('Doctor seeder completed successfully!');
     }
 }

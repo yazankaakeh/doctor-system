@@ -2,17 +2,17 @@
 
 use Illuminate\Support\Facades\Route;
 use Modules\Core\App\Http\Controllers\LoginController;
-use Modules\Core\app\Http\Controllers\SocialController;
 use Modules\Theme\Http\Controllers\LandingPageController;
 use Modules\Theme\Http\Controllers\ThemeController;
 use Modules\Theme\Http\Controllers\TinyMCEUploadController;
 
-/*Auth::routes();*/
+/* Auth::routes(); */
 Route::get('lang/{locale}', function ($locale) {
     if (in_array($locale, ['en', 'ar', 'tr'])) {
         session(['locale' => $locale]);
         App::setLocale($locale);
     }
+
     return redirect()->back();
 })->name('locale');
 Route::get('/admin/login', [LoginController::class, 'showLoginForm'])->middleware('doctorMenu')->name(

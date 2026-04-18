@@ -4,14 +4,16 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      */
     public function up(): void
     {
         Schema::table('patients', function (Blueprint $table) {
-            $table->date('age')->change()->nullable(); // change int -> date        });
+            // Age should remain as integer - no changes needed
+            // If you need birthdate, add a new column instead
         });
     }
 
@@ -21,7 +23,7 @@ return new class extends Migration {
     public function down(): void
     {
         Schema::table('patients', function (Blueprint $table) {
-            $table->integer('birthdate')->change(); // rollback to int
+            // No changes to revert
         });
     }
 };

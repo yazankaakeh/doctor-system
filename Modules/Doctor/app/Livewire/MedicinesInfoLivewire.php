@@ -16,10 +16,15 @@ class MedicinesInfoLivewire extends Component
     use OptimizeLivewireTrait;
 
     public string $componentName = 'MedicinesInfoLivewire';
+
     public mixed $medicines;
+
     public mixed $medicinesArray = [0];
+
     public mixed $dosageForms;
+
     public MedicalExamination $medicalExamination;
+
     public array $medicinesData = [
         [
             'medicine_id' => null,     // required | exists:medicines,id   (select2)
@@ -52,13 +57,12 @@ class MedicinesInfoLivewire extends Component
             'medical_examination_id' => $this->medicalExamination->id,
         ])->get()->toArray();
         $this->dosageForms = DosageForm::getDosageFormSelect2();
-        if (!empty($medicinesData)) {
+        if (! empty($medicinesData)) {
             $this->medicinesData = MedicalExaminationMedicine::query()->where([
                 'medical_examination_id' => $this->medicalExamination->id,
             ])->get()->toArray();
         }
     }
-
 
     public function decrease($index): void
     {
@@ -78,7 +82,7 @@ class MedicinesInfoLivewire extends Component
         $syncPayload = [];
 
         foreach ($validated['medicinesData'] as $row) {
-            $drugId = (int)$row['medicine_id'];
+            $drugId = (int) $row['medicine_id'];
             $syncPayload[$drugId] = [
                 'medicine_id' => $row['medicine_id'],
                 'dose' => $row['dose'],
@@ -97,6 +101,7 @@ class MedicinesInfoLivewire extends Component
     public function render(): Factory|View
     {
         $this->medicines = Medicine::getMedicinesSelect2();
+
         return view('doctor::livewire.medicines-info-livewire');
     }
 

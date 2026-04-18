@@ -17,6 +17,7 @@ class MedicalSpecialty extends Model
     use HasFactory, HasTranslations;
 
     public array $translatable = ['name'];
+
     /**
      * The attributes that are mass assignable.
      */
@@ -26,6 +27,7 @@ class MedicalSpecialty extends Model
         'code',
         'is_active',
     ];
+
     protected $casts = [
         'code' => 'string',
         'is_active' => ActiveEnum::class,

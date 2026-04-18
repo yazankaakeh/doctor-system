@@ -9,10 +9,10 @@ use Spatie\Translatable\HasTranslations;
 
 class DosageForm extends Model
 {
-
     use HasTranslations;
 
     public array $translatable = ['name'];
+
     /**
      * The attributes that are mass assignable.
      */
@@ -30,5 +30,4 @@ class DosageForm extends Model
     {
         return DosageForm::query()->where('is_active', ActiveEnum::ACTIVE)->pluck('name', 'id');
     }
-
 }

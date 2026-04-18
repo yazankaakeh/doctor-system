@@ -15,10 +15,14 @@ class VitalSignRequest extends FormRequest
     {
         $isUpdate = $this->routeIs('doctor.vitalSign.update'); // true/false
         $required = $isUpdate ? 'required' : 'nullable';
+
         return [
             'id' => [$required, 'integer', 'exists:vital_signs,id'],
-            'is_active' => ['required', new Enum(ActiveEnum::class)],           // must be true/false
+            'is_active' => ['required', new Enum(ActiveEnum::class)],
             'name.*' => ['required', 'string', 'max:255'],
+            'min_value' => ['nullable', 'numeric', 'min:0'],
+            'max_value' => ['nullable', 'numeric', 'min:0', 'gte:min_value'],
+            'unit' => ['nullable', 'string', 'max:50'],
         ];
     }
 

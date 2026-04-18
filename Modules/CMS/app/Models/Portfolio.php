@@ -14,7 +14,7 @@ use Spatie\Translatable\HasTranslations;
 
 class Portfolio extends Model implements HasMedia
 {
-    use InteractsWithMedia, HasTranslations, SoftDeletes, HasSeo;
+    use HasSeo, HasTranslations, InteractsWithMedia, SoftDeletes;
 
     protected $table = 'portfolios';
 
@@ -94,7 +94,7 @@ class Portfolio extends Model implements HasMedia
             $originalSlug = $portfolio->slug;
             $count = 1;
             while (static::where('slug', $portfolio->slug)->exists()) {
-                $portfolio->slug = $originalSlug . '-' . $count++;
+                $portfolio->slug = $originalSlug.'-'.$count++;
             }
 
             // Set order if not provided
@@ -186,7 +186,7 @@ class Portfolio extends Model implements HasMedia
 
     public function scopeByCategory($query, string $category)
     {
-        return $query->where('category', 'like', '%"' . $category . '"%');
+        return $query->where('category', 'like', '%"'.$category.'"%');
     }
 
     // Accessors

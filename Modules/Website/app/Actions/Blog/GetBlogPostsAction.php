@@ -2,7 +2,6 @@
 
 namespace Modules\Website\Actions\Blog;
 
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 use Modules\Website\Repository\Blog\BlogFrontInterface;
 
@@ -10,8 +9,7 @@ class GetBlogPostsAction
 {
     public function __construct(
         private readonly BlogFrontInterface $blogRepository
-    ) {
-    }
+    ) {}
 
     public function handle(Request $request): array
     {

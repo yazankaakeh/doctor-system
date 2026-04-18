@@ -13,7 +13,7 @@ class UpdateThemeSettingsAction
 
         $themeSetting = ThemeSetting::where('scope', $scope)->first();
 
-        if (!$themeSetting) {
+        if (! $themeSetting) {
             $themeSetting = new ThemeSetting(['scope' => $scope]);
         }
 
@@ -35,9 +35,19 @@ class UpdateThemeSettingsAction
 
         // Update typography
         $themeSetting->font_family = $request->input('font_family');
+        $themeSetting->font_import_url = $request->input('font_import_url');
         $themeSetting->font_size_base = $request->input('font_size_base');
         $themeSetting->headings_font_family = $request->input('headings_font_family');
         $themeSetting->headings_font_weight = $request->input('headings_font_weight');
+
+        // Handle custom fonts (array of @font-face declarations)
+        if ($request->filled('custom_fonts')) {
+            $customFonts = array_filter(
+                array_map('trim', explode('---FONT-SEPARATOR---', $request->input('custom_fonts'))),
+                fn ($font) => ! empty($font)
+            );
+            $themeSetting->custom_fonts = ! empty($customFonts) ? $customFonts : null;
+        }
 
         // Update light mode layout
         $themeSetting->body_bg = $request->input('body_bg');

@@ -15,6 +15,7 @@ class MedicalSpecialtyRequest extends FormRequest
     {
         $isUpdate = $this->routeIs('doctor.medicalSpecialty.update'); // true/false
         $required = $isUpdate ? 'required' : 'nullable';
+
         return [
             'id' => [$required, 'integer', 'exists:medical_specialties,id'],
             'name.*' => ['required', 'string', 'max:255'], // array of names

@@ -17,6 +17,7 @@
   "autoload": {
     "psr-4": {
       "Modules\\AdminManagement\\": "app/",
+      "Modules\\AdminManagement\\app\\": "app/",
       "Modules\\AdminManagement\\Database\\Factories\\": "database/factories/",
       "Modules\\AdminManagement\\Database\\Seeders\\": "database/seeders/"
     }

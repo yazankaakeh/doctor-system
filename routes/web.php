@@ -13,9 +13,8 @@ Route::post('admin/login', [AuthController::class, 'login'])
     ->name('admin.login.post');
 */
 
-use Modules\AdminManagement\app\Http\Controllers\AuthController;
-use Modules\AdminManagement\app\Http\Controllers\UserAuthController;
-
+use Modules\AdminManagement\Http\Controllers\AuthController;
+use Modules\AdminManagement\Http\Controllers\UserAuthController;
 
 Route::post('admin/logout', [AuthController::class, 'logout'])
     ->name('admin.logout.post');

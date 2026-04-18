@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Notification extends Model
 {
-
     /**
      * The attributes that are mass assignable.
      */
@@ -26,5 +25,4 @@ class Notification extends Model
     {
         return $this->morphTo();
     }
-
 }

@@ -17,7 +17,7 @@ class SetApiLocale
         $locale = $request->header('Accept-Language') ?? Session::get('locale');
 
         $supportedLocales = ['en', 'tr'];
-        if (!in_array($locale, $supportedLocales)) {
+        if (! in_array($locale, $supportedLocales)) {
             $locale = config('app.fallback_locale', 'en');
         }
 

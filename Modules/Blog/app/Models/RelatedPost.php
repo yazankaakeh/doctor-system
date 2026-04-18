@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class RelatedPost extends Model
 {
-
     /**
      * The attributes that are mass assignable.
      */
@@ -14,6 +13,4 @@ class RelatedPost extends Model
         'post_id',
         'related_post_id',
     ];
-
-
 }

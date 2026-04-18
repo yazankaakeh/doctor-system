@@ -15,6 +15,7 @@ class DosageFormRequest extends FormRequest
     {
         $isUpdate = $this->routeIs('doctor.dosageForm.update'); // true/false
         $required = $isUpdate ? 'required' : 'nullable';
+
         return [
             'id' => [$required, 'integer', 'exists:dosage_forms,id'],
             'is_active' => ['required', new Enum(ActiveEnum::class)],           // must be true/false

@@ -2,9 +2,9 @@
 
 namespace Modules\MCP\Repository\ChatConversation;
 
-use Modules\MCP\Models\ChatConversation;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
+use Modules\MCP\Models\ChatConversation;
 
 interface ChatConversationInterface
 {

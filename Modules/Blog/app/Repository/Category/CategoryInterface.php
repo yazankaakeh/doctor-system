@@ -18,5 +18,3 @@ interface CategoryInterface
 
     public function destroy(int $id): void;
 }
-
-

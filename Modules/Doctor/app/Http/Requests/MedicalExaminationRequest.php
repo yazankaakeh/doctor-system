@@ -25,8 +25,7 @@ class MedicalExaminationRequest extends FormRequest
             'id' => [
                 'required',
                 Rule::exists('medical_examinations', 'id')
-                    ->where(fn($query)
-                        => $query->whereNot('status', MedicalExaminationStatusEnum::ARCHIVED),
+                    ->where(fn ($query) => $query->whereNot('status', MedicalExaminationStatusEnum::ARCHIVED),
                     ),
             ],
             'reason_of_visiting' => ['required', 'string', 'max:255'],

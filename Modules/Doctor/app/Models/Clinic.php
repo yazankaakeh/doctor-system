@@ -19,6 +19,7 @@ class Clinic extends Model implements HasMedia
     use HasFactory, HasTranslations, InteractsWithMedia;
 
     public array $translatable = ['name'];
+
     /**
      * The attributes that are mass assignable.
      */
@@ -26,6 +27,7 @@ class Clinic extends Model implements HasMedia
         'name',
         'is_active',
     ];
+
     protected $casts = [
         'is_active' => ActiveEnum::class,
     ];

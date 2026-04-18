@@ -36,9 +36,9 @@ class PatientController extends Controller
         $data = Patient::query()->filter($filters)->with(['media'])->paginate(Pagination::PAG->value);
         $countries = Country::getCountriesSelect2();
         $clinics = Clinic::getClinicSelect2();
+
         return view('doctor::doctor.patients.index', compact('data', 'countries', 'clinics'));
     }
-
 
     /**
      * @throws FileIsTooBig
@@ -53,6 +53,7 @@ class PatientController extends Controller
         }
         $patient->clinics()->sync($request->clinics_id);
         $patient->clinics()->attach($request->clinics);
+
         return redirect()->back();
     }
 
@@ -68,9 +69,9 @@ class PatientController extends Controller
             ->with('finalDiagnosis')
             ->first();
         $medicalExaminations = MedicalExamination::patientMedicalExaminationsWithoutId($id)->get();
+
         return view('doctor::doctor.patients.show', compact('patient', 'medicalExaminations'));
     }
-
 
     /**
      * Update the specified resource in storage.
@@ -87,6 +88,7 @@ class PatientController extends Controller
         if ($request->file('img')) {
             $patient->addMedia($request->file('img'))->toMediaCollection('images');
         }
+
         return redirect()->back();
     }
 
@@ -95,10 +97,11 @@ class PatientController extends Controller
      */
     public function downloadVCard($id)
     {
-        $vcard = new VCard();
+        $vcard = new VCard;
         $patient = Patient::query()->findOrFail($id);
         $content = $vcard->download($patient);
         $filename = $vcard->getFilename($patient->name);
+
         return response($content, 200, [
             'Content-Type' => 'text/vcard; charset=utf-8',
             'Content-Disposition' => 'attachment; filename="'.$filename.'"',

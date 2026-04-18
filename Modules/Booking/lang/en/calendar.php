@@ -1,0 +1,43 @@
+<?php
+
+return [
+    'availability_calendar' => 'Availability Calendar',
+    'appointments_calendar' => 'Appointments Calendar',
+    'generate_from_recurring' => 'Generate from Recurring',
+    'add_availability' => 'Add Availability',
+    'edit_availability' => 'Edit Availability',
+    'availability_details' => 'Availability Details',
+    'booking_details' => 'Booking Details',
+    'generate_description' => 'Generate availability slots from your recurring schedules for the selected date range.',
+    'max_days_info' => 'You can generate up to 90 days at a time.',
+    'generate' => 'Generate',
+    'no_recurring_schedules' => 'No active recurring schedules found. Please create recurring schedules first.',
+
+    'recurring_slots' => 'Recurring',
+    'manual_slots' => 'Manual',
+    'inactive_slots' => 'Inactive',
+    'slots_available' => 'slots',
+    'type' => 'Type',
+    'recurring' => 'Recurring',
+    'manual' => 'Manual',
+    'available_slots' => 'Available Slots',
+    'time_range' => 'Time Range',
+    'time' => 'Time',
+
+    'has_active_bookings' => 'This availability has active bookings and cannot be deleted.',
+    'cannot_delete_with_bookings' => 'Cannot delete availability with active bookings.',
+    'availability_created' => 'Availability created successfully.',
+    'availability_updated' => 'Availability updated successfully.',
+    'availability_deleted' => 'Availability deleted successfully.',
+
+    'filter_by_status' => 'Filter by Status',
+    'all_statuses' => 'All Statuses',
+    'patient_info' => 'Patient Information',
+    'appointment_info' => 'Appointment Information',
+    'join_meeting' => 'Join Meeting',
+    'mark_completed' => 'Mark as Completed',
+    'mark_no_show' => 'Mark as No Show',
+    'booking_completed' => 'Booking marked as completed.',
+    'booking_no_show' => 'Booking marked as no show.',
+    'unknown_patient' => 'Unknown Patient',
+];

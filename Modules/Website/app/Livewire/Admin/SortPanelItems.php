@@ -12,6 +12,7 @@ use Modules\CMS\Repository\PanelItem\PanelItemInterface;
 class SortPanelItems extends Component
 {
     public int $panelId;
+
     public $items = [];
 
     public function mount(int $panelId, PanelItemInterface $panelItemRepository): void

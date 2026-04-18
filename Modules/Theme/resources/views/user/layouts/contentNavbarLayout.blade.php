@@ -90,4 +90,10 @@
             <div class="drag-target"></div>
         </div>
         <!-- / Layout wrapper -->
+
+        <!-- Global Messaging Panel -->
+        @if(class_exists(\Modules\Messaging\Livewire\GlobalMessagingPanelThemed::class))
+            <livewire:messaging-global-panel-themed />
+        @endif
+        <!-- / Global Messaging Panel -->
 @endsection

@@ -13,12 +13,12 @@ class FirebaseAuthService
      */
     public function getGoogleClient(): Google_Client
     {
-        $client = new Google_Client();
+        $client = new Google_Client;
 
         // Set the path to the service account key file
         $serviceAccountPath = storage_path('firebase-service-account.json');
 
-        if (!file_exists($serviceAccountPath)) {
+        if (! file_exists($serviceAccountPath)) {
             throw new Exception('Firebase service account file not found. Please upload it in the environment settings.');
         }
 
@@ -40,12 +40,12 @@ class FirebaseAuthService
             $token = $client->fetchAccessTokenWithAssertion();
 
             if (isset($token['error'])) {
-                throw new Exception('Failed to generate access token: ' . $token['error']);
+                throw new Exception('Failed to generate access token: '.$token['error']);
             }
 
             return $token['access_token'];
         } catch (Exception $e) {
-            Log::error('Firebase Auth Error: ' . $e->getMessage());
+            Log::error('Firebase Auth Error: '.$e->getMessage());
             throw $e;
         }
     }
@@ -59,13 +59,13 @@ class FirebaseAuthService
             $client = $this->getGoogleClient();
             $payload = $client->verifyIdToken($idToken);
 
-            if (!$payload) {
+            if (! $payload) {
                 throw new Exception('Invalid ID token');
             }
 
             return $payload;
         } catch (Exception $e) {
-            Log::error('Firebase ID Token Verification Error: ' . $e->getMessage());
+            Log::error('Firebase ID Token Verification Error: '.$e->getMessage());
             throw $e;
         }
     }
@@ -93,6 +93,7 @@ class FirebaseAuthService
     {
         try {
             $serviceAccountPath = storage_path('firebase-service-account.json');
+
             return file_exists($serviceAccountPath);
         } catch (Exception $e) {
             return false;

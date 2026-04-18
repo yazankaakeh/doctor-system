@@ -3,9 +3,9 @@
 namespace Modules\CMS\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 use Modules\CMS\Enums\PanelTypeEnum;
 use Modules\Core\App\Enums\LanguageEnum;
-use Illuminate\Validation\Rule;
 
 class PanelRequest extends FormRequest
 {
@@ -39,7 +39,7 @@ class PanelRequest extends FormRequest
         $messages = [];
 
         foreach (LanguageEnum::values() as $lang) {
-            $messages["title.{$lang}.required"] = "Title in " . strtoupper($lang) . " is required";
+            $messages["title.{$lang}.required"] = 'Title in '.strtoupper($lang).' is required';
         }
 
         return $messages;

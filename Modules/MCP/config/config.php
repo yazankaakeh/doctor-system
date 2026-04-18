@@ -39,7 +39,7 @@ return [
 
     // System Prompts
     'system_prompts' => [
-        'default' => 'You are a helpful AI assistant for a medical/doctor system. You have access to information about doctors, patients, clinics, appointments, and medical services. Provide accurate, professional, and friendly responses. Always prioritize patient privacy and medical accuracy.',
+        'default' => 'You are a helpful AI assistant for this application. Provide accurate, professional, and friendly responses. Always maintain user privacy and data security.',
         'greeting' => 'Hello! I am your AI assistant. How can I help you today?',
         'fallback' => 'I apologize, but I don\'t have enough information to answer that question accurately. Would you like to speak with a human representative?',
     ],

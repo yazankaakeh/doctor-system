@@ -29,12 +29,12 @@ class PanelItemController extends Controller
                     'type_label' => $item->type->label(),
                     'title' => $item->title,
                     'is_active' => $item->is_active,
-                ]
+                ],
             ], 201);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 500);
         }
     }
@@ -57,12 +57,12 @@ class PanelItemController extends Controller
                     'type_label' => $item->type->label(),
                     'title' => $item->title,
                     'is_active' => $item->is_active,
-                ]
+                ],
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 500);
         }
     }
@@ -77,12 +77,12 @@ class PanelItemController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Panel item deleted successfully'
+                'message' => 'Panel item deleted successfully',
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 500);
         }
     }
@@ -109,12 +109,12 @@ class PanelItemController extends Controller
                     'is_active' => $item->is_active,
                     'order' => $item->order,
                     'settings' => $item->settings,
-                ]
+                ],
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 404);
         }
     }

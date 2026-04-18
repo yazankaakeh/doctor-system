@@ -14,7 +14,7 @@ enum PageStatusEnum: string
 
     public function label(): string
     {
-        return trans('cms::enums.PageStatusEnum.' . $this->value);
+        return trans('cms::enums.PageStatusEnum.'.$this->value);
     }
 
     public function class(): string

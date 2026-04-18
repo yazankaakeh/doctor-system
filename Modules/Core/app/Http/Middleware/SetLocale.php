@@ -18,6 +18,7 @@ class SetLocale
             $locale = config('app.locale');
         }
         App::setLocale($locale);
+
         return $next($request);
     }
 }

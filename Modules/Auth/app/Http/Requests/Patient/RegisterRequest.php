@@ -29,9 +29,9 @@ class RegisterRequest extends FormRequest
             'phone' => ['required', 'string', 'max:20', 'unique:patients,phone'],
             'password' => ['required', 'string', 'confirmed', Password::defaults()],
             'age' => ['nullable', 'integer', 'min:1', 'max:150'],
-            'gender' => ['nullable', 'string', 'in:' . implode(',', array_column(Gender::cases(), 'value'))],
-            'blood_type' => ['nullable', 'string', 'in:' . implode(',', array_column(BloodType::cases(), 'value'))],
-            'marital_status' => ['nullable', 'string', 'in:' . implode(',', array_column(MaritalStatus::cases(), 'value'))],
+            'gender' => ['nullable', 'string', 'in:'.implode(',', array_column(Gender::cases(), 'value'))],
+            'blood_type' => ['nullable', 'string', 'in:'.implode(',', array_column(BloodType::cases(), 'value'))],
+            'marital_status' => ['nullable', 'string', 'in:'.implode(',', array_column(MaritalStatus::cases(), 'value'))],
             'work' => ['nullable', 'string', 'max:255'],
             'nationality_id' => ['nullable', 'exists:countries,id'],
         ];

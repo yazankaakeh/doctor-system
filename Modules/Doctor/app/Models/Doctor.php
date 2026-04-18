@@ -2,15 +2,18 @@
 
 namespace Modules\Doctor\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Modules\Booking\Models\Booking;
+use Modules\Booking\Models\DoctorAvailability;
+use Modules\Booking\Models\DoctorRecurringSchedule;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Modules\AdminManagement\Traits\AuditLogTrait;
-use Modules\Auth\app\Models\SocialAccount;
+use Modules\Auth\Models\SocialAccount;
 use Modules\Blog\Traits\HasAuthor;
 use Modules\Core\App\Enums\ActiveEnum;
 use Modules\Core\App\Enums\Gender;
@@ -36,12 +39,12 @@ use Spatie\Permission\Traits\HasRoles;
  */
 class Doctor extends Authenticatable implements HasMedia
 {
+    use AuditLogTrait;
+    use HasAuthor;
     use HasFactory;
+    use HasRoles;
     use InteractsWithMedia;
     use Notifiable;
-    use HasAuthor;
-    use HasRoles;
-    use AuditLogTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -56,11 +59,15 @@ class Doctor extends Authenticatable implements HasMedia
         'is_active',
         'age',
         'medical_specialty_id',
+        'bio',
     ];
+
     protected $casts = [
         'gender' => Gender::class,
         'is_active' => ActiveEnum::class,
+        'password' => 'hashed',
     ];
+
     protected $hidden = [
         'password',
         'remember_token',
@@ -89,14 +96,14 @@ class Doctor extends Authenticatable implements HasMedia
             ->nonQueued();
     }
 
-    public function notifications(): MorphTo
+    public function notifications()
     {
-        return $this->morphTo(Notification::class, 'notifiable');
+        return $this->morphMany(Notification::class, 'notifiable');
     }
 
-    public function pushTokens(): MorphTo
+    public function pushTokens()
     {
-        return $this->morphTo(NotificationPushToken::class, 'tokenable');
+        return $this->morphMany(NotificationPushToken::class, 'tokenable');
     }
 
     /**
@@ -107,4 +114,50 @@ class Doctor extends Authenticatable implements HasMedia
         return $this->morphMany(SocialAccount::class, 'user');
     }
 
+    public function availabilities(): HasMany
+    {
+        return $this->hasMany(DoctorAvailability::class);
+    }
+
+    public function bookings(): HasMany
+    {
+        return $this->hasMany(Booking::class);
+    }
+
+    public function recurringSchedules(): HasMany
+    {
+        return $this->hasMany(DoctorRecurringSchedule::class);
+    }
+
+    public function activeRecurringSchedules(): HasMany
+    {
+        return $this->recurringSchedules()->where('is_active', true);
+    }
+
+    public function medicalExaminations(): HasMany
+    {
+        return $this->hasMany(MedicalExamination::class);
+    }
+
+    /**
+     * Get distinct clinics where doctor has performed examinations.
+     */
+    public function getClinicsAttribute()
+    {
+        return Clinic::query()
+            ->whereIn('id', $this->medicalExaminations()->pluck('clinic_id')->unique())
+            ->where('is_active', 1)
+            ->get();
+    }
+
+    /**
+     * Get count of distinct clinics where doctor works.
+     */
+    public function getClinicsCountAttribute(): int
+    {
+        return $this->medicalExaminations()
+            ->whereNotNull('clinic_id')
+            ->distinct('clinic_id')
+            ->count('clinic_id');
+    }
 }

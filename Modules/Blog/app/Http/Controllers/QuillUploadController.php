@@ -22,5 +22,4 @@ class QuillUploadController extends Controller
 
         return response()->json(['url' => $url]);
     }
-
 }

@@ -16,14 +16,16 @@ use Spatie\Translatable\HasTranslations;
 
 class Page extends Model implements HasMedia
 {
-    use InteractsWithMedia, HasSeo, HasTranslations, SoftDeletes;
+    use HasSeo, HasTranslations, InteractsWithMedia, SoftDeletes;
 
     public array $translatable = [
         'title',
         'content',
         'excerpt',
     ];
+
     protected $table = 'cms_pages';
+
     protected $fillable = [
         'title',
         'slug',

@@ -8,8 +8,7 @@ class GetTagPostsAction
 {
     public function __construct(
         private readonly BlogFrontInterface $blogRepository
-    ) {
-    }
+    ) {}
 
     public function handle(int $tagId): array
     {

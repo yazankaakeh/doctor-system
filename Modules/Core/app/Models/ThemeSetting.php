@@ -32,6 +32,8 @@ class ThemeSetting extends Model implements HasMedia
         'dark_warning_color',
         'dark_danger_color',
         'font_family',
+        'font_import_url',
+        'custom_fonts',
         'font_size_base',
         'headings_font_family',
         'headings_font_weight',
@@ -52,6 +54,7 @@ class ThemeSetting extends Model implements HasMedia
 
     protected $casts = [
         'custom_css_variables' => 'array',
+        'custom_fonts' => 'array',
         'is_active' => 'boolean',
     ];
 
@@ -165,11 +168,27 @@ class ThemeSetting extends Model implements HasMedia
     }
 
     /**
-     * Get full custom CSS including variables
+     * Get full custom CSS including font imports and variables
      */
     public function getFullCustomCss(): string
     {
-        $css = $this->getCssVariables();
+        $css = '';
+
+        // Add Google Font import if provided
+        if ($this->font_import_url) {
+            $css .= '@import url(\''.$this->font_import_url.'\');'.PHP_EOL.PHP_EOL;
+        }
+
+        // Add custom font @font-face declarations
+        if ($this->custom_fonts && is_array($this->custom_fonts)) {
+            foreach ($this->custom_fonts as $fontDeclaration) {
+                if (! empty($fontDeclaration)) {
+                    $css .= $fontDeclaration.PHP_EOL.PHP_EOL;
+                }
+            }
+        }
+
+        $css .= $this->getCssVariables();
 
         if ($this->custom_css) {
             $css .= PHP_EOL.PHP_EOL.'/* Light Mode Custom CSS */'.PHP_EOL.$this->custom_css;
@@ -190,7 +209,7 @@ class ThemeSetting extends Model implements HasMedia
         $hex = ltrim($hex, '#');
 
         if (strlen($hex) === 3) {
-            $hex = $hex[0] . $hex[0] . $hex[1] . $hex[1] . $hex[2] . $hex[2];
+            $hex = $hex[0].$hex[0].$hex[1].$hex[1].$hex[2].$hex[2];
         }
 
         $r = hexdec(substr($hex, 0, 2));
@@ -229,12 +248,12 @@ class ThemeSetting extends Model implements HasMedia
             '--bs-border-radius' => $this->border_radius,
 
             // Typography
-            '--bs-body-font-family' => $this->font_family,
+            '--bs-body-font-family' => '"'.$this->font_family.'", sans-serif',
             '--bs-body-font-size' => $this->font_size_base,
         ];
 
         if ($this->headings_font_family) {
-            $lightVariables['--bs-heading-font-family'] = $this->headings_font_family;
+            $lightVariables['--bs-heading-font-family'] = '"'.$this->headings_font_family.'", sans-serif';
         }
 
         if ($this->headings_font_weight) {
@@ -272,6 +291,18 @@ class ThemeSetting extends Model implements HasMedia
             $css .= "  {$key}: {$value};".PHP_EOL;
         }
         $css .= '}'.PHP_EOL.PHP_EOL;
+
+        // Apply font family to body and headings
+        $css .= 'body {'.PHP_EOL;
+        $css .= '  font-family: var(--bs-body-font-family) !important;'.PHP_EOL;
+        $css .= '}'.PHP_EOL.PHP_EOL;
+
+        if ($this->headings_font_family) {
+            $css .= 'h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {'.PHP_EOL;
+            $css .= '  font-family: var(--bs-heading-font-family) !important;'.PHP_EOL;
+            $css .= '  font-weight: var(--bs-heading-font-weight) !important;'.PHP_EOL;
+            $css .= '}'.PHP_EOL.PHP_EOL;
+        }
 
         // Generate CSS for dark mode
         $css .= '[data-bs-theme="dark"] {'.PHP_EOL;

@@ -567,6 +567,31 @@
         margin-bottom: 20px;
     }
 
+    .panel-team-profile-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 10px 20px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--panel-primary);
+        background: rgba(var(--panel-primary-rgb), 0.08);
+        border-radius: 50px;
+        text-decoration: none;
+        transition: var(--panel-transition);
+        margin-top: 8px;
+    }
+
+    .panel-team-profile-link:hover {
+        background: var(--panel-primary);
+        color: #fff;
+        transform: translateY(-2px);
+    }
+
+    .panel-team-profile-link i {
+        font-size: 1rem;
+    }
+
     /* ========================================
        REVIEW CARD
        ======================================== */

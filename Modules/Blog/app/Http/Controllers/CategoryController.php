@@ -2,22 +2,21 @@
 
 namespace Modules\Blog\Http\Controllers;
 
-use App\Enum\Pagination;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Modules\Blog\Http\Requests\CategoryRequest;
 use Modules\Blog\Repository\Category\CategoryInterface;
-use Modules\Blog\Models\BlogCategory;
 
 class CategoryController extends Controller
 {
     public function __construct(public CategoryInterface $categories) {}
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         $data = $this->categories->index();
+
         return view('blog::category.index', compact('data'));
     }
 
@@ -43,6 +42,7 @@ class CategoryController extends Controller
     public function edit($id)
     {
         $category = $this->categories->find($id);
+
         return view('blog::category.edit', compact('category'));
     }
 
@@ -52,6 +52,7 @@ class CategoryController extends Controller
     public function update(CategoryRequest $request, $id)
     {
         $this->categories->update($id, $request);
+
         return redirect()->route('doctor.categories.index')->with('success', trans('core::core.env.save'));
     }
 
@@ -61,9 +62,9 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         $this->categories->destroy($id);
+
         return redirect()->route('doctor.categories.index')->with('success', trans('core::core.env.save'));
     }
-
 
     /**
      * Store a newly created resource in storage.
@@ -71,6 +72,7 @@ class CategoryController extends Controller
     public function store(CategoryRequest $request)
     {
         $this->categories->store($request);
+
         return redirect()->route('doctor.categories.index')->with('success', trans('core::core.env.save'));
     }
 }

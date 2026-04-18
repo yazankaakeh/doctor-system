@@ -17,9 +17,9 @@ class ClinicController extends Controller
     public function index()
     {
         $data = Clinic::query()->paginate(Pagination::PAG->value);
+
         return view('doctor::doctor.clinics.index', compact('data'));
     }
-
 
     /**
      * @throws FileDoesNotExist
@@ -35,6 +35,7 @@ class ClinicController extends Controller
         if ($request->file('img')) {
             $clinic->addMedia($request->file('img'))->toMediaCollection('images');
         }
+
         return redirect()->route('doctor.clinic.index');
     }
 
@@ -57,6 +58,7 @@ class ClinicController extends Controller
                 ->addMedia($request->file('img'))
                 ->toMediaCollection('images');
         }
+
         return redirect()->back();
     }
 

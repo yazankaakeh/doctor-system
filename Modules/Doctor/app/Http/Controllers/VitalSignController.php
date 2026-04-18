@@ -15,9 +15,9 @@ class VitalSignController extends Controller
     public function index()
     {
         $data = VitalSign::query()->paginate(Pagination::PAG->value);
+
         return view('doctor::doctor.vitalSign.index', compact('data'));
     }
-
 
     /**
      * Store a newly created resource in storage.
@@ -25,9 +25,9 @@ class VitalSignController extends Controller
     public function store(VitalSignRequest $request)
     {
         VitalSign::query()->create($request->validated());
+
         return redirect()->back();
     }
-
 
     /**
      * Update the specified resource in storage.
@@ -35,6 +35,7 @@ class VitalSignController extends Controller
     public function update(VitalSignRequest $request)
     {
         VitalSign::query()->where('id', $request->id)->update($request->validated());
+
         return redirect()->back();
     }
 }

@@ -30,6 +30,7 @@ class AppServiceProvider extends ServiceProvider
         Blade::if('canany', function (...$permissions) {
             /** @var Admin $user */
             $user = auth()->user();
+
             return auth()->check() && $user->hasAnyPermission($permissions);
         });
         Paginator::useBootstrapFive();

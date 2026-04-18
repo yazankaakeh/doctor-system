@@ -19,8 +19,7 @@ use Spatie\Translatable\HasTranslations;
  */
 class BlogPost extends Model implements HasMedia
 {
-
-    use InteractsWithMedia, HasSeo, HasTranslations;
+    use HasSeo, HasTranslations, InteractsWithMedia;
 
     /**
      * The attributes that are mass assignable.
@@ -96,6 +95,7 @@ class BlogPost extends Model implements HasMedia
     {
         $a = $this->relatedPosts;
         $b = $this->relatedOfPosts;
+
         return $a->merge($b)->unique('id')->values();
     }
 

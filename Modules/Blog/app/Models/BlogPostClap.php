@@ -34,12 +34,14 @@ class BlogPostClap extends Model
     public static function canClap(int $postId, string $sessionId): bool
     {
         $currentClaps = self::getSessionClaps($postId, $sessionId);
+
         return $currentClaps < 50;
     }
 
     public static function getRemainingClaps(int $postId, string $sessionId): int
     {
         $currentClaps = self::getSessionClaps($postId, $sessionId);
+
         return max(0, 50 - $currentClaps);
     }
 }

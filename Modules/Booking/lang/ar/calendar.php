@@ -1,0 +1,43 @@
+<?php
+
+return [
+    'availability_calendar' => 'تقويم التوفر',
+    'appointments_calendar' => 'تقويم المواعيد',
+    'generate_from_recurring' => 'إنشاء من الجدول المتكرر',
+    'add_availability' => 'إضافة توفر',
+    'edit_availability' => 'تعديل التوفر',
+    'availability_details' => 'تفاصيل التوفر',
+    'booking_details' => 'تفاصيل الحجز',
+    'generate_description' => 'إنشاء فترات التوفر من جداولك المتكررة لنطاق التاريخ المحدد.',
+    'max_days_info' => 'يمكنك إنشاء حتى 90 يوماً في المرة الواحدة.',
+    'generate' => 'إنشاء',
+    'no_recurring_schedules' => 'لم يتم العثور على جداول متكررة نشطة. يرجى إنشاء جداول متكررة أولاً.',
+
+    'recurring_slots' => 'متكرر',
+    'manual_slots' => 'يدوي',
+    'inactive_slots' => 'غير نشط',
+    'slots_available' => 'فترة',
+    'type' => 'النوع',
+    'recurring' => 'متكرر',
+    'manual' => 'يدوي',
+    'available_slots' => 'الفترات المتاحة',
+    'time_range' => 'نطاق الوقت',
+    'time' => 'الوقت',
+
+    'has_active_bookings' => 'هذا التوفر له حجوزات نشطة ولا يمكن حذفه.',
+    'cannot_delete_with_bookings' => 'لا يمكن حذف التوفر مع الحجوزات النشطة.',
+    'availability_created' => 'تم إنشاء التوفر بنجاح.',
+    'availability_updated' => 'تم تحديث التوفر بنجاح.',
+    'availability_deleted' => 'تم حذف التوفر بنجاح.',
+
+    'filter_by_status' => 'تصفية حسب الحالة',
+    'all_statuses' => 'جميع الحالات',
+    'patient_info' => 'معلومات المريض',
+    'appointment_info' => 'معلومات الموعد',
+    'join_meeting' => 'الانضمام للاجتماع',
+    'mark_completed' => 'تحديد كمكتمل',
+    'mark_no_show' => 'تحديد كغير حاضر',
+    'booking_completed' => 'تم تحديد الحجز كمكتمل.',
+    'booking_no_show' => 'تم تحديد الحجز كغير حاضر.',
+    'unknown_patient' => 'مريض غير معروف',
+];

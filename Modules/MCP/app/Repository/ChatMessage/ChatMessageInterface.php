@@ -2,8 +2,8 @@
 
 namespace Modules\MCP\Repository\ChatMessage;
 
-use Modules\MCP\Models\ChatMessage;
 use Illuminate\Database\Eloquent\Collection;
+use Modules\MCP\Models\ChatMessage;
 
 interface ChatMessageInterface
 {

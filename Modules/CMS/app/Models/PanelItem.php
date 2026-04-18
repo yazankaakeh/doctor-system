@@ -13,7 +13,7 @@ use Spatie\Translatable\HasTranslations;
 
 class PanelItem extends Model implements HasMedia
 {
-    use InteractsWithMedia, HasTranslations, SoftDeletes;
+    use HasTranslations, InteractsWithMedia, SoftDeletes;
 
     protected $table = 'cms_panel_items';
 

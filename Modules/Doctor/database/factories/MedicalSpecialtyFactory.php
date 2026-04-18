@@ -19,7 +19,7 @@ class MedicalSpecialtyFactory extends Factory
     {
         return [
             'name' => $this->faker->name(),
+            'code' => $this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
         ];
     }
 }
-

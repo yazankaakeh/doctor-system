@@ -17,7 +17,6 @@ enum Gender: int
         return trans('doctor::doctor.enum.Gender.'.$this->value);
     }
 
-
     public function class(): string
     {
         return match ($this) {

@@ -7,15 +7,34 @@
     <testsuites>
         <testsuite name="Unit">
             <directory>tests/Unit</directory>
+            <directory>Modules/*/tests/Unit</directory>
         </testsuite>
         <testsuite name="Feature">
             <directory>tests/Feature</directory>
+            <directory>Modules/*/tests/Feature</directory>
+        </testsuite>
+        <testsuite name="AdminManagement">
+            <directory>Modules/AdminManagement/tests</directory>
+        </testsuite>
+        <testsuite name="Auth">
+            <directory>Modules/Auth/tests</directory>
+        </testsuite>
+        <testsuite name="Doctor">
+            <directory>Modules/Doctor/tests</directory>
+        </testsuite>
+        <testsuite name="Booking">
+            <directory>Modules/Booking/tests</directory>
         </testsuite>
     </testsuites>
     <source>
         <include>
             <directory>app</directory>
+            <directory>Modules/*/app</directory>
         </include>
+        <exclude>
+            <directory>Modules/*/node_modules</directory>
+            <directory>Modules/*/vendor</directory>
+        </exclude>
     </source>
     <php>
         <env name="APP_ENV" value="testing"/>

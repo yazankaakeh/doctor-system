@@ -13,8 +13,7 @@ class PortfolioController extends Controller
 {
     public function __construct(
         private readonly PortfolioInterface $portfolioRepository
-    ) {
-    }
+    ) {}
 
     /**
      * Display a listing of portfolios.
@@ -55,7 +54,7 @@ class PortfolioController extends Controller
     {
         $portfolio = $this->portfolioRepository->find($id);
 
-        if (!$portfolio) {
+        if (! $portfolio) {
             abort(404, 'Portfolio not found');
         }
 
@@ -69,7 +68,7 @@ class PortfolioController extends Controller
     {
         $portfolio = $this->portfolioRepository->find($id);
 
-        if (!$portfolio) {
+        if (! $portfolio) {
             abort(404, 'Portfolio not found');
         }
 
@@ -163,13 +162,13 @@ class PortfolioController extends Controller
     {
         $portfolio = $this->portfolioRepository->find($id);
 
-        if (!$portfolio) {
+        if (! $portfolio) {
             return response()->json(['success' => false, 'message' => 'Portfolio not found'], 404);
         }
 
         $media = $portfolio->getMedia('gallery')->where('id', $mediaId)->first();
 
-        if (!$media) {
+        if (! $media) {
             return response()->json(['success' => false, 'message' => 'Image not found'], 404);
         }
 

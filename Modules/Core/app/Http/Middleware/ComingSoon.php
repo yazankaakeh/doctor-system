@@ -16,6 +16,7 @@ class ComingSoon
         if (env('IS_COMING_SOON', 0) == 1) {
             return redirect()->route('landing.coming_soon');
         }
+
         return $next($request);
     }
 }

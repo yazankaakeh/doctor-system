@@ -2,7 +2,6 @@
 
 namespace Modules\Notification\App\Services\Notifications;
 
-
 use Exception;
 use Google_Client;
 use Illuminate\Support\Facades\Log;
@@ -36,13 +35,13 @@ class FireBase
                 'token' => $token,
 
                 'notification' => [
-                    'title' => (string)$data['title'],
-                    'body' => (string)$data['body'],
+                    'title' => (string) $data['title'],
+                    'body' => (string) $data['body'],
 
                 ],
                 'data' => [
-                    'vibrate' => (string)$vibrate,
-                    'sound' => (string)$sound,
+                    'vibrate' => (string) $vibrate,
+                    'sound' => (string) $sound,
                     'click_action' => json_encode($click_action),
                 ],
             ],
@@ -88,11 +87,11 @@ class FireBase
         $firebaseCredentials = storage_path('firebase-service-account.json');
 
         // Fallback to config path if not found in storage
-        if (!file_exists($firebaseCredentials)) {
+        if (! file_exists($firebaseCredentials)) {
             $firebaseCredentials = base_path(config('services.fireBase.firebaseCredentials'));
         }
 
-        if (!file_exists($firebaseCredentials)) {
+        if (! file_exists($firebaseCredentials)) {
             throw new Exception('Firebase credentials JSON file not found. Please upload the service account file in the environment settings.');
         }
 

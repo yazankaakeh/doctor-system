@@ -40,12 +40,12 @@
                     <ul class="nav nav-tabs mb-4" role="tablist">
                         <li class="nav-item">
                             <button type="button" class="nav-link active" data-bs-toggle="tab" data-bs-target="#admin-settings" role="tab">
-                                <i class="ti ti-settings me-1"></i> {{ trans('core::core.theme_settings.admin_theme') }}
+                                <i class="ti tabler-settings me-1"></i> {{ trans('core::core.theme_settings.admin_theme') }}
                             </button>
                         </li>
                         <li class="nav-item">
                             <button type="button" class="nav-link" data-bs-toggle="tab" data-bs-target="#website-settings" role="tab">
-                                <i class="ti ti-world me-1"></i> {{ trans('core::core.theme_settings.website_theme') }}
+                                <i class="ti tabler-world me-1"></i> {{ trans('core::core.theme_settings.website_theme') }}
                             </button>
                         </li>
                     </ul>
@@ -87,20 +87,48 @@
             const primaryColor = form.querySelector('[name="primary_color"]').value;
             const bodyBg = form.querySelector('[name="body_bg"]').value;
             const cardBg = form.querySelector('[name="card_bg"]').value;
+            const fontFamily = form.querySelector('[name="font_family"]').value;
 
             preview.style.setProperty('--preview-bg', bodyBg);
             preview.querySelector('.preview-card').style.background = cardBg;
             preview.querySelector('.preview-button').style.background = primaryColor;
+            preview.style.fontFamily = `"${fontFamily}", sans-serif`;
         }
 
         // Attach preview update listeners
         ['admin', 'website'].forEach(scope => {
             const form = document.getElementById(`theme-form-${scope}`);
             if (form) {
-                form.querySelectorAll('input[type="color"], input[type="text"]').forEach(input => {
+                form.querySelectorAll('input[type="color"], input[type="text"], select').forEach(input => {
                     input.addEventListener('input', () => updatePreview(scope));
                 });
             }
+        });
+
+        // Font import URL helper
+        document.querySelectorAll('[id^="font_family_"]').forEach(select => {
+            select.addEventListener('change', function() {
+                const scope = this.id.split('_').pop();
+                const importUrlInput = document.getElementById(`font_import_url_${scope}`);
+                if (!importUrlInput) return;
+
+                const fontUrls = {
+                    'Public Sans': 'https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&display=swap',
+                    'Inter': 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap',
+                    'Roboto': 'https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap',
+                    'Open Sans': 'https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap',
+                    'Poppins': 'https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap',
+                    'Cairo': 'https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap',
+                    'Tajawal': 'https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap',
+                    'Montserrat': 'https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap',
+                    'Lato': 'https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap',
+                    'Raleway': 'https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&display=swap'
+                };
+
+                if (fontUrls[this.value] && !importUrlInput.value) {
+                    importUrlInput.value = fontUrls[this.value];
+                }
+            });
         });
     </script>
 @endsection

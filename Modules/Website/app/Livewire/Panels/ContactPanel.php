@@ -17,5 +17,3 @@ class ContactPanel extends Component
         ]);
     }
 }
-
-

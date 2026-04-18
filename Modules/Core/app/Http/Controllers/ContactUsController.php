@@ -8,13 +8,13 @@ use Modules\Core\app\Models\ContactUs;
 
 class ContactUsController extends Controller
 {
-  /**
-   * Display a listing of the resource.
-   */
-  public function submitContactForm(ContactUsRequest $request)
-  {
-    ContactUs::query()->create($request->all());
+    /**
+     * Display a listing of the resource.
+     */
+    public function submitContactForm(ContactUsRequest $request)
+    {
+        ContactUs::query()->create($request->all());
 
-    return redirect()->back();
-  }
+        return redirect()->back();
+    }
 }

@@ -1,6 +1,8 @@
 @php
     use Illuminate\Support\Facades\Route;use Modules\Theme\Helpers\Helpers;
     $configData = Helpers::appClasses();
+    // Ensure menuData exists, provide empty fallback if not
+    $menuData = $menuData ?? [];
 @endphp
         <!-- Horizontal Menu -->
 <aside id="layout-menu" class="layout-menu-horizontal menu-horizontal  menu bg-menu-theme flex-grow-0"
@@ -9,7 +11,7 @@
 @endforeach>
 <div class="{{ $containerNav }} d-flex h-100">
     <ul class="menu-inner">
-        @foreach ($menuData as $menu)
+        @foreach ((isset($menuData[0]->menu) ? $menuData[0]->menu : []) as $menu)
             {{-- active menu method --}}
             @php
                 $activeClass = null;

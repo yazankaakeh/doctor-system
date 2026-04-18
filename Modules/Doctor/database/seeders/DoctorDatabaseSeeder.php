@@ -14,11 +14,11 @@ class DoctorDatabaseSeeder extends Seeder
         $this->call([
             MedicineSeeder::class,
             MedicalTestsSeeder::class,
-            VitalSignsSeeder ::class,
-            //PatientSeeder ::class,
-            ClinicSeeder ::class,
-            FinalDiagnosisSeeder ::class,
-            DosageFormSeeder ::class,
+            VitalSignsSeeder::class,
+            // PatientSeeder ::class,
+            ClinicSeeder::class,
+            FinalDiagnosisSeeder::class,
+            DosageFormSeeder::class,
         ]);
     }
 }

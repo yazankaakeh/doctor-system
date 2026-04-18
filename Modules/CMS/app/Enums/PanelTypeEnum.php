@@ -18,6 +18,7 @@ enum PanelTypeEnum: string
     case STATS = 'stats';
     case GALLERY = 'gallery';
     case CAROUSEL = 'carousel';
+    case BOOKING = 'booking';
     case CUSTOM = 'custom';
 
     public function label(): string
@@ -33,6 +34,7 @@ enum PanelTypeEnum: string
             self::STATS => 'Statistics / Numbers',
             self::GALLERY => 'Image Gallery',
             self::CAROUSEL => 'Carousel / Slider',
+            self::BOOKING => 'Booking Widget',
             self::CUSTOM => 'Custom HTML',
         };
     }
@@ -50,6 +52,7 @@ enum PanelTypeEnum: string
             self::STATS => 'Statistics or number counters',
             self::GALLERY => 'Image gallery with lightbox',
             self::CAROUSEL => 'Modern image/content slider with autoplay and navigation',
+            self::BOOKING => 'Appointment booking wizard for patients',
             self::CUSTOM => 'Custom HTML content',
         };
     }
@@ -67,6 +70,7 @@ enum PanelTypeEnum: string
             self::STATS => 'tabler-chart-bar',
             self::GALLERY => 'tabler-photo',
             self::CAROUSEL => 'tabler-carousel-horizontal',
+            self::BOOKING => 'tabler-calendar-event',
             self::CUSTOM => 'tabler-code',
         };
     }
@@ -87,7 +91,7 @@ enum PanelTypeEnum: string
     public function maxItems(): ?int
     {
         return match ($this) {
-            self::HERO, self::CONTACT, self::CTA => 1,
+            self::HERO, self::CONTACT, self::CTA, self::BOOKING => 1,
             default => null, // Unlimited
         };
     }

@@ -14,7 +14,7 @@ class VerifyEmailController extends Controller
     /**
      * Display the email verification notice.
      */
-    public function notice(): View
+    public function show(): View
     {
         return view('auth::patient.verify-email');
     }

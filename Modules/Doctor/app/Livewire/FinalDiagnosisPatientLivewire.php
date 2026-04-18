@@ -15,17 +15,22 @@ use Throwable;
 
 class FinalDiagnosisPatientLivewire extends Component
 {
-
     use OptimizeLivewireTrait;
 
     public string $onChangeEvent;
+
     public string $componentName;
+
     public int $patientId;
+
     public Patient $patient;
 
     public MedicalExamination $medicalExamination;
+
     public mixed $finalDiagnosis;
+
     public mixed $addedFinalDiagnosis;
+
     public string $name;
 
     /**

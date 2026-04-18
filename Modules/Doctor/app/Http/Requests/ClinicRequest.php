@@ -15,6 +15,7 @@ class ClinicRequest extends FormRequest
     {
         $isUpdate = $this->routeIs('doctor.clinic.update'); // true/false
         $required = $isUpdate ? 'required' : 'nullable';
+
         return [
             'id' => [$required, 'integer', 'exists:clinics,id'],
             'name.*' => ['required', 'string', 'max:255'], // array of names

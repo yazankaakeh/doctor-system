@@ -2,7 +2,6 @@
 
 namespace Modules\Notification\Enums;
 
-
 enum NotificationsParams: string
 {
     // SMTP

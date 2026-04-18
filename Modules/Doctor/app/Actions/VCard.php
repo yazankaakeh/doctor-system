@@ -16,7 +16,6 @@ class VCard
         $names = FinalDiagnosis::getUniqueDiagnosisByPatientId($patient->id)->implode(', ');
         $note = $names;
 
-
         // Split name to N:last;first;middle;prefix;suffix
         [$first, $last] = $this->splitName($fullName);
 
@@ -52,16 +51,18 @@ class VCard
             $first = $full;
             $last = '';
         }
+
         return [$first, $last];
     }
 
     private function escape(string $text): string
     {
         // Escape per vCard: comma, semicolon, backslash, and newlines
-        $text = str_replace("\\", "\\\\", $text);
-        $text = str_replace(",", "\,", $text);
-        $text = str_replace(";", "\;", $text);
-        return str_replace(["\r\n", "\r", "\n"], "\\n", $text);
+        $text = str_replace('\\', '\\\\', $text);
+        $text = str_replace(',', "\,", $text);
+        $text = str_replace(';', "\;", $text);
+
+        return str_replace(["\r\n", "\r", "\n"], '\\n', $text);
     }
 
     private function escapeNote(string $text): string
@@ -78,6 +79,7 @@ class VCard
     private function safeFilename(string $name): string
     {
         $base = preg_replace('/[^A-Za-z0-9\-_\.]+/u', '_', $name);
+
         return trim($base ?: 'contact', '_');
     }
 }

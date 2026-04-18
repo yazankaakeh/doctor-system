@@ -3,14 +3,14 @@
     if (isset($panel)) {
         $ctaTitle = $panel['title'][$locale] ?? 'Ready to Get Started?';
         $ctaSubtitle = $panel['settings']['description'][$locale] ?? 'Start your project with a 14-day free trial';
-        $ctaButtonText = $panel['settings']['button_text'][$locale] ?? 'Get Started';
-        $ctaButtonUrl = $panel['settings']['button_url'] ?? '/register';
+        $ctaButtonText = $panel['settings']['button_text'][$locale] ?? 'Book Appointment';
+        $ctaButtonUrl = $panel['settings']['button_url'] ?? (route('booking.public') ?? '#booking');
     } else {
         $cta = $sections['cta'] ?? [];
         $ctaTitle = $cta['title'][$locale] ?? 'Ready to Get Started?';
         $ctaSubtitle = $cta['subtitle'][$locale] ?? 'Start your project with a 14-day free trial';
-        $ctaButtonText = $cta['button_text'][$locale] ?? 'Get Started';
-        $ctaButtonUrl = $cta['button_url'] ?? '/register';
+        $ctaButtonText = $cta['button_text'][$locale] ?? 'Book Appointment';
+        $ctaButtonUrl = $cta['button_url'] ?? (route('booking.public') ?? '#booking');
     }
 @endphp
 

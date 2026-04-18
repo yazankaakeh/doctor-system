@@ -1,0 +1,21 @@
+{
+    "name": "modules/patient",
+    "description": "Patient module for patient dashboard and management",
+    "type": "laravel-module",
+    "license": "MIT",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Modules\\Patient\\": "app/",
+            "Modules\\Patient\\Database\\Factories\\": "database/factories/",
+            "Modules\\Patient\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\Patient\\Providers\\PatientServiceProvider"
+            ]
+        }
+    }
+}

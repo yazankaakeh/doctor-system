@@ -9,7 +9,6 @@ use Modules\AdminManagement\app\Http\Requests\LoginRequest;
 
 class AuthController extends Controller
 {
-
     public function login(LoginRequest $request)
     {
         if (Auth::guard('doctor')->attempt(['email' => $request->email, 'password' => $request->password],
@@ -19,12 +18,14 @@ class AuthController extends Controller
                 ? redirect()->intended(route('doctor.dashboard.index'))
                 : back()->withInput($request->only('email', 'remember'));
         }
+
         return back()->withInput($request->only('email', 'remember'));
     }
 
     public function logout(Request $request)
     {
         Auth::guard('doctor')->logout();
+
         return redirect()->route('admin.login');
     }
 }

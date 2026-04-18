@@ -49,6 +49,27 @@
 @section('page-script')
     <script src="{{asset('livewire-select2/livewire-select2.js')}}"></script>
     @vite(['resources/assets/js/forms-file-upload.js'],'build/modules/theme')
+
+    <script>
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                // Show notification
+                if (typeof Toastify !== 'undefined') {
+                    Toastify({
+                        text: "{{ trans('core::video.link_copied') }}",
+                        duration: 2000,
+                        gravity: "top",
+                        position: "right",
+                        style: { background: "#28a745" }
+                    }).showToast();
+                } else {
+                    alert("{{ trans('core::video.link_copied') }}");
+                }
+            }).catch(err => {
+                console.error('Failed to copy:', err);
+            });
+        }
+    </script>
 @endsection
 
 @section('title', trans('customer.sidebar.medicalExaminations'))
@@ -64,6 +85,44 @@
             <div class="row">
                 <div class="col-lg-3">
                     @includeIf('doctor::doctor.medicalExamination.partials.patientCard',['patient'=> $patient])
+
+                    {{-- Video Meeting & Chat Section --}}
+                    @if(isset($booking) && $booking && $booking->isConfirmed())
+                        <div class="card mb-3">
+                            <div class="card-header">
+                                <h6 class="mb-0">
+                                    <i class="ti tabler-video me-1"></i>
+                                    {{ trans('core::video.video_consultation') }}
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                @if($booking->hasMeetingRoom())
+                                    <a href="{{ route('video.join', ['roomName' => $booking->getMeetingRoomName(), 'booking' => $booking->id]) }}"
+                                       class="btn btn-success w-100 mb-2"
+                                       target="_blank">
+                                        <i class="ti tabler-video me-1"></i>
+                                        {{ trans('booking::booking.join_consultation') }}
+                                    </a>
+                                    <button type="button"
+                                            class="btn btn-outline-success btn-sm w-100"
+                                            onclick="copyToClipboard('{{ $booking->getMeetingLink() }}')">
+                                        <i class="ti tabler-copy me-1"></i>
+                                        {{ trans('core::video.copy_link') }}
+                                    </button>
+                                @else
+                                    <p class="text-muted mb-0 small">{{ trans('booking::booking.no_meeting_scheduled') }}</p>
+                                @endif
+                            </div>
+                        </div>
+
+                        {{-- Chat with Patient --}}
+                        @if(class_exists('\Modules\Messaging\Services\ConversationService'))
+                            <div class="mb-3">
+                                @livewire('booking::booking-conversation', ['booking' => $booking, 'userType' => 'doctor'])
+                            </div>
+                        @endif
+                    @endif
+
                     @includeIf('doctor::doctor.medicalExamination.partials.files',['model'=> $medicalExamination])
                     <div class="my-4">
                         <livewire:doctor::final-diagnosis-patient-livewire

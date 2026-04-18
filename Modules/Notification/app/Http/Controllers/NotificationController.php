@@ -27,12 +27,12 @@ class NotificationController extends Controller
         $email = $request->input('email');
         $details = [
             'subject' => 'Test Email from Mavera',
-            'body'    => 'This is a test email sent.',
+            'body' => 'This is a test email sent.',
         ];
 
         Mail::raw($details['body'], function ($message) use ($details, $email) {
             $message->to($email)  // replace with the recipient's email address
-            ->subject($details['subject']);
+                ->subject($details['subject']);
         });
 
         return redirect()->back();

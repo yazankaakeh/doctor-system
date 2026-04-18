@@ -1,6 +1,6 @@
 # MCP - AI Chat Bot Module
 
-A comprehensive AI-powered chat bot module for Laravel that integrates with Anthropic Claude and OpenAI APIs to provide intelligent customer support for your medical/doctor system.
+A comprehensive AI-powered chat bot module for Laravel that integrates with Anthropic Claude and OpenAI APIs to provide intelligent customer support for your application.
 
 ## Features
 
@@ -288,4 +288,4 @@ For issues or questions:
 
 ## License
 
-This module is part of the doctor-system project.
+This module is part of the base project.

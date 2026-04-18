@@ -9,8 +9,7 @@ class GetHomePageAction
 {
     public function __construct(
         private readonly PageInterface $pageRepository
-    ) {
-    }
+    ) {}
 
     public function handle(): ?Page
     {
@@ -21,7 +20,7 @@ class GetHomePageAction
     {
         $homePage = $this->handle();
 
-        if (!$homePage) {
+        if (! $homePage) {
             abort(404, 'Home page not found. Please run: php artisan db:seed --class=Modules\\CMS\\Database\\Seeders\\LandingPageSeeder');
         }
 

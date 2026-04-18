@@ -4,7 +4,7 @@ namespace Modules\AdminManagement\app\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Modules\AdminManagement\Enums\ActiveAdminEnum;
-use Modules\Auth\app\Models\SocialAccount;
+use Modules\Auth\Models\SocialAccount;
 use Spatie\Permission\Traits\HasRoles;
 
 /**
@@ -14,15 +14,17 @@ use Spatie\Permission\Traits\HasRoles;
  * @property mixed|string $img
  * @property int|mixed $is_active
  * @property mixed $phone
+ *
  * @method addMedia(string $string)
  */
 class Admin extends Authenticatable
 {
     use HasRoles;
 
-    protected string $guard = "admin";
+    protected string $guard = 'admin';
 
     protected $table = 'admins';
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -59,5 +61,4 @@ class Admin extends Authenticatable
     {
         return $this->morphMany(SocialAccount::class, 'user');
     }
-
 }

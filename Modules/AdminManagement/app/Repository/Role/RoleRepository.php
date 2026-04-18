@@ -11,7 +11,6 @@ use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class RoleRepository implements RoleInterface
-
 {
     public function index(): LengthAwarePaginator
     {
@@ -39,7 +38,7 @@ class RoleRepository implements RoleInterface
     {
         /** @var Role $role */
         $role = Role::query()->findOrFail($id);
-        $role->update(['name' => $request->name,]);
+        $role->update(['name' => $request->name]);
         $role->syncPermissions([$request->permissions]);
     }
 

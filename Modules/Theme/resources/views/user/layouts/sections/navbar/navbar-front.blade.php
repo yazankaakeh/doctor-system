@@ -48,6 +48,11 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link fw-medium" href="#booking">
+                            Book Appointment
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link fw-medium" href="#theHow">
                             {{trans('newLandingPage.navbar.theHow')}}
                         </a>
@@ -71,7 +76,12 @@
 
                 <!-- navbar button: Start -->
                 <li>
-                    <a href="#" class="btn btn-primary" target="_blank"><span
+                    <a href="{{ route('booking.public') }}" class="btn btn-primary me-2"><span
+                                class="icon-base ti tabler-calendar scaleX-n1-rtl me-md-1"></span><span
+                                class="d-none d-md-block">Book Appointment</span></a>
+                </li>
+                <li>
+                    <a href="#" class="btn btn-outline-primary" target="_blank"><span
                                 class="icon-base ti tabler-login scaleX-n1-rtl me-md-1"></span><span
                                 class="d-none d-md-block">{{trans('newLandingPage.navbar.loginRegister')}}</span></a>
                 </li>

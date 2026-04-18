@@ -14,7 +14,7 @@ class ClapBlogPostAction
         $sessionId = session()->getId();
 
         // Check if user can still clap
-        if (!BlogPostClap::canClap($id, $sessionId)) {
+        if (! BlogPostClap::canClap($id, $sessionId)) {
             return [
                 'success' => false,
                 'message' => 'You have reached the maximum number of claps (50) for this post.',

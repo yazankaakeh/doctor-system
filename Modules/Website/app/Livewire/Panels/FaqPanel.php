@@ -17,5 +17,3 @@ class FaqPanel extends Component
         ]);
     }
 }
-
-

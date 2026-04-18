@@ -6,7 +6,6 @@ use Modules\Core\app\Traits\OptimizeEnumTrait;
 
 enum LanguageEnum: string
 {
-
     use OptimizeEnumTrait;
 
     case EN = 'en';

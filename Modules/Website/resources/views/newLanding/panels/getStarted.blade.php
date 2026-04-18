@@ -14,7 +14,7 @@
                     <p class="text-body mb-6 mb-md-11">
                         {{trans('newLandingPage.getStartedSection.desc')}}
                     </p>
-                    <a href="#" class="btn btn-primary">
+                    <a href="{{ route('booking.public') }}" class="btn btn-primary">
                         {{trans('newLandingPage.getStartedSection.btn')}}
                     </a>
                 </div>

@@ -24,14 +24,14 @@ class MenuRepository implements MenuInterface
         $validated = $request->validated();
 
         return DB::transaction(function () use ($validated) {
-            $menu = new Menu();
+            $menu = new Menu;
             $menu->name = $validated['name'];
             $menu->slug = $validated['slug'];
             $menu->location = $validated['location'] ?? null;
             $menu->is_active = $validated['is_active'] ?? true;
             $menu->save();
 
-            if (!empty($validated['items']) && is_array($validated['items'])) {
+            if (! empty($validated['items']) && is_array($validated['items'])) {
                 $this->syncMenuItems($menu, $validated['items']);
             }
 
@@ -56,7 +56,7 @@ class MenuRepository implements MenuInterface
                 $menu->allItems()->delete();
 
                 // Create new items
-                if (!empty($validated['items']) && is_array($validated['items'])) {
+                if (! empty($validated['items']) && is_array($validated['items'])) {
                     $this->syncMenuItems($menu, $validated['items']);
                 }
             }
@@ -68,7 +68,7 @@ class MenuRepository implements MenuInterface
     private function syncMenuItems(Menu $menu, array $items): void
     {
         foreach ($items as $itemData) {
-            $menuItem = new MenuItem();
+            $menuItem = new MenuItem;
             $menuItem->menu_id = $menu->id;
             $menuItem->parent_id = $itemData['parent_id'] ?? null;
             $menuItem->title = $itemData['title'];

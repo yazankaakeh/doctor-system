@@ -2,15 +2,13 @@
 
 namespace Modules\Website\Actions\Blog;
 
-use Modules\Blog\Models\BlogPost;
 use Modules\Website\Repository\Blog\BlogFrontInterface;
 
 class GetBlogPostAction
 {
     public function __construct(
         private readonly BlogFrontInterface $blogRepository
-    ) {
-    }
+    ) {}
 
     public function handle(int $id, string $sessionId): array
     {

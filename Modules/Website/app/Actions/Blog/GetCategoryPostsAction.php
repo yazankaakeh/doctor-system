@@ -8,8 +8,7 @@ class GetCategoryPostsAction
 {
     public function __construct(
         private readonly BlogFrontInterface $blogRepository
-    ) {
-    }
+    ) {}
 
     public function handle(int $categoryId): array
     {

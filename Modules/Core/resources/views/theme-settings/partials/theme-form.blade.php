@@ -8,7 +8,7 @@
             <!-- Light Mode Colors Section -->
             <div class="card mb-4">
                 <div class="card-header">
-                    <h5 class="mb-0"><i class="ti ti-sun me-2"></i>{{ trans('core::core.theme_settings.colors') }} (Light Mode)</h5>
+                    <h5 class="mb-0"><i class="ti tabler-sun me-2"></i>{{ trans('core::core.theme_settings.colors') }} (Light Mode)</h5>
                 </div>
                 <div class="card-body">
                     <div class="row g-3">
@@ -34,7 +34,7 @@
             <!-- Dark Mode Colors Section -->
             <div class="card mb-4">
                 <div class="card-header">
-                    <h5 class="mb-0"><i class="ti ti-moon me-2"></i>{{ trans('core::core.theme_settings.colors') }} (Dark Mode)</h5>
+                    <h5 class="mb-0"><i class="ti tabler-moon me-2"></i>{{ trans('core::core.theme_settings.colors') }} (Dark Mode)</h5>
                 </div>
                 <div class="card-body">
                     <div class="row g-3">
@@ -60,7 +60,7 @@
             <!-- Typography Section -->
             <div class="card mb-4">
                 <div class="card-header">
-                    <h5 class="mb-0"><i class="ti ti-typography me-2"></i>{{ trans('core::core.theme_settings.typography') }}</h5>
+                    <h5 class="mb-0"><i class="ti tabler-typography me-2"></i>{{ trans('core::core.theme_settings.typography') }}</h5>
                 </div>
                 <div class="card-body">
                     <div class="row g-3">
@@ -69,7 +69,7 @@
                                 :label="trans('core::core.theme_settings.font_family')"
                                 name="font_family"
                                 id="font_family_{{ $scope }}"
-                                :options="['Public Sans' => 'Public Sans', 'Inter' => 'Inter', 'Roboto' => 'Roboto', 'Open Sans' => 'Open Sans', 'Poppins' => 'Poppins', 'Cairo' => 'Cairo (Arabic)', 'Tajawal' => 'Tajawal (Arabic)']"
+                                :options="['Public Sans' => 'Public Sans', 'Inter' => 'Inter', 'Roboto' => 'Roboto', 'Open Sans' => 'Open Sans', 'Poppins' => 'Poppins', 'Cairo' => 'Cairo (Arabic)', 'Tajawal' => 'Tajawal (Arabic)', 'Montserrat' => 'Montserrat', 'Lato' => 'Lato', 'Raleway' => 'Raleway']"
                                 value="{{ old('font_family', $settings->font_family) }}">
                             </x-core::select>
                         </div>
@@ -82,6 +82,20 @@
                                 value="{{ old('font_size_base', $settings->font_size_base) }}">
                             </x-core::input>
                             <small class="text-muted">e.g., 0.9375rem or 15px</small>
+                        </div>
+                        <div class="col-12">
+                            <x-core::input
+                                :label="trans('core::core.theme_settings.font_import_url')"
+                                type="url"
+                                name="font_import_url"
+                                id="font_import_url_{{ $scope }}"
+                                placeholder="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
+                                value="{{ old('font_import_url', $settings->font_import_url) }}">
+                            </x-core::input>
+                            <small class="text-muted">
+                                <i class="ti tabler-info-circle"></i> Import Google Fonts or custom font URLs.
+                                <a href="https://fonts.google.com/" target="_blank" class="text-primary">Browse Google Fonts</a>
+                            </small>
                         </div>
                         <div class="col-md-6">
                             <x-core::input
@@ -102,6 +116,21 @@
                                 value="{{ old('headings_font_weight', $settings->headings_font_weight) }}">
                             </x-core::select>
                         </div>
+                        <div class="col-12">
+                            <label class="form-label">
+                                <i class="ti tabler-file-upload me-1"></i>{{ trans('core::core.theme_settings.custom_fonts') }}
+                            </label>
+                            <textarea
+                                name="custom_fonts"
+                                id="custom_fonts_{{ $scope }}"
+                                class="form-control font-monospace"
+                                rows="6"
+                                placeholder="@font-face {&#10;  font-family: 'MyCustomFont';&#10;  src: url('/fonts/MyCustomFont.woff2') format('woff2');&#10;  font-weight: normal;&#10;  font-style: normal;&#10;}">{{ old('custom_fonts', is_array($settings->custom_fonts) ? implode("\n---FONT-SEPARATOR---\n", $settings->custom_fonts) : '') }}</textarea>
+                            <small class="text-muted">
+                                <i class="ti tabler-info-circle"></i> Add custom @font-face declarations for uploaded fonts.
+                                Separate multiple font declarations with <code>---FONT-SEPARATOR---</code>
+                            </small>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -109,7 +138,7 @@
             <!-- Layout Section -->
             <div class="card mb-4">
                 <div class="card-header">
-                    <h5 class="mb-0"><i class="ti ti-layout me-2"></i>{{ trans('core::core.theme_settings.layout') }}</h5>
+                    <h5 class="mb-0"><i class="ti tabler-layout me-2"></i>{{ trans('core::core.theme_settings.layout') }}</h5>
                 </div>
                 <div class="card-body">
                     <h6 class="mb-3">Light Mode</h6>
@@ -178,7 +207,7 @@
             <!-- Branding Section -->
             <div class="card mb-4">
                 <div class="card-header">
-                    <h5 class="mb-0"><i class="ti ti-brand-tabler me-2"></i>{{ trans('core::core.theme_settings.branding') }}</h5>
+                    <h5 class="mb-0"><i class="ti tabler-brand-tabler me-2"></i>{{ trans('core::core.theme_settings.branding') }}</h5>
                 </div>
                 <div class="card-body">
                     <div class="row g-3">
@@ -225,7 +254,7 @@
             <!-- Advanced Section -->
             <div class="card mb-4">
                 <div class="card-header">
-                    <h5 class="mb-0"><i class="ti ti-code me-2"></i>{{ trans('core::core.theme_settings.advanced') }}</h5>
+                    <h5 class="mb-0"><i class="ti tabler-code me-2"></i>{{ trans('core::core.theme_settings.advanced') }}</h5>
                 </div>
                 <div class="card-body">
                     <div class="mb-4">
@@ -278,10 +307,10 @@
             <div class="card">
                 <div class="card-body">
                     <button type="submit" class="btn btn-primary w-100 mb-2">
-                        <i class="ti ti-device-floppy me-1"></i>{{ trans('core::core.theme_settings.save_changes') }}
+                        <i class="ti tabler-device-floppy me-1"></i>{{ trans('core::core.theme_settings.save_changes') }}
                     </button>
                     <button type="button" class="btn btn-outline-secondary w-100" onclick="if(confirm('{{ trans('core::core.theme_settings.reset_confirm') }}')) { document.getElementById('reset-form-{{ $scope }}').submit(); }">
-                        <i class="ti ti-refresh me-1"></i>{{ trans('core::core.theme_settings.reset_defaults') }}
+                        <i class="ti tabler-refresh me-1"></i>{{ trans('core::core.theme_settings.reset_defaults') }}
                     </button>
                 </div>
             </div>

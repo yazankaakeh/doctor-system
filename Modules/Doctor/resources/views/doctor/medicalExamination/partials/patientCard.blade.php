@@ -58,8 +58,9 @@
                     <span>{{$patient->name}}</span>
                 </li>
                 <li class="mb-2">
-                    <span class="h6 text-{{$patient->gender->class()}}">{{trans('doctor::doctor.patients.gender')}}:</span>
-                    <span class="text-{{$patient->gender->class()}}">{{$patient->gender->label()}}</span>
+                    <span
+                        class="h6 text-{{$patient?->gender?->class()}}">{{trans('doctor::doctor.patients.gender')}}:</span>
+                    <span class="text-{{$patient?->gender?->class()}}">{{$patient?->gender?->label()}}</span>
                 </li>
                 <li class="mb-2">
                     <span class="h6">{{trans('doctor::doctor.patients.age')}}:</span>
@@ -121,7 +122,8 @@
                 </li>
                 <li class="mb-2">
                     <span class="h6 text-{{$patient->marital_status->class()}}">{{trans('doctor::doctor.patients.marital_status')}}:</span>
-                    <span class="text-{{$patient->marital_status->class()}}">{{$patient->marital_status->label()}}</span>
+                    <span
+                        class="text-{{$patient->marital_status->class()}}">{{$patient->marital_status->label()}}</span>
                 </li>
 
                 <li class="mb-2">

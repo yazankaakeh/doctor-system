@@ -8,26 +8,25 @@ use Illuminate\Support\Facades\File;
 
 class StatesSeeder extends Seeder
 {
-  /**
-   * Run the database seeds.
-   *
-   * @return void
-   */
-  public function run(): void
-  {
-    $path = base_path('Modules/Core/database/sql/states.sql');
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
+    {
+        $path = base_path('Modules/Core/database/sql/states.sql');
 
-    if (!File::exists($path)) {
-      $this->command->error("❌ states.sql not found at: $path");
-      return;
+        if (! File::exists($path)) {
+            $this->command->error("❌ states.sql not found at: $path");
+
+            return;
+        }
+
+        $this->command->info('🌍 Importing States...');
+
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        DB::unprepared(File::get($path));
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
+        $this->command->info('✅ Countries imported successfully!');
     }
-
-    $this->command->info('🌍 Importing States...');
-
-    DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-    DB::unprepared(File::get($path));
-    DB::statement('SET FOREIGN_KEY_CHECKS=1;');
-
-    $this->command->info('✅ Countries imported successfully!');
-  }
 }

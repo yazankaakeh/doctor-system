@@ -18,6 +18,7 @@ class TagController extends Controller
     public function index()
     {
         $data = $this->tags->index();
+
         return view('blog::tags.index', compact('data'));
     }
 
@@ -51,6 +52,7 @@ class TagController extends Controller
     public function store(TagRequest $request): RedirectResponse
     {
         $this->tags->store($request);
+
         return redirect()->route('doctor.tags.index')->with('success', trans('core::core.env.save'));
     }
 
@@ -60,6 +62,7 @@ class TagController extends Controller
     public function edit($id)
     {
         $tag = $this->tags->find($id);
+
         return view('blog::tags.edit', compact('tag'));
     }
 
@@ -69,6 +72,7 @@ class TagController extends Controller
     public function update(TagRequest $request, $id): RedirectResponse
     {
         $this->tags->update($id, $request);
+
         return redirect()->route('doctor.tags.index')->with('success', trans('core::core.env.save'));
     }
 
@@ -78,6 +82,7 @@ class TagController extends Controller
     public function destroy($id): RedirectResponse
     {
         $this->tags->destroy($id);
+
         return redirect()->route('doctor.tags.index')->with('success', trans('core::core.env.save'));
     }
 

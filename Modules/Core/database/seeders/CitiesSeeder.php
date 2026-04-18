@@ -10,15 +10,14 @@ class CitiesSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
     public function run(): void
     {
         $path = base_path('Modules/Core/database/sql/cities.sql');
 
-        if (!File::exists($path)) {
+        if (! File::exists($path)) {
             $this->command->error("❌ cities.sql not found at: $path");
+
             return;
         }
 

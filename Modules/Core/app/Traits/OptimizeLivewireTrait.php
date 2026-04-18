@@ -19,6 +19,7 @@ trait OptimizeLivewireTrait
     {
         $errors = array_slice($e->validator->errors()->all(), 0, 5); // Get first 5 errors
         $this->setErrorBag($e->validator->errors());
+
         return nl2br(implode("\n", $errors)); // Convert to HTML format
     }
 
@@ -59,13 +60,12 @@ trait OptimizeLivewireTrait
             data_set($this, $property, $values);
             $this->resetErrorBag($property);
         }
-        /*if ($attribute == 'city_id' || $attribute == 'newGender')*/
+        /* if ($attribute == 'city_id' || $attribute == 'newGender') */
         $this->dispatch('initSelect2');
         $this->dispatch('reRenderSelect2');
         // Optional: Trigger reinitialization of select2 or any other actions
 
     }
-
 
     #[On('updateSelectPicker_{componentName}')]
     public function updateSelectPicker($attribute, $value): void

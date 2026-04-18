@@ -10,14 +10,13 @@ class UpdateHomePageAction
 {
     public function __construct(
         private readonly PageInterface $pageRepository
-    ) {
-    }
+    ) {}
 
     public function handle(Request $request): Page
     {
         $homePage = $this->pageRepository->getHomePage();
 
-        if (!$homePage) {
+        if (! $homePage) {
             throw new \Exception('Home page not found.');
         }
 

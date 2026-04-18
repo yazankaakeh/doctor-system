@@ -8,10 +8,10 @@ use Spatie\Translatable\HasTranslations;
 
 class SeoMeta extends Model
 {
-
-    use  HasTranslations;
+    use HasTranslations;
 
     public $table = 'seo_meta';
+
     public array $translatable = [
         'title',
         'meta_description',
@@ -19,6 +19,7 @@ class SeoMeta extends Model
         'twitter',
         'jsonld',
     ];
+
     /**
      * The attributes that are mass assignable.
      */
@@ -34,6 +35,7 @@ class SeoMeta extends Model
         'twitter',
         'jsonld',
     ];
+
     protected $casts = [
         'robots_index' => 'boolean',
         'robots_follow' => 'boolean',

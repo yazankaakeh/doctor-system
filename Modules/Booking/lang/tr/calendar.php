@@ -1,0 +1,43 @@
+<?php
+
+return [
+    'availability_calendar' => 'Müsaitlik Takvimi',
+    'appointments_calendar' => 'Randevu Takvimi',
+    'generate_from_recurring' => 'Tekrarlayandan Oluştur',
+    'add_availability' => 'Müsaitlik Ekle',
+    'edit_availability' => 'Müsaitliği Düzenle',
+    'availability_details' => 'Müsaitlik Detayları',
+    'booking_details' => 'Rezervasyon Detayları',
+    'generate_description' => 'Seçilen tarih aralığı için tekrarlayan programlarınızdan müsaitlik slotları oluşturun.',
+    'max_days_info' => 'Bir seferde 90 güne kadar oluşturabilirsiniz.',
+    'generate' => 'Oluştur',
+    'no_recurring_schedules' => 'Aktif tekrarlayan program bulunamadı. Lütfen önce tekrarlayan programlar oluşturun.',
+
+    'recurring_slots' => 'Tekrarlayan',
+    'manual_slots' => 'Manuel',
+    'inactive_slots' => 'Pasif',
+    'slots_available' => 'slot',
+    'type' => 'Tür',
+    'recurring' => 'Tekrarlayan',
+    'manual' => 'Manuel',
+    'available_slots' => 'Mevcut Slotlar',
+    'time_range' => 'Zaman Aralığı',
+    'time' => 'Saat',
+
+    'has_active_bookings' => 'Bu müsaitliğin aktif rezervasyonları var ve silinemez.',
+    'cannot_delete_with_bookings' => 'Aktif rezervasyonlu müsaitlik silinemez.',
+    'availability_created' => 'Müsaitlik başarıyla oluşturuldu.',
+    'availability_updated' => 'Müsaitlik başarıyla güncellendi.',
+    'availability_deleted' => 'Müsaitlik başarıyla silindi.',
+
+    'filter_by_status' => 'Duruma Göre Filtrele',
+    'all_statuses' => 'Tüm Durumlar',
+    'patient_info' => 'Hasta Bilgileri',
+    'appointment_info' => 'Randevu Bilgileri',
+    'join_meeting' => 'Toplantıya Katıl',
+    'mark_completed' => 'Tamamlandı Olarak İşaretle',
+    'mark_no_show' => 'Gelmedi Olarak İşaretle',
+    'booking_completed' => 'Rezervasyon tamamlandı olarak işaretlendi.',
+    'booking_no_show' => 'Rezervasyon gelmedi olarak işaretlendi.',
+    'unknown_patient' => 'Bilinmeyen Hasta',
+];

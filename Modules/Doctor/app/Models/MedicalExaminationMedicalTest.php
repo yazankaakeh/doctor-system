@@ -8,13 +8,12 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\File;
 
-
 class MedicalExaminationMedicalTest extends Pivot implements HasMedia
 {
-
     use InteractsWithMedia;
 
     protected $table = 'medical_examination_medical_test';
+
     /**
      * The attributes that are mass assignable.
      */
@@ -45,7 +44,16 @@ class MedicalExaminationMedicalTest extends Pivot implements HasMedia
                     'image/webp',
                     'application/pdf',
                 ], true);
-            })->singleFile();
+            })
+            ->singleFile()
+            ->useDisk('secure'); // Store medical test files in secure (private) storage
     }
 
+    /**
+     * Get secure URL for media download.
+     */
+    public function getSecureMediaUrl($mediaItem): string
+    {
+        return route('secure-file.download', ['mediaId' => $mediaItem->id]);
+    }
 }

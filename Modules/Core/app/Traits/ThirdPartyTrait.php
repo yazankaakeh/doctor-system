@@ -6,7 +6,6 @@ use Modules\Core\App\Models\ThirdPartyLog;
 
 trait ThirdPartyTrait
 {
-
     public function saveLog($model, $data): void
     {
         ThirdPartyLog::query()->create([

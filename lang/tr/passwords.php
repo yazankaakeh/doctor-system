@@ -2,7 +2,7 @@
 
 return [
 
-  /*
+    /*
   |--------------------------------------------------------------------------
   | Password Reset Language Lines
   |--------------------------------------------------------------------------
@@ -13,9 +13,9 @@ return [
   |
   */
 
-  'reset' => 'Şifreniz sıfırlandı.',
-  'sent' => 'Şifre sıfırlama bağlantısını e-posta ile gönderdik.',
-  'throttled' => 'Lütfen tekrar denemeden önce bekleyin.',
-  'token' => 'Bu şifre sıfırlama anahtarı geçersiz.',
-  'user' => "Bu e-posta adresine ait bir kullanıcı bulunamadı.",
+    'reset' => 'Şifreniz sıfırlandı.',
+    'sent' => 'Şifre sıfırlama bağlantısını e-posta ile gönderdik.',
+    'throttled' => 'Lütfen tekrar denemeden önce bekleyin.',
+    'token' => 'Bu şifre sıfırlama anahtarı geçersiz.',
+    'user' => 'Bu e-posta adresine ait bir kullanıcı bulunamadı.',
 ];

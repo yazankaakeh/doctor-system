@@ -17,6 +17,7 @@ class MenuController extends Controller
     public function index()
     {
         $data = $this->menus->index();
+
         return view('cms::menus.index', compact('data'));
     }
 
@@ -27,6 +28,7 @@ class MenuController extends Controller
     {
         $pages = Page::published()->get()->mapWithKeys(function ($page) {
             $title = $page->getTranslation('title', app()->getLocale());
+
             return [$page->id => $title];
         })->toArray();
 
@@ -39,6 +41,7 @@ class MenuController extends Controller
     public function store(MenuRequest $request)
     {
         $this->menus->store($request);
+
         return redirect()->route('menus.index')->with('success', trans('core::core.env.save'));
     }
 
@@ -48,6 +51,7 @@ class MenuController extends Controller
     public function show($id)
     {
         $menu = $this->menus->find($id);
+
         return view('cms::menus.show', compact('menu'));
     }
 
@@ -60,6 +64,7 @@ class MenuController extends Controller
 
         $pages = Page::published()->get()->mapWithKeys(function ($page) {
             $title = $page->getTranslation('title', app()->getLocale());
+
             return [$page->id => $title];
         })->toArray();
 
@@ -72,6 +77,7 @@ class MenuController extends Controller
     public function update(MenuRequest $request, $id)
     {
         $this->menus->update($id, $request);
+
         return redirect()->route('menus.index')->with('success', trans('core::core.env.save'));
     }
 
@@ -81,6 +87,7 @@ class MenuController extends Controller
     public function destroy($id)
     {
         $this->menus->destroy($id);
+
         return redirect()->route('menus.index')->with('success', trans('core::core.env.save'));
     }
 }

@@ -24,6 +24,7 @@ class MedicalTest extends Model
         'is_active',
         'type',
     ];
+
     protected $casts = [
         'is_active' => ActiveEnum::class,
         'type' => MedicalTestTypeEnum::class,

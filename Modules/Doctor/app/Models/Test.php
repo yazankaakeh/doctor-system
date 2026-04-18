@@ -2,8 +2,9 @@
 
 namespace Modules\Doctor\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
 // use Modules\Doctor\Database\Factories\TestFactory;
 
 class Test extends Model

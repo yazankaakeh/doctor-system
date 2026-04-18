@@ -2,8 +2,8 @@
 
 namespace Modules\MCP\Actions;
 
-use Modules\MCP\Repository\BusinessKnowledge\BusinessKnowledgeInterface;
 use Illuminate\Support\Facades\Cache;
+use Modules\MCP\Repository\BusinessKnowledge\BusinessKnowledgeInterface;
 
 class SearchKnowledgeBaseAction
 {
@@ -13,7 +13,7 @@ class SearchKnowledgeBaseAction
 
     public function handle(string $searchTerm, ?string $category = null): array
     {
-        $cacheKey = "knowledge_search:" . md5($searchTerm . $category);
+        $cacheKey = 'knowledge_search:'.md5($searchTerm.$category);
         $cacheTtl = config('mcp.knowledge_base.cache_ttl', 3600);
 
         return Cache::remember($cacheKey, $cacheTtl, function () use ($searchTerm, $category) {

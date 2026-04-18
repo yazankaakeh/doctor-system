@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class FinalDiagnosisPatient extends Pivot
 {
-
     protected $table = 'final_diagnosis_patients';
+
     /**
      * The attributes that are mass assignable.
      */
@@ -33,6 +33,4 @@ class FinalDiagnosisPatient extends Pivot
     {
         return $this->hasOne(FinalDiagnosis::class, 'id', 'final_diagnosis_id');
     }
-
-
 }

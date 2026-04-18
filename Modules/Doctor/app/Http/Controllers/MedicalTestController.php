@@ -15,6 +15,7 @@ class MedicalTestController extends Controller
     public function index()
     {
         $data = MedicalTest::query()->paginate(Pagination::PAG->value);
+
         return view('doctor::doctor.medicalTest.index', compact('data'));
     }
 
@@ -24,6 +25,7 @@ class MedicalTestController extends Controller
     public function store(MedicalTestRequest $request)
     {
         MedicalTest::query()->create($request->validated());
+
         return redirect()->back();
     }
 
@@ -33,8 +35,7 @@ class MedicalTestController extends Controller
     public function update(MedicalTestRequest $request)
     {
         MedicalTest::query()->where('id', $request->id)->update($request->validated());
+
         return redirect()->back();
     }
-
-
 }

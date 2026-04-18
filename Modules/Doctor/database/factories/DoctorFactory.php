@@ -21,12 +21,29 @@ class DoctorFactory extends Factory
     {
         return [
             'name' => $this->faker->name(),
-            'email' => $this->faker->safeEmail(),
-            'age' => $this->faker->numberBetween(1, 90),
+            'email' => $this->faker->unique()->safeEmail(),
+            'phone' => $this->faker->numerify('##########'),
+            'age' => $this->faker->numberBetween(25, 65),
             'gender' => $this->faker->randomElement(Gender::cases()),
             'password' => 'password', // will be hashed by the cast
             'is_active' => $this->faker->randomElement(ActiveEnum::cases()), // enum
         ];
     }
-}
 
+    /**
+     * Configure the factory to add a random avatar after creation.
+     */
+    public function configure(): static
+    {
+        return $this->afterCreating(function (Doctor $doctor) {
+            $avatarNumber = rand(1, 15);
+            $avatarPath = public_path("assets/img/avatars/{$avatarNumber}.png");
+
+            if (file_exists($avatarPath)) {
+                $doctor->addMedia($avatarPath)
+                    ->preservingOriginal()
+                    ->toMediaCollection('default');
+            }
+        });
+    }
+}

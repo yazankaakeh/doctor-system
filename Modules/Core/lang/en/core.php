@@ -57,7 +57,7 @@ return [
             'notificationTitle' => 'Notification Title',
             'notificationBody' => 'Notification Body',
             'testNotificationTitle' => 'Test Notification',
-            'testNotificationBody' => 'This is a test notification from the doctor system.',
+            'testNotificationBody' => 'This is a test notification from the base project.',
             'sendTestNotification' => 'Send Test Notification',
         ],
 
@@ -91,6 +91,8 @@ return [
         'danger_color' => 'Danger Color',
         'typography' => 'Typography',
         'font_family' => 'Font Family',
+        'font_import_url' => 'Font Import URL',
+        'custom_fonts' => 'Custom Font CSS',
         'font_size_base' => 'Base Font Size',
         'headings_font_family' => 'Headings Font Family',
         'headings_font_weight' => 'Headings Font Weight',

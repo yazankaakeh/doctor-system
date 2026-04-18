@@ -2,15 +2,15 @@
 
 namespace Modules\MCP\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Translatable\HasTranslations;
 
 class BusinessKnowledge extends Model
 {
-    use HasFactory, SoftDeletes, HasTranslations;
+    use HasFactory, HasTranslations, SoftDeletes;
 
     protected $table = 'business_knowledge_base';
 
@@ -120,6 +120,6 @@ class BusinessKnowledge extends Model
      */
     public function toggleActive(): bool
     {
-        return $this->update(['is_active' => !$this->is_active]);
+        return $this->update(['is_active' => ! $this->is_active]);
     }
 }

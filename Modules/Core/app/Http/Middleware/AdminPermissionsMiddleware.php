@@ -21,10 +21,11 @@ class AdminPermissionsMiddleware
          */
         $user = Auth::user();
         abort_if(
-            !($user->can($request->route()->getName()) || $user->hasRole(Roles::SUPER_ADMIN->value)),
+            ! ($user->can($request->route()->getName()) || $user->hasRole(Roles::SUPER_ADMIN->value)),
             Response::HTTP_FORBIDDEN,
             'Sorry!, You dont have the right permission to access this Operation.',
         );
+
         return $next($request);
     }
 }

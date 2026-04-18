@@ -15,6 +15,6 @@ enum PageTemplateEnum: string
 
     public function label(): string
     {
-        return trans('cms::enums.PageTemplateEnum.' . $this->value);
+        return trans('cms::enums.PageTemplateEnum.'.$this->value);
     }
 }

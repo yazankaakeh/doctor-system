@@ -38,8 +38,6 @@ class CreateRoutePermissionsCommand extends Command
 
     /**
      * Execute the console command.
-     *
-     * @return void
      */
     public function handle(): void
     {
@@ -51,7 +49,7 @@ class CreateRoutePermissionsCommand extends Command
         $role = Role::query()->where(['name' => Roles::SUPER_ADMIN->value])->first();
 
         foreach ($routes as $route) {
-            if (!empty($route->getName())
+            if (! empty($route->getName())
                 && isset($route->getAction()['middleware'])
                 && in_array('admin-enabled', $route->getAction()['middleware'])
                 && (str_starts_with($route->uri, 'admin/')

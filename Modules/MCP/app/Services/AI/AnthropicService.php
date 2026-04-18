@@ -2,16 +2,20 @@
 
 namespace Modules\MCP\Services\AI;
 
+use Exception;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-use Exception;
 
 class AnthropicService implements AIServiceInterface
 {
     protected string $apiKey;
+
     protected string $model;
+
     protected int $maxTokens;
+
     protected float $temperature;
+
     protected string $apiUrl = 'https://api.anthropic.com/v1/messages';
 
     public function __construct()
@@ -83,7 +87,7 @@ class AnthropicService implements AIServiceInterface
         $contextMessages = [];
 
         // Add knowledge base context if available
-        if (!empty($knowledge)) {
+        if (! empty($knowledge)) {
             $knowledgeText = $this->formatKnowledge($knowledge);
             $contextMessages[] = [
                 'role' => 'assistant',
@@ -117,7 +121,7 @@ class AnthropicService implements AIServiceInterface
 
         // Add custom context if provided
         if (isset($context['custom_prompt'])) {
-            $systemPrompt .= "\n\n" . $context['custom_prompt'];
+            $systemPrompt .= "\n\n".$context['custom_prompt'];
         }
 
         return $systemPrompt;

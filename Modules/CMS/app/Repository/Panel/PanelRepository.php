@@ -13,7 +13,7 @@ class PanelRepository implements PanelInterface
     public function getByPage(int $pageId): Collection
     {
         return Panel::query()
-            ->with(['items' => fn($q) => $q->ordered()])
+            ->with(['items' => fn ($q) => $q->ordered()])
             ->byPage($pageId)
             ->ordered()
             ->get();
@@ -22,7 +22,7 @@ class PanelRepository implements PanelInterface
     public function getActiveByPage(int $pageId): Collection
     {
         return Panel::query()
-            ->with(['activeItems' => fn($q) => $q->ordered()])
+            ->with(['activeItems' => fn ($q) => $q->ordered()])
             ->byPage($pageId)
             ->active()
             ->ordered()
@@ -36,7 +36,7 @@ class PanelRepository implements PanelInterface
 
     public function findWithItems(int $id): ?Panel
     {
-        return Panel::with(['items' => fn($q) => $q->ordered()])->find($id);
+        return Panel::with(['items' => fn ($q) => $q->ordered()])->find($id);
     }
 
     public function store(Request $request): Panel
@@ -44,7 +44,7 @@ class PanelRepository implements PanelInterface
         $data = $request->validated();
 
         // Get next order if not provided
-        if (!isset($data['order'])) {
+        if (! isset($data['order'])) {
             $data['order'] = $this->getNextOrder($data['page_id']);
         }
 
@@ -64,7 +64,7 @@ class PanelRepository implements PanelInterface
     {
         $panel = $this->find($id);
 
-        if (!$panel) {
+        if (! $panel) {
             abort(404, 'Panel not found');
         }
 
@@ -102,14 +102,14 @@ class PanelRepository implements PanelInterface
     {
         $original = $this->findWithItems($id);
 
-        if (!$original) {
+        if (! $original) {
             abort(404, 'Panel not found');
         }
 
         // Create duplicate panel
         $duplicate = $original->replicate();
         $duplicate->title = array_map(
-            fn($title) => $title . ' (Copy)',
+            fn ($title) => $title.' (Copy)',
             $original->title
         );
         $duplicate->order = $this->getNextOrder($original->page_id);
@@ -140,11 +140,11 @@ class PanelRepository implements PanelInterface
     {
         $panel = $this->find($id);
 
-        if (!$panel) {
+        if (! $panel) {
             abort(404, 'Panel not found');
         }
 
-        $panel->is_active = !$panel->is_active;
+        $panel->is_active = ! $panel->is_active;
         $panel->save();
 
         return $panel;
@@ -158,6 +158,7 @@ class PanelRepository implements PanelInterface
     public function getNextOrder(int $pageId): int
     {
         $maxOrder = Panel::byPage($pageId)->max('order');
+
         return ($maxOrder ?? -1) + 1;
     }
 

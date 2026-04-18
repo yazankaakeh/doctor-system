@@ -1,21 +1,49 @@
+@php
+    $customizerHidden = 'customizer-hide';
+@endphp
+
 @extends('theme::user.layouts.layoutFront')
 
 @section('title', trans('auth::auth.patient_login'))
 
+@section('vendor-style')
+    @vite(['resources/assets/vendor/libs/@form-validation/form-validation.scss'], 'build/modules/theme')
+@endsection
+
+@section('page-style')
+    @vite(['resources/assets/vendor/scss/pages/page-auth.scss'], 'build/modules/theme')
+@endsection
+
+@section('vendor-script')
+    @vite([
+    'resources/assets/vendor/libs/@form-validation/bootstrap5.js',
+    'resources/assets/vendor/libs/@form-validation/auto-focus.js'], 'build/modules/theme')
+@endsection
+
+@section('page-script')
+    @vite(['resources/assets/js/pages-auth.js'], 'build/modules/theme')
+@endsection
+
 @section('content')
     <div class="container-xxl">
         <div class="authentication-wrapper authentication-basic container-p-y">
-            <div class="authentication-inner">
+            <div class="authentication-inner py-4">
                 <!-- Login Card -->
                 <div class="card">
                     <div class="card-body">
                         <!-- Logo -->
-                        <div class="app-brand justify-content-center mb-4">
-                            <span class="app-brand-text demo text-body fw-bold">{{ config('app.name') }}</span>
+                        <div class="app-brand justify-content-center mb-4 mt-2">
+                            <a href="{{ url('/') }}" class="app-brand-link gap-2">
+                                <img src="{{ asset('landing/assets/img/tagiy.svg') }}" alt="{{ config('app.name') }}">
+                            </a>
                         </div>
                         <!-- /Logo -->
-                        <h4 class="mb-2">{{ trans('auth::auth.patient_login') }}</h4>
+
+                        <h4 class="mb-1 pt-2">{{ trans('auth::auth.patient_login') }}</h4>
                         <p class="mb-4">{{ trans('auth::auth.patient_login_subtitle') }}</p>
+
+                        <!-- Demo Credentials -->
+                        <x-auth::demo-credentials user-type="patient" />
 
                         @if (session('success'))
                             <div class="alert alert-success" role="alert">
@@ -31,8 +59,7 @@
                             </div>
                         @endif
 
-                        <form id="formAuthentication" class="mb-3" action="{{ route('patient.login.post') }}"
-                              method="POST">
+                        <form id="formAuthentication" class="mb-3" action="{{ route('patient.login.post') }}" method="POST">
                             @csrf
 
                             <x-core::input
@@ -40,8 +67,9 @@
                                 type="email"
                                 name="email"
                                 id="email"
+                                placeholder="{{ trans('auth::auth.email_placeholder') }}"
                                 value="{{ old('email') }}"
-                                required="required" />
+                                autofocus="autofocus" />
 
                             <div class="mb-3 form-password-toggle">
                                 <div class="d-flex justify-content-between">
@@ -54,8 +82,8 @@
                                     <input type="password" id="password"
                                            class="form-control @error('password') is-invalid @enderror" name="password"
                                            placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                                           aria-describedby="password" required/>
-                                    <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                                           aria-describedby="password" required />
+                                    <span class="input-group-text cursor-pointer"><i class="ti tabler-eye-off"></i></span>
                                 </div>
                                 @error('password')
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -72,7 +100,9 @@
                             </div>
 
                             <div class="mb-3">
-                                <button class="btn btn-primary d-grid w-100" type="submit">{{ trans('auth::auth.sign_in') }}</button>
+                                <button class="btn btn-primary d-grid w-100" type="submit">
+                                    {{ trans('auth::auth.sign_in') }}
+                                </button>
                             </div>
                         </form>
 
@@ -89,6 +119,9 @@
                                 <span>{{ trans('auth::auth.doctor_login_link') }}</span>
                             </a>
                         </p>
+
+                        <!-- Social Login Buttons -->
+                        <x-auth::social-login-buttons user-type="patient" />
                     </div>
                 </div>
                 <!-- /Login Card -->

@@ -2,20 +2,26 @@
 
 namespace Modules\MCP\Livewire;
 
+use Illuminate\Support\Str;
 use Livewire\Component;
 use Modules\MCP\Actions\CreateConversationAction;
 use Modules\MCP\Actions\ProcessChatMessageAction;
 use Modules\MCP\Repository\ChatMessage\ChatMessageInterface;
-use Illuminate\Support\Str;
 
 class ChatWidget extends Component
 {
     public $sessionId;
+
     public $conversationId;
+
     public $messages = [];
+
     public $newMessage = '';
+
     public $isOpen = false;
+
     public $isLoading = false;
+
     public $isTyping = false;
 
     protected $rules = [
@@ -27,7 +33,7 @@ class ChatWidget extends Component
         // Get or create session ID
         $this->sessionId = session()->get('chat_session_id');
 
-        if (!$this->sessionId) {
+        if (! $this->sessionId) {
             $this->sessionId = Str::uuid()->toString();
             session()->put('chat_session_id', $this->sessionId);
         }
@@ -85,7 +91,7 @@ class ChatWidget extends Component
         // Add user message to UI immediately
         $userMessage = $this->newMessage;
         $this->messages[] = [
-            'id' => 'temp_' . time(),
+            'id' => 'temp_'.time(),
             'message' => $userMessage,
             'is_from_bot' => false,
             'created_at' => now()->toIso8601String(),
@@ -104,7 +110,7 @@ class ChatWidget extends Component
             $this->isTyping = false;
         } catch (\Exception $e) {
             $this->messages[] = [
-                'id' => 'error_' . time(),
+                'id' => 'error_'.time(),
                 'message' => 'Sorry, I encountered an error. Please try again.',
                 'is_from_bot' => true,
                 'created_at' => now()->toIso8601String(),
@@ -121,7 +127,7 @@ class ChatWidget extends Component
 
     public function toggleChat()
     {
-        $this->isOpen = !$this->isOpen;
+        $this->isOpen = ! $this->isOpen;
 
         if ($this->isOpen) {
             $this->dispatch('chatOpened');

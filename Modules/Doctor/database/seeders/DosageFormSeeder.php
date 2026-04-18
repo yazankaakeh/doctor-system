@@ -34,7 +34,6 @@ class DosageFormSeeder extends Seeder
             'patch' => ['en' => 'Patch', 'ar' => 'لاصقة'],
         ];
 
-
         foreach ($dosageForms as $dosageForm) {
             DosageForm::query()->create([
                 'name' => $dosageForm,

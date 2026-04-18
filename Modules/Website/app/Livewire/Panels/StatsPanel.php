@@ -17,5 +17,3 @@ class StatsPanel extends Component
         ]);
     }
 }
-
-

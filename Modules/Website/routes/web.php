@@ -1,11 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Website\Http\Controllers\WebsiteController;
-use Modules\Website\Http\Controllers\LandingPageController;
 use Modules\Website\Http\Controllers\BlogFrontController;
-use Modules\Website\Http\Controllers\PortfolioController;
+use Modules\Website\Http\Controllers\DoctorController;
+use Modules\Website\Http\Controllers\LandingPageController;
 use Modules\Website\Http\Controllers\PageController;
+use Modules\Website\Http\Controllers\PortfolioController;
+use Modules\Website\Http\Controllers\WebsiteController;
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('websites', WebsiteController::class)->names('website');
@@ -44,5 +45,11 @@ Route::middleware('setLocale')->group(function () {
 
         // CMS Page Routes
         Route::get('/page/{slug}', [PageController::class, 'show'])->name('page.show');
+
+        // Doctors Routes
+        Route::prefix('doctors')->name('doctors.')->group(function () {
+            Route::get('/', [DoctorController::class, 'index'])->name('index');
+            Route::get('/{id}', [DoctorController::class, 'show'])->name('show');
+        });
     });
 });

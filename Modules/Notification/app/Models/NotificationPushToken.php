@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class NotificationPushToken extends Model
 {
+    /**
+     * The table associated with the model.
+     */
+    protected $table = 'notification_push_token';
 
     /**
      * The attributes that are mass assignable.
@@ -23,5 +27,4 @@ class NotificationPushToken extends Model
     {
         return $this->morphTo();
     }
-
 }

@@ -15,6 +15,7 @@ class FinalDiagnosisRequest extends FormRequest
     {
         $isUpdate = $this->routeIs('doctor.finalDiagnosis.update'); // true/false
         $required = $isUpdate ? 'required' : 'nullable';
+
         return [
             'id' => [$required, 'integer', 'exists:final_diagnoses,id'],
             'is_active' => ['required', new Enum(ActiveEnum::class)],           // must be true/false

@@ -11,14 +11,13 @@ class UpdateHomePageContentAction
 {
     public function __construct(
         private readonly PageInterface $pageRepository
-    ) {
-    }
+    ) {}
 
     public function handle(Request $request): Page
     {
         $homePage = $this->pageRepository->getHomePage();
 
-        if (!$homePage) {
+        if (! $homePage) {
             throw new \Exception('Home page not found.');
         }
 
@@ -39,9 +38,9 @@ class UpdateHomePageContentAction
             // Handle hero image upload
             if ($request->hasFile('hero_image')) {
                 $heroImage = $request->file('hero_image');
-                $heroImageName = 'hero_' . time() . '.' . $heroImage->getClientOriginalExtension();
+                $heroImageName = 'hero_'.time().'.'.$heroImage->getClientOriginalExtension();
                 $heroImage->move(public_path('assets/img/landing'), $heroImageName);
-                $metaData['hero']['image'] = 'assets/img/landing/' . $heroImageName;
+                $metaData['hero']['image'] = 'assets/img/landing/'.$heroImageName;
             } elseif ($request->filled('hero_image_path')) {
                 $metaData['hero']['image'] = $request->input('hero_image_path');
             }

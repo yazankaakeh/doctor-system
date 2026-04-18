@@ -7,21 +7,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Passport\HasApiTokens;
+use Laravel\Sanctum\HasApiTokens;
+use Modules\Auth\app\Models\SocialAccount;
 use Modules\Core\App\Enums\Gender;
 use Modules\Core\app\Models\Address;
-use Modules\Mps\Enums\User\CompanyVerifiedEnum;
-use Modules\Mps\Enums\User\KVKKVerifyEnum;
-use Modules\Mps\Enums\UserStatusEnum;
 use Modules\Mps\Models\Commission;
 use Modules\Mps\Models\Company;
 use Modules\Mps\Models\Iban;
-use Modules\Mps\Models\Payment;
-use Modules\Mps\Models\Permit;
-use Modules\Mps\Models\UserAgreement;
-use Modules\Mps\Models\UserIntegrations;
-use Modules\Mps\Models\VerificationCode;
-use Modules\Auth\app\Models\SocialAccount;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
@@ -63,7 +55,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 class User extends Authenticatable implements HasMedia
 {
     /** @use HasFactory<UserFactory> */
-    use  HasFactory, Notifiable, InteractsWithMedia, HasApiTokens;
+    use HasApiTokens, HasFactory, InteractsWithMedia, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -106,6 +98,7 @@ class User extends Authenticatable implements HasMedia
     protected $casts = [
         'gender' => Gender::class,
     ];
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -130,35 +123,30 @@ class User extends Authenticatable implements HasMedia
     {
         return $query
             ->when(
-                !empty($filters['name']),
-                fn($q)
-                    => $q->where('name', 'like', '%'.$filters['name'].'%'),
+                ! empty($filters['name']),
+                fn ($q) => $q->where('name', 'like', '%'.$filters['name'].'%'),
             )
             ->when(
-                !empty($filters['company_type']),
-                fn($q)
-                    => $q->whereHas('company', function ($q) use ($filters) {
+                ! empty($filters['company_type']),
+                fn ($q) => $q->whereHas('company', function ($q) use ($filters) {
                     $q->where('company_type', $filters['company_type']);
                 }),
             )
             ->when(
-                !empty($filters['delegate']),
-                fn($q)
-                    => $q->whereHas('company', function ($q) use ($filters) {
+                ! empty($filters['delegate']),
+                fn ($q) => $q->whereHas('company', function ($q) use ($filters) {
                     $q->where('delegate', $filters['delegate']);
                 }),
             )
             ->when(
-                !empty($filters['city_id']),
-                fn($q)
-                    => $q->whereHas('address', function ($q) use ($filters) {
+                ! empty($filters['city_id']),
+                fn ($q) => $q->whereHas('address', function ($q) use ($filters) {
                     $q->where('city_id', $filters['city_id']);
                 }),
             )
             ->when(
-                !empty($filters['status']),
-                fn($q)
-                    => $q->where('status', $filters['status']),
+                ! empty($filters['status']),
+                fn ($q) => $q->where('status', $filters['status']),
             );
     }
 

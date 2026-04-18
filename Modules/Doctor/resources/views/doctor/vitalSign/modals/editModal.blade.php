@@ -18,10 +18,38 @@
                 <div class="modal-body">
                     <div class="row">
                         <x-core::inputMultiLanguageComponent divClass="col-lg-12 col-sm-12 col-md-6 mb-3"
-                                                             label="doctor::doctor.finalDiagnosis.name"
+                                                             label="doctor::doctor.vitalSign.name"
                                                              name="name"
                                                              type="text" id="name"/>
-
+                        <div class="col-4 mb-3">
+                            <x-core::input
+                                    :label="trans('doctor::doctor.vitalSign.min_value')"
+                                    :placeholder="trans('doctor::doctor.vitalSign.min_value')"
+                                    id="edit_min_value"
+                                    name="min_value"
+                                    type="number"
+                                    step="0.01"
+                                    value="{{old('min_value')}}"/>
+                        </div>
+                        <div class="col-4 mb-3">
+                            <x-core::input
+                                    :label="trans('doctor::doctor.vitalSign.max_value')"
+                                    :placeholder="trans('doctor::doctor.vitalSign.max_value')"
+                                    id="edit_max_value"
+                                    name="max_value"
+                                    type="number"
+                                    step="0.01"
+                                    value="{{old('max_value')}}"/>
+                        </div>
+                        <div class="col-4 mb-3">
+                            <x-core::input
+                                    :label="trans('doctor::doctor.vitalSign.unit')"
+                                    :placeholder="trans('doctor::doctor.vitalSign.unit_placeholder')"
+                                    id="edit_unit"
+                                    name="unit"
+                                    type="text"
+                                    value="{{old('unit')}}"/>
+                        </div>
                         <div class="col-6 mb-3">
                             <x-core::select :label="trans('doctor::doctor.patients.active')"
                                             :placeholder="trans('doctor::doctor.patients.active')"
@@ -50,29 +78,27 @@
 </div>
 <script>
     $(document).ready(function () {
-        // Your modal HTML structure here
-
         $('.EditModalBTN').on('click', function () {
             let dataId = $(this).data('id');
-            let code = $(this).data('code');
-            //let active = $(this).data('active');
             let active = $(this).data('active');
+            let minValue = $(this).data('min-value');
+            let maxValue = $(this).data('max-value');
+            let unit = $(this).data('unit');
             let nameTranslations;
             try {
                 nameTranslations = JSON.parse($(this).attr('data-name') || '{}');
             } catch {
                 nameTranslations = {};
             }
-            console.log(nameTranslations);
             const modal = $('#editModal');
             Object.entries(nameTranslations).forEach(([locale, value]) => {
                 modal.find(`[name="name[${locale}]"]`).val(value ?? '');
             });
-            // If you want to get the input value as well
             $('#editModal #editeId').val(dataId);
-            $('#editModal #code').val(code);
-            // $('#editModal #active').prop('checked', active);
             $('#editModal #is_active').val(active);
+            $('#editModal #edit_min_value').val(minValue ?? '');
+            $('#editModal #edit_max_value').val(maxValue ?? '');
+            $('#editModal #edit_unit').val(unit ?? '');
         });
     });
 </script>

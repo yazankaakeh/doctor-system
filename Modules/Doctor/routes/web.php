@@ -11,6 +11,7 @@ use Modules\Doctor\Http\Controllers\MedicalTestController;
 use Modules\Doctor\Http\Controllers\MedicineController;
 use Modules\Doctor\Http\Controllers\PatientController;
 use Modules\Doctor\Http\Controllers\PDFController;
+use Modules\Doctor\Http\Controllers\ProfileController;
 use Modules\Doctor\Http\Controllers\UploadFileController;
 use Modules\Doctor\Http\Controllers\VitalSignController;
 
@@ -21,6 +22,10 @@ Route::middleware(['auth:doctor', 'audit', 'admin-enabled', 'authorize', 'setLoc
 )->group(
     function () {
         Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+        // Profile routes
+        Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+        Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
         Route::get('/clinic', [ClinicController::class, 'index'])->name('clinic.index');
 
@@ -68,11 +73,9 @@ Route::middleware(['auth:doctor', 'audit', 'admin-enabled', 'authorize', 'setLoc
             'medicine.store',
         );
 
-
         Route::post('/medicine/update', [MedicineController::class, 'update'])->name(
             'medicine.update',
         );
-
 
         Route::get('/medicalSpecialty', [MedicalSpecialtyController::class, 'index'])->name(
             'medicalSpecialty.index',

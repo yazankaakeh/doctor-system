@@ -10,6 +10,7 @@ class SendPushNotificationChannel extends FireBase
 {
     /**
      * Send the given notification.
+     *
      * @throws Exception
      */
     public function send(mixed $notifiable, $notification): void

@@ -85,8 +85,8 @@ class ThemeServiceProvider extends ServiceProvider
                 if ($file->isFile() && $file->getExtension() === 'php') {
                     $relativePath = str_replace($configPath.DIRECTORY_SEPARATOR, '', $file->getPathname());
                     $configKey = $this->nameLower.'.'.str_replace([DIRECTORY_SEPARATOR, '.php'],
-                            ['.', ''],
-                            $relativePath);
+                        ['.', ''],
+                        $relativePath);
                     $key = ($relativePath === 'config.php') ? $this->nameLower : $configKey;
 
                     $this->publishes([$file->getPathname() => config_path($relativePath)], 'config');
@@ -135,7 +135,7 @@ class ThemeServiceProvider extends ServiceProvider
         $this->app->register(EventServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
         $this->app->singleton('globalSeo', function () {
-            return Cache::remember("seo:settings", 3600, function () {
+            return Cache::remember('seo:settings', 3600, function () {
                 return SeoSettings::query()->get();
             });
         });

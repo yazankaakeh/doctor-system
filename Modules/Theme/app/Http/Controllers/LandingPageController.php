@@ -40,7 +40,7 @@ class LandingPageController extends Controller
                 'order' => $panel->order,
                 'media' => [
                     'panel_image' => $panel->getFirstMediaUrl('panel_image') ?: null,
-                    'panel_gallery' => $panel->getMedia('panel_gallery')->map(fn($m) => $m->getUrl())->toArray(),
+                    'panel_gallery' => $panel->getMedia('panel_gallery')->map(fn ($m) => $m->getUrl())->toArray(),
                 ],
                 'items' => $panel->activeItems->map(function ($item) {
                     return [
@@ -53,7 +53,7 @@ class LandingPageController extends Controller
                         'order' => $item->order,
                         'media' => [
                             'item_image' => $item->getFirstMediaUrl('item_image') ?: null,
-                            'item_gallery' => $item->getMedia('item_gallery')->map(fn($m) => $m->getUrl())->toArray(),
+                            'item_gallery' => $item->getMedia('item_gallery')->map(fn ($m) => $m->getUrl())->toArray(),
                         ],
                     ];
                 })->toArray(),
@@ -87,6 +87,4 @@ class LandingPageController extends Controller
     {
         return view('theme::landing.blog');
     }
-
-
 }

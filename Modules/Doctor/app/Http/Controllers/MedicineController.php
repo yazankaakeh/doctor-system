@@ -15,9 +15,9 @@ class MedicineController extends Controller
     public function index()
     {
         $data = Medicine::query()->paginate(Pagination::PAG->value);
+
         return view('doctor::doctor.medicine.index', compact('data'));
     }
-
 
     /**
      * Store a newly created resource in storage.
@@ -25,9 +25,9 @@ class MedicineController extends Controller
     public function store(MedicineRequest $request)
     {
         Medicine::query()->create($request->validated());
+
         return redirect()->back();
     }
-
 
     /**
      * Update the specified resource in storage.
@@ -35,7 +35,7 @@ class MedicineController extends Controller
     public function update(MedicineRequest $request)
     {
         Medicine::query()->where('id', $request->id)->update($request->validated());
+
         return redirect()->back();
     }
-
 }

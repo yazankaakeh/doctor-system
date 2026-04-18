@@ -11,14 +11,16 @@ class CountriesSeeder extends Seeder
 {
     /**
      * Run the database seeds.
+     *
      * @throws FileNotFoundException
      */
     public function run(): void
     {
         $path = base_path('Modules/Core/database/sql/countries.sql');
 
-        if (!File::exists($path)) {
+        if (! File::exists($path)) {
             $this->command->error("❌ SQL file not found at {$path}");
+
             return;
         }
         $this->command->info('🌍 Importing countries...');

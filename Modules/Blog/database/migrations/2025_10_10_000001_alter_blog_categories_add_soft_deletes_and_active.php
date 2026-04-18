@@ -4,17 +4,18 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     public function up(): void
     {
         Schema::table('blog_categories', function (Blueprint $table) {
-            if (!Schema::hasColumn('blog_categories', 'deleted_at')) {
+            if (! Schema::hasColumn('blog_categories', 'deleted_at')) {
                 $table->softDeletes();
             }
-            if (Schema::hasColumn('blog_categories', 'active') && !Schema::hasColumn('blog_categories', 'is_active')) {
+            if (Schema::hasColumn('blog_categories', 'active') && ! Schema::hasColumn('blog_categories', 'is_active')) {
                 $table->renameColumn('active', 'is_active');
             }
-            if (!Schema::hasColumn('blog_categories', 'is_active')) {
+            if (! Schema::hasColumn('blog_categories', 'is_active')) {
                 $table->boolean('is_active')->default(true)->after('description');
             }
             if (Schema::hasColumn('blog_categories', 'title') && Schema::getColumnType('blog_categories', 'title') !== 'json') {
@@ -34,5 +35,3 @@ return new class extends Migration {
         });
     }
 };
-
-

@@ -11,8 +11,7 @@ class PortfolioController extends Controller
 {
     public function __construct(
         private readonly PortfolioInterface $portfolioRepository
-    ) {
-    }
+    ) {}
 
     /**
      * Display portfolio listing page.
@@ -54,7 +53,7 @@ class PortfolioController extends Controller
     {
         $portfolio = $this->portfolioRepository->findActiveBySlug($slug);
 
-        if (!$portfolio) {
+        if (! $portfolio) {
             abort(404, 'Portfolio not found');
         }
 

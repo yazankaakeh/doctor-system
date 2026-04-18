@@ -23,7 +23,4 @@ class ClinicFactory extends Factory
             'is_active' => ActiveEnum::ACTIVE->value,
         ];
     }
-
-
 }
-

@@ -5,7 +5,6 @@ use Modules\AdminManagement\Http\Controllers\AuditLogController;
 use Modules\AdminManagement\Http\Controllers\RoleManagementController;
 use Modules\AdminManagement\Http\Controllers\UserManagementController;
 
-
 Route::middleware(['auth:doctor', 'admin-enabled', 'authorize', 'doctorMenu', 'setLocale', 'audit'])->prefix(
     'admin',
 )->group(
@@ -30,4 +29,3 @@ Route::middleware(['auth:doctor', 'admin-enabled', 'authorize', 'doctorMenu', 's
             ->names('admin.role_management');
     },
 );
-

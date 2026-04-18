@@ -37,7 +37,7 @@ class PanelItemRepository implements PanelItemInterface
         $data = $request->validated();
 
         // Get next order if not provided
-        if (!isset($data['order'])) {
+        if (! isset($data['order'])) {
             $data['order'] = $this->getNextOrder($data['panel_id']);
         }
 
@@ -57,7 +57,7 @@ class PanelItemRepository implements PanelItemInterface
     {
         $item = $this->find($id);
 
-        if (!$item) {
+        if (! $item) {
             abort(404, 'Panel item not found');
         }
 
@@ -94,14 +94,14 @@ class PanelItemRepository implements PanelItemInterface
     {
         $original = $this->find($id);
 
-        if (!$original) {
+        if (! $original) {
             abort(404, 'Panel item not found');
         }
 
         // Create duplicate
         $duplicate = $original->replicate();
         $duplicate->title = array_map(
-            fn($title) => $title ? $title . ' (Copy)' : null,
+            fn ($title) => $title ? $title.' (Copy)' : null,
             $original->title ?? []
         );
         $duplicate->order = $this->getNextOrder($original->panel_id);
@@ -120,11 +120,11 @@ class PanelItemRepository implements PanelItemInterface
     {
         $item = $this->find($id);
 
-        if (!$item) {
+        if (! $item) {
             abort(404, 'Panel item not found');
         }
 
-        $item->is_active = !$item->is_active;
+        $item->is_active = ! $item->is_active;
         $item->save();
 
         return $item;
@@ -143,6 +143,7 @@ class PanelItemRepository implements PanelItemInterface
     public function getNextOrder(int $panelId): int
     {
         $maxOrder = PanelItem::byPanel($panelId)->max('order');
+
         return ($maxOrder ?? -1) + 1;
     }
 

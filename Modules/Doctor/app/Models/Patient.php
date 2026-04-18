@@ -8,11 +8,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Modules\Auth\app\Models\SocialAccount;
+use Modules\Auth\Models\SocialAccount;
+use Modules\Auth\Notifications\PatientVerifyEmailNotification;
+use Modules\Booking\Models\Booking;
 use Modules\Core\App\Enums\ActiveEnum;
 use Modules\Core\App\Enums\Gender;
 use Modules\Core\app\Models\Address;
@@ -114,7 +116,16 @@ class Patient extends Authenticatable implements HasMedia, MustVerifyEmail
                     'image/webp',
                     'application/pdf',
                 ], true);
-            });
+            })
+            ->useDisk('secure'); // Store patient files in secure (private) storage
+    }
+
+    /**
+     * Get secure URL for media download.
+     */
+    public function getSecureMediaUrl($mediaItem): string
+    {
+        return route('secure-file.download', ['mediaId' => $mediaItem->id]);
     }
 
     public function nationality(): BelongsTo
@@ -126,7 +137,7 @@ class Patient extends Authenticatable implements HasMedia, MustVerifyEmail
     public function scopeFilter(Builder $q, array $f): Builder
     {
         // small helpers
-        $toArray = fn($v) => is_array($v) ? $v : (isset($v) && $v !== '' ? [$v] : []);
+        $toArray = fn ($v) => is_array($v) ? $v : (isset($v) && $v !== '' ? [$v] : []);
         $enumBacked = function (array $vals, string $enum): array {
             return array_values(array_filter(array_map(function ($v) use ($enum) {
                 if ($v instanceof $enum) {
@@ -138,14 +149,16 @@ class Patient extends Authenticatable implements HasMedia, MustVerifyEmail
                 // allow passing enum NAME like "A_POS"
                 if (is_string($v) && defined("$enum::$v")) {
                     $const = constant("$enum::$v");
+
                     return $const instanceof $enum ? $const->value : null;
                 }
+
                 return is_scalar($v) ? $v : null; // last resort
-            }, $vals), fn($v) => $v !== null && $v !== ''));
+            }, $vals), fn ($v) => $v !== null && $v !== ''));
         };
 
         // text
-        $q->when($f['name'] ?? null, fn($q, $v) => $q->where('name', 'like', "%{$v}%"));
+        $q->when($f['name'] ?? null, fn ($q, $v) => $q->where('name', 'like', "%{$v}%"));
 
         // nationality_id (single or array)
         if ($ids = $toArray($f['nationality_id'] ?? null)) {
@@ -162,7 +175,7 @@ class Patient extends Authenticatable implements HasMedia, MustVerifyEmail
             $q->where('age', '<=', $max);
         }
         // exact age still supported
-        $q->when($f['age'] ?? null, fn($q, $v) => $q->where('age', $v));
+        $q->when($f['age'] ?? null, fn ($q, $v) => $q->where('age', $v));
 
         // enums (except single value or array → do whereIn)
         if ($vals = $enumBacked($toArray($f['blood_type'] ?? null), BloodType::class)) {
@@ -203,14 +216,14 @@ class Patient extends Authenticatable implements HasMedia, MustVerifyEmail
             ->using(FinalDiagnosisPatient::class); // optional
     }
 
-    public function notifications(): MorphTo
+    public function notifications()
     {
-        return $this->morphTo(Notification::class, 'notifiable');
+        return $this->morphMany(Notification::class, 'notifiable');
     }
 
-    public function pushTokens(): MorphTo
+    public function pushTokens()
     {
-        return $this->morphTo(NotificationPushToken::class, 'tokenable');
+        return $this->morphMany(NotificationPushToken::class, 'tokenable');
     }
 
     /**
@@ -221,4 +234,16 @@ class Patient extends Authenticatable implements HasMedia, MustVerifyEmail
         return $this->morphMany(SocialAccount::class, 'user');
     }
 
+    public function bookings(): HasMany
+    {
+        return $this->hasMany(Booking::class);
+    }
+
+    /**
+     * Send the email verification notification.
+     */
+    public function sendEmailVerificationNotification(): void
+    {
+        $this->notify(new PatientVerifyEmailNotification);
+    }
 }

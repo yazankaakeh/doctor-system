@@ -1,0 +1,12 @@
+{
+    "name": "Patient",
+    "alias": "patient",
+    "description": "Patient module for patient dashboard and management",
+    "keywords": ["patient", "dashboard", "medical"],
+    "priority": 0,
+    "providers": [
+        "Modules\\Patient\\Providers\\PatientServiceProvider",
+        "Modules\\Patient\\Providers\\RouteServiceProvider"
+    ],
+    "files": []
+}

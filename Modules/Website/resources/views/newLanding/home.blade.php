@@ -385,6 +385,9 @@
                     @case('carousel')
                         @include('website::newLanding.panels.carousel', ['panel' => $panel, 'items' => $items])
                         @break
+                    @case('booking')
+                        @include('website::newLanding.panels.booking', ['panel' => $panel])
+                        @break
                     @case('custom')
                         @include('website::newLanding.panels.custom', ['panel' => $panel, 'items' => $items])
                         @break

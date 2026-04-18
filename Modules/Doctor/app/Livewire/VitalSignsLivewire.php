@@ -13,17 +13,22 @@ use Modules\Doctor\Models\VitalSign;
 class VitalSignsLivewire extends Component
 {
     public mixed $vitalSigns;
+
     public int $medicalExaminationId;
+
     public MedicalExamination $medicalExamination;
+
     public string $componentName = 'VitalSignsLivewire';
+
     // Bind inputs like values[ID] => '120/80'
     #[Validate('array')]
     public array $values = [];
+
     public bool $isOpen = true;
 
     public function toggle(): void
     {
-        $this->isOpen = !$this->isOpen;
+        $this->isOpen = ! $this->isOpen;
     }
 
     public function saveOne(int $vitalSignId): void
@@ -51,10 +56,10 @@ class VitalSignsLivewire extends Component
         // Build payload: [id => ['value' => '...'], ...]
         $payload = [];
         foreach ($this->values as $id => $val) {
-            $payload[(int)$id] = ['value' => $val];
+            $payload[(int) $id] = ['value' => $val];
         }
 
-        if (!empty($payload)) {
+        if (! empty($payload)) {
             $this->medicalExamination->vitalSigns()->syncWithoutDetaching($payload);
         }
 
@@ -69,7 +74,6 @@ class VitalSignsLivewire extends Component
             ->where('is_active', ActiveEnum::ACTIVE->value)
             ->orderBy('id')
             ->get();
-
 
         // prefill from existing pivot values (if editing)
         $existing = $this->medicalExamination

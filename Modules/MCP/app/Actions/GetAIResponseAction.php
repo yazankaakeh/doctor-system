@@ -3,9 +3,9 @@
 namespace Modules\MCP\Actions;
 
 use Modules\MCP\Models\ChatMessage;
-use Modules\MCP\Services\AI\AIServiceFactory;
-use Modules\MCP\Repository\ChatMessage\ChatMessageInterface;
 use Modules\MCP\Repository\ChatConversation\ChatConversationInterface;
+use Modules\MCP\Repository\ChatMessage\ChatMessageInterface;
+use Modules\MCP\Services\AI\AIServiceFactory;
 
 class GetAIResponseAction
 {
@@ -46,7 +46,7 @@ class GetAIResponseAction
             'model_used' => $response['model'],
             'tokens_used' => $response['tokens_used'],
             'context' => [
-                'knowledge_used' => !empty($knowledge),
+                'knowledge_used' => ! empty($knowledge),
                 'knowledge_count' => count($knowledge),
             ],
             'metadata' => $response['metadata'],

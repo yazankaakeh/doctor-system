@@ -18,10 +18,10 @@ class AuditLogController extends Controller
         $data = AuditLog::query()->with('auditable');
         $data = AuditLog::IndexFilter($data, $request->all());
         $data = $data->orderByDesc('created_at')->paginate(Pagination::PAG->value);
-        
+
         // Get auditable types for filter dropdown
         $auditableTypes = AuditLog::GetAuditableTypes();
-        
+
         return view('adminmanagement::audit_log.index', compact('data', 'auditableTypes'));
     }
 
@@ -30,17 +30,17 @@ class AuditLogController extends Controller
         $auditing = AuditLog::query()->find($id);
         $payload_html = "<table class='table table-vcenter' style='direction: ltr !important;'>";
         foreach (
-            !is_array($auditing->payload) ? json_decode(
+            ! is_array($auditing->payload) ? json_decode(
                 $auditing->payload,
             ) : $auditing->payload as $index => $payload
         ) {
             if (is_string($payload) && $index != '_token') {
-                $payload_html .= "<tr>";
+                $payload_html .= '<tr>';
                 $payload_html .= "<td>$index : </td><td>$payload</td>";
-                $payload_html .= "</tr>";
+                $payload_html .= '</tr>';
             }
         }
-        $payload_html .= "</table>";
+        $payload_html .= '</table>';
 
         return response()->json(['payload' => $payload_html]);
     }
@@ -53,7 +53,7 @@ class AuditLogController extends Controller
         $auditableType = $request->get('auditable_type');
         $auditableId = $request->get('auditable_id');
 
-        if (!$auditableType || !$auditableId) {
+        if (! $auditableType || ! $auditableId) {
             return response()->json(['error' => 'Missing auditable_type or auditable_id'], 400);
         }
 

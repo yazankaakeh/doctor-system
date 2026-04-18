@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Core\Database\Seeders;
+namespace Modules\Core\database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Modules\Core\App\Models\ThemeSetting;
@@ -41,7 +41,7 @@ class ThemeSettingsSeeder extends Seeder
                 'dark_body_bg' => '#232333',
                 'dark_card_bg' => '#2b2c40',
                 'border_radius' => '0.375rem',
-                'site_title' => 'Doctor System Admin',
+                'site_title' => 'Base Project Admin',
                 'custom_css' => '',
                 'dark_custom_css' => '',
                 'is_active' => true,
@@ -77,7 +77,7 @@ class ThemeSettingsSeeder extends Seeder
                 'dark_body_bg' => '#1a1a2e',
                 'dark_card_bg' => '#16213e',
                 'border_radius' => '0.5rem',
-                'site_title' => 'Doctor System',
+                'site_title' => 'Base Project',
                 'custom_css' => '',
                 'dark_custom_css' => '',
                 'is_active' => true,

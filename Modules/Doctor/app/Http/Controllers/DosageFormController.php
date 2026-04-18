@@ -15,9 +15,9 @@ class DosageFormController extends Controller
     public function index()
     {
         $data = DosageForm::query()->paginate(Pagination::PAG->value);
+
         return view('doctor::doctor.dosageForm.index', compact('data'));
     }
-
 
     /**
      * Store a newly created resource in storage.
@@ -25,9 +25,9 @@ class DosageFormController extends Controller
     public function store(DosageFormRequest $request)
     {
         DosageForm::query()->create($request->validated());
+
         return redirect()->back()->with('success', 'added successfully');
     }
-
 
     /**
      * Update the specified resource in storage.
@@ -35,6 +35,7 @@ class DosageFormController extends Controller
     public function update(DosageFormRequest $request)
     {
         DosageForm::query()->where('id', $request->id)->update($request->validated());
+
         return redirect()->back()->with('success', 'added successfully');
     }
 }

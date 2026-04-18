@@ -25,6 +25,10 @@
             @endif
         </div>
 
+        @php
+            $showViewAllDoctors = $panel->settings['show_view_all_doctors'] ?? false;
+        @endphp
+
         {{-- Team Grid --}}
         @if($panel->activeItems->count() > 0)
             <div class="row g-4 justify-content-center">
@@ -37,6 +41,10 @@
                         $role = is_array($roleData) ? ($roleData[$locale] ?? $roleData[config('app.fallback_locale')] ?? '') : $roleData;
                         $itemImage = $item->getFirstMediaUrl('item_image');
                         $socialLinks = $item->data['social_links'] ?? [];
+                        // Get profile link - either doctor profile or custom link
+                        $doctorId = $item->data['doctor_id'] ?? null;
+                        $customLink = $item->data['link'] ?? null;
+                        $profileLink = $doctorId ? route('doctors.show', $doctorId) : $customLink;
                     @endphp
                     <div class="col-sm-6 col-lg-4 col-xl-3 panel-animate">
                         <div class="panel-team-card">
@@ -67,10 +75,26 @@
                                     @endforeach
                                 </div>
                             @endif
+                            @if($profileLink)
+                                <a href="{{ $profileLink }}" class="panel-team-profile-link">
+                                    <i class="ti ti-user"></i>
+                                    {{ __('website::doctors.view_profile') }}
+                                </a>
+                            @endif
                         </div>
                     </div>
                 @endforeach
             </div>
+
+            {{-- View All Doctors Link --}}
+            @if($showViewAllDoctors)
+                <div class="text-center mt-5">
+                    <a href="{{ route('doctors.index') }}" class="panel-btn panel-btn-primary">
+                        <i class="ti ti-users"></i>
+                        {{ __('website::doctors.view_all_doctors') }}
+                    </a>
+                </div>
+            @endif
         @endif
     </div>
 </section>

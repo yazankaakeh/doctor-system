@@ -104,7 +104,7 @@ class PortfolioRepository implements PortfolioInterface
     {
         $portfolio = $this->find($id);
 
-        if (!$portfolio) {
+        if (! $portfolio) {
             abort(404, 'Portfolio not found');
         }
 
@@ -169,11 +169,11 @@ class PortfolioRepository implements PortfolioInterface
     {
         $portfolio = $this->find($id);
 
-        if (!$portfolio) {
+        if (! $portfolio) {
             abort(404, 'Portfolio not found');
         }
 
-        $portfolio->is_active = !$portfolio->is_active;
+        $portfolio->is_active = ! $portfolio->is_active;
         $portfolio->save();
 
         return $portfolio;
@@ -183,11 +183,11 @@ class PortfolioRepository implements PortfolioInterface
     {
         $portfolio = $this->find($id);
 
-        if (!$portfolio) {
+        if (! $portfolio) {
             abort(404, 'Portfolio not found');
         }
 
-        $portfolio->is_featured = !$portfolio->is_featured;
+        $portfolio->is_featured = ! $portfolio->is_featured;
         $portfolio->save();
 
         return $portfolio;
@@ -206,12 +206,12 @@ class PortfolioRepository implements PortfolioInterface
     {
         $original = $this->find($id);
 
-        if (!$original) {
+        if (! $original) {
             abort(404, 'Portfolio not found');
         }
 
         $duplicate = $original->replicate();
-        $duplicate->title = array_map(fn($t) => $t . ' (Copy)', $original->title);
+        $duplicate->title = array_map(fn ($t) => $t.' (Copy)', $original->title);
         $duplicate->slug = null; // Will be auto-generated
         $duplicate->is_active = false;
         $duplicate->is_featured = false;
@@ -254,10 +254,10 @@ class PortfolioRepository implements PortfolioInterface
 
         foreach ($portfolios as $portfolio) {
             $translations = $portfolio->getTranslations('category');
-            if (!empty($translations)) {
+            if (! empty($translations)) {
                 foreach (array_keys($translations) as $lang) {
                     $cat = $portfolio->getTranslation('category', $lang);
-                    if ($cat && !in_array($cat, $categories)) {
+                    if ($cat && ! in_array($cat, $categories)) {
                         $categories[] = $cat;
                     }
                 }

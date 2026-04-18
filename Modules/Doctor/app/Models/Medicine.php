@@ -20,6 +20,7 @@ class Medicine extends Model
         'name',
         'is_active',
     ];
+
     protected $casts = [
         'is_active' => ActiveEnum::class,
     ];
@@ -38,8 +39,8 @@ class Medicine extends Model
     {
         return $this
             ->belongsToMany(MedicalExamination::class, 'medical_examination_medicine')
-            ->withPivot('value')
+            ->withPivot(['dosage_form_id', 'dose', 'dosage', 'duration', 'note'])
             ->withTimestamps()
-            ->using(MedicalExaminationMedicine::class); // optional
+            ->using(MedicalExaminationMedicine::class);
     }
 }

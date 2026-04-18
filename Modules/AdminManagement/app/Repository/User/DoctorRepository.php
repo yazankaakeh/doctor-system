@@ -14,14 +14,13 @@ use Spatie\Permission\Models\Role;
 
 class DoctorRepository implements DoctorInterface
 {
-
     /**
      * @throws FileIsTooBig
      * @throws FileDoesNotExist
      */
     public function store(DoctorRequest $request): void
     {
-        $doctor = new Doctor();
+        $doctor = new Doctor;
         $doctor->name = $request->name;
         $doctor->gender = $request->gender;
         $doctor->phone = $request->phone;
@@ -60,7 +59,6 @@ class DoctorRepository implements DoctorInterface
         }
         $doctor->save();
 
-
         // Remove each role from the user
         $doctor->roles()->detach();
         /** @var Role $role */
@@ -82,6 +80,7 @@ class DoctorRepository implements DoctorInterface
         $users = Doctor::query()->with('roles')
             ->paginate(Pagination::PAG->value);
         $roles = Role::query()->pluck('name', 'id');
+
         return [
             'users' => $users,
             'roles' => $roles,

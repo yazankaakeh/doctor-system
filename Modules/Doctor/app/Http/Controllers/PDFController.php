@@ -99,5 +99,4 @@ class PDFController extends Controller
             'Content-Disposition' => "inline; filename=invoice-{$medicalExamination->id}.pdf",
         ]);
     }
-
 }

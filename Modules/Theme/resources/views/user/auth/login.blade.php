@@ -45,6 +45,10 @@
                         <p class="mb-4">
                             {{trans('auth.login.desc')}}
                         </p>
+
+                        <!-- Demo Credentials -->
+                        <x-auth::demo-credentials user-type="admin" />
+
                         <form method="POST" id="formAuthentication" action="{{ route('admin.login.submit') }}"
                               class="mb-3">
                             @csrf

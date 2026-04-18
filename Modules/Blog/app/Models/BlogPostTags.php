@@ -10,8 +10,7 @@ use Spatie\Translatable\HasTranslations;
 
 class BlogPostTags extends Model implements HasMedia
 {
-
-    use InteractsWithMedia, HasSeo, HasTranslations;
+    use HasSeo, HasTranslations, InteractsWithMedia;
 
     /**
      * The attributes that are mass assignable.
@@ -30,5 +29,4 @@ class BlogPostTags extends Model implements HasMedia
     protected $casts = [
         'name' => 'array',
     ];
-
 }

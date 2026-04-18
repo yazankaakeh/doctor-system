@@ -47,7 +47,7 @@ class EnvController extends Controller
                 // Check for required Firebase service account fields
                 $requiredFields = ['type', 'project_id', 'private_key', 'client_email'];
                 foreach ($requiredFields as $field) {
-                    if (!isset($json[$field])) {
+                    if (! isset($json[$field])) {
                         return redirect()->back()->with('error', "Missing required field '{$field}' in Firebase service account file.");
                     }
                 }
@@ -97,7 +97,8 @@ class EnvController extends Controller
         ]);
 
         try {
-            Mail::to($request->email)->send(new TestMail());
+            Mail::to($request->email)->send(new TestMail);
+
             return back()->with('success', 'Test email sent successfully.');
         } catch (Exception $e) {
             return back()->with('error', 'Failed: '.$e->getMessage());
@@ -138,12 +139,12 @@ class EnvController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Push token saved successfully.'
+                'message' => 'Push token saved successfully.',
             ]);
         } catch (Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to save push token: ' . $e->getMessage()
+                'message' => 'Failed to save push token: '.$e->getMessage(),
             ], 500);
         }
     }
@@ -166,12 +167,12 @@ class EnvController extends Controller
             if ($pushTokens->isEmpty()) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'No push tokens found. Please save a push token first.'
+                    'message' => 'No push tokens found. Please save a push token first.',
                 ], 400);
             }
 
             // Send notification using Firebase service
-            $firebaseService = new \Modules\Notification\App\Services\Notifications\FireBase();
+            $firebaseService = new \Modules\Notification\App\Services\Notifications\FireBase;
 
             $notificationData = [
                 'title' => $request->title,
@@ -188,14 +189,13 @@ class EnvController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Test notification sent successfully to ' . $pushTokens->count() . ' device(s).'
+                'message' => 'Test notification sent successfully to '.$pushTokens->count().' device(s).',
             ]);
         } catch (Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to send notification: ' . $e->getMessage()
+                'message' => 'Failed to send notification: '.$e->getMessage(),
             ], 500);
         }
     }
-
 }

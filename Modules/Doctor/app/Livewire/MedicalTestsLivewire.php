@@ -20,15 +20,22 @@ class MedicalTestsLivewire extends Component
     use OptimizeLivewireTrait, WithFileUploads;
 
     public string $title;
-    public string $onChangeEvent;
-    public string $componentName;
-    public MedicalExamination $medicalExamination;
-    public mixed $medicalTests;
-    public mixed $addedMedicalTests;
-    public string $name;
-    public MedicalTestTypeEnum $type;
-    public mixed $listMedicalTests = [];
 
+    public string $onChangeEvent;
+
+    public string $componentName;
+
+    public MedicalExamination $medicalExamination;
+
+    public mixed $medicalTests;
+
+    public mixed $addedMedicalTests;
+
+    public string $name;
+
+    public MedicalTestTypeEnum $type;
+
+    public mixed $listMedicalTests = [];
 
     /**
      * @throws Throwable
@@ -40,6 +47,24 @@ class MedicalTestsLivewire extends Component
             $this->medicalExamination,
             $this->type->value,
             $ids,  // array of IDs the user selected for LAB
+        );
+        $this->updateMedicalTests();
+    }
+
+    /**
+     * Remove a single test from the medical examination.
+     *
+     * @throws Throwable
+     */
+    public function removeTest(int $testId): void
+    {
+        $this->listMedicalTests = array_values(
+            array_filter($this->listMedicalTests, fn ($id) => (int) $id !== $testId)
+        );
+        $this->syncTestsForType(
+            $this->medicalExamination,
+            $this->type->value,
+            $this->listMedicalTests,
         );
         $this->updateMedicalTests();
     }
@@ -106,13 +131,20 @@ class MedicalTestsLivewire extends Component
         });
     }
 
-
     public function updateMedicalTests(): void
     {
+        $this->medicalExamination->load('medicalTests');
         $this->addedMedicalTests = $this->medicalExamination->medicalTests->where(
             'type',
             $this->type,
         );
+
+        // Load pivot media for each test
+        $this->addedMedicalTests->each(function ($test) {
+            if ($test->pivot) {
+                $test->pivot->load('media');
+            }
+        });
     }
 
     /**
@@ -151,6 +183,14 @@ class MedicalTestsLivewire extends Component
             'type',
             $this->type,
         );
+
+        // Load pivot media for each test
+        $addedMedicalTests->each(function ($test) {
+            if ($test->pivot) {
+                $test->pivot->load('media');
+            }
+        });
+
         $this->medicalTests = $medicalTests;
         $this->addedMedicalTests = $addedMedicalTests;
         $this->listMedicalTests = array_map('strval', $addedMedicalTests->pluck('id')->toArray());

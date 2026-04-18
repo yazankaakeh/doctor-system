@@ -112,15 +112,18 @@ $page = 'sales-dashboard'; ?>
                                                 <td>{{$patient->phone}}</td>
                                                 <td>{{$patient->age}}</td>
                                                 <td>
-                                                    <span class="badge text-bg-{{$patient->gender->class()}} me-1">{{$patient->gender->label()}} </span>
+                                                    <span
+                                                        class="badge text-bg-{{$patient?->gender?->class()}} me-1">{{$patient?->gender?->label()}} </span>
                                                 </td>
                                                 <td>{{$patient->children}}</td>
                                                 {{--<td>{{$patient->work}}</td>--}}
                                                 <td>
-                                                    <span class="badge text-bg-{{$patient->blood_type->class()}} me-1">{{$patient->blood_type->label()}} </span>
+                                                    <span
+                                                        class="badge text-bg-{{$patient?->blood_type?->class()}} me-1">{{$patient?->blood_type?->label()}} </span>
                                                 </td>
                                                 <td>
-                                                    <span class="badge text-bg-{{$patient->marital_status->class()}} me-1">{{$patient->marital_status->label()}} </span>
+                                                    <span
+                                                        class="badge text-bg-{{$patient?->marital_status?->class()}} me-1">{{$patient?->marital_status?->label()}} </span>
                                                 </td>
                                                 {{--<td>{{$patient->drug_allergies}}</td>
                                                 <td>{{$patient->disabilities}}</td>
@@ -134,9 +137,10 @@ $page = 'sales-dashboard'; ?>
                                                             class="avatar avatar-xl pull-up"
                                                             aria-label="{{$patient->name}}"
                                                             data-bs-original-title="{{$patient->name}}">
-                                                            <img src="{{$patient->getFirstMediaUrl('images') != null ? $patient->getFirstMediaUrl('images'): asset('assets/img/avatars/3.png') }}"
-                                                                 alt="Avatar"
-                                                                 class="rounded-circle">
+                                                            <img
+                                                                src="{{$patient->getFirstMediaUrl('images') != null ? $patient->getFirstMediaUrl('images'): asset('assets/img/avatars/3.png') }}"
+                                                                alt="Avatar"
+                                                                class="rounded-circle">
                                                         </li>
                                                     </ul>
                                                 </td>
@@ -147,10 +151,11 @@ $page = 'sales-dashboard'; ?>
                                                 </td>--}}
                                                 <td class="action-table-data">
                                                     <div class="dropdown">
-                                                        <button class="btn btn-text-secondary btn-icon rounded-pill text-body-secondary border-0 me-n1 waves-effect"
-                                                                type="button" id="teamMemberList"
-                                                                data-bs-toggle="dropdown" aria-haspopup="true"
-                                                                aria-expanded="false">
+                                                        <button
+                                                            class="btn btn-text-secondary btn-icon rounded-pill text-body-secondary border-0 me-n1 waves-effect"
+                                                            type="button" id="teamMemberList"
+                                                            data-bs-toggle="dropdown" aria-haspopup="true"
+                                                            aria-expanded="false">
                                                             <i class="icon-base ti tabler-dots-vertical icon-22px text-body-secondary"></i>
                                                         </button>
                                                         <div class="dropdown-menu dropdown-menu-end"
@@ -166,12 +171,12 @@ $page = 'sales-dashboard'; ?>
                                                                    data-clinics='@json($patient?->clinics->pluck("id"))'
                                                                    data-name='{{$patient->name}}'
                                                                    data-age='{{$patient->age}}'
-                                                                   data-gender='{{$patient->gender->value}}'
-                                                                   data-marital-status='{{$patient->marital_status->value}}'
+                                                                   data-gender='{{$patient?->gender?->value}}'
+                                                                   data-marital-status='{{$patient?->marital_status?->value}}'
                                                                    data-children='{{$patient->children}}'
                                                                    data-work='{{$patient->work}}'
                                                                    data-drug-allergies='{{$patient->drug_allergies}}'
-                                                                   data-blood-type='{{$patient->blood_type->value}}'
+                                                                   data-blood-type='{{$patient?->blood_type?->value}}'
                                                                    data-disabilities='{{$patient->disabilities}}'
                                                                    data-medical-history='{{$patient->medical_history}}'
                                                                    data-surgical-history='{{$patient->surgical_history}}'
@@ -193,8 +198,9 @@ $page = 'sales-dashboard'; ?>
                                                                 </a>
                                                             @endcan
                                                             @can('doctor.medicalExamination.store')
-                                                                <form action="{{route('doctor.medicalExamination.store',['patientId'=>$patient->id])}}"
-                                                                      method="POST">
+                                                                <form
+                                                                    action="{{route('doctor.medicalExamination.store',['patientId'=>$patient->id])}}"
+                                                                    method="POST">
                                                                     @csrf
                                                                     @method('POST')
                                                                     <button type="submit"

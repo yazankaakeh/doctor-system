@@ -22,7 +22,7 @@ class ThemeSettingsComposer
         $scope = request()->is('admin/*') || request()->is('doctor/*') ? 'admin' : 'website';
 
         // Check if already loaded in this request
-        if (!isset(self::$cache[$scope])) {
+        if (! isset(self::$cache[$scope])) {
             // Load from database/cache once per request
             $themeSettings = ThemeSetting::getForScope($scope);
 

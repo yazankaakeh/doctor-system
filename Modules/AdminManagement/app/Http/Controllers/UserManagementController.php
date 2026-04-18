@@ -16,7 +16,6 @@ use Modules\Doctor\Models\MedicalSpecialty;
 
 class UserManagementController extends Controller
 {
-
     public function __construct(public DoctorInterface $userInterface) {}
 
     /**
@@ -29,6 +28,7 @@ class UserManagementController extends Controller
         $users = $userRepo['users'];
         $roles = $userRepo['roles'];
         $medicalSpecialty = MedicalSpecialty::getMedicalSpecialtySelect2();
+
         return view('adminmanagement::users.index', compact('users', 'roles', 'medicalSpecialty'));
     }
 
@@ -38,6 +38,7 @@ class UserManagementController extends Controller
     public function update(UpdateDoctorRequest $request): RedirectResponse
     {
         $this->userInterface->update($request);
+
         return redirect()->route('admin.user_management.index')->with(
             'success',
             trans('mps::mps.success.updatedSuccess'),
@@ -50,6 +51,7 @@ class UserManagementController extends Controller
     public function store(DoctorRequest $request): RedirectResponse
     {
         $this->userInterface->store($request);
+
         return redirect()->route('admin.user_management.index')->with(
             'success',
             trans('mps::mps.success.createdSuccess'),
@@ -62,6 +64,7 @@ class UserManagementController extends Controller
     public function status(UpdateStatusAminRequest $request): RedirectResponse
     {
         $this->userInterface->activateDeActivate($request);
+
         return redirect()->route('admin.user_management.index')->with(
             'success',
             trans('mps::mps.success.updateStatusSuccess'),

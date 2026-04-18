@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class ThirdPartyLog extends Model
 {
-
     /**
      * The attributes that are mass assignable.
      */
@@ -22,6 +21,4 @@ class ThirdPartyLog extends Model
     {
         return $this->morphTo();
     }
-
-
 }

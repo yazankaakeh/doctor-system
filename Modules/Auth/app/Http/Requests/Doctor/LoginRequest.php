@@ -3,7 +3,6 @@
 namespace Modules\Auth\Http\Requests\Doctor;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\Password;
 
 class LoginRequest extends FormRequest
 {

@@ -12,7 +12,27 @@
       "Bash(composer dump-autoload:*)",
       "Bash(npm run build:*)",
       "Bash(yarn build)",
-      "Bash(dir:*)"
+      "Bash(dir:*)",
+      "Bash(tree:*)",
+      "Bash(done)",
+      "Bash(wc:*)",
+      "Bash(find:*)",
+      "Bash(curl:*)",
+      "Bash(timeout /t 3 /nobreak)",
+      "Bash(Select-String -Pattern \"Error|Exception\" -Context 0,5)",
+      "Bash(python -c:*)",
+      "Bash(pip install:*)",
+      "Bash(python create_excel.py:*)",
+      "Bash(python update_excel.py:*)",
+      "Bash(composer require:*)",
+      "Bash(npm install:*)",
+      "Bash(powershell:*)",
+      "Bash(grep:*)",
+      "Bash(mysql:*)",
+      "Bash(if not exist \"storage\\\\app\\\\secure\" mkdir \"storage\\\\app\\\\secure\")",
+      "Bash(where:*)",
+      "Bash(where \"C:\\\\Program Files\\\\Google\\\\Chrome\\\\Application\\\\chrome.exe\")",
+      "Bash(where \"C:\\\\Program Files \\(x86\\)\\\\Google\\\\Chrome\\\\Application\\\\chrome.exe\")"
     ]
   }
 }

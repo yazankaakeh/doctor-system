@@ -64,7 +64,7 @@ class Helpers
             // 'defaultLanguage'=>array('en'=>'en','fr'=>'fr','de'=>'de','ar'=>'ar'),
         ];
 
-        //if myLayout value empty or not match with default options in custom.php config file then set a default value
+        // if myLayout value empty or not match with default options in custom.php config file then set a default value
         foreach ($allOptions as $key => $value) {
             if (array_key_exists($key, $DefaultData)) {
                 if (gettype($DefaultData[$key]) === gettype($data[$key])) {
@@ -73,7 +73,7 @@ class Helpers
                         // data key should not be empty
                         if (isset($data[$key]) && $data[$key] !== null) {
                             // data key should not be existed inside allOptions array's sub array
-                            if (!array_key_exists($data[$key], $value)) {
+                            if (! array_key_exists($data[$key], $value)) {
                                 // ensure that passed value should be match with any of allOptions array value
                                 $result = array_search($data[$key], $value, 'strict');
                                 if (empty($result) && $result !== 0) {
@@ -90,12 +90,12 @@ class Helpers
                 }
             }
         }
-        $themeVal = $data['myTheme'] == "dark" ? "dark" : "light";
-        $themeUpdatedVal = $data['myTheme'] == "dark" ? "dark" : $data['myTheme'];
+        $themeVal = $data['myTheme'] == 'dark' ? 'dark' : 'light';
+        $themeUpdatedVal = $data['myTheme'] == 'dark' ? 'dark' : $data['myTheme'];
 
         // Determine if the layout is admin or front based on template name
         $layoutName = $data['myLayout'];
-        $isAdmin = !Str::contains($layoutName, 'front');
+        $isAdmin = ! Str::contains($layoutName, 'front');
 
         $modeCookieName = $isAdmin ? 'admin-mode' : 'front-mode';
         $colorPrefCookieName = $isAdmin ? 'admin-colorPref' : 'front-colorPref';
@@ -139,7 +139,7 @@ class Helpers
             // Ensure we have a proper boolean conversion
             $semiDarkEnabled = $semiDarkFromCookie !== null ?
                 filter_var($semiDarkFromCookie, FILTER_VALIDATE_BOOLEAN) :
-                (bool)$data['hasSemiDark'];
+                (bool) $data['hasSemiDark'];
         } else {
             // For front-end layouts, use defaults
             $skinName = 'default';
@@ -160,7 +160,7 @@ class Helpers
 
         $directionVal = isset($_COOKIE['direction']) ? ($_COOKIE['direction'] === 'true' ? 'rtl' : 'ltr') : $data['myRTLMode'];
 
-        //layout classes
+        // layout classes
         $layoutClasses = [
             'layout' => $data['myLayout'],
             'skins' => $data['mySkins'],
@@ -209,7 +209,6 @@ class Helpers
         if ($layoutClasses['menuFixed']) {
             $layoutClasses['menuFixed'] = 'layout-menu-fixed';
         }
-
 
         // Footer Fixed
         if ($layoutClasses['footerFixed']) {
@@ -279,7 +278,7 @@ class Helpers
      */
     public static function generatePrimaryColorCSS(string $color): string
     {
-        if (!$color) {
+        if (! $color) {
             return '';
         }
 
@@ -288,7 +287,7 @@ class Helpers
         $configColor = config('custom.custom.primaryColor');
         $isFromCookie = isset($_COOKIE['admin-primaryColor']) || isset($_COOKIE['front-primaryColor']);
 
-        if (!$configColor && !$isFromCookie) {
+        if (! $configColor && ! $isFromCookie) {
             return '';
         }
 

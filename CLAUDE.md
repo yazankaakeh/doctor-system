@@ -4,9 +4,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a modular Laravel 12 application (PHP 8.4) for a doctor/medical system, built using the
-`nwidart/laravel-modules` package. The system manages doctors, patients, clinics, medical examinations, and includes
-blog/CMS functionality.
+This is a modular Laravel 12 application (PHP 8.4) serving as a base project foundation, built using the
+`nwidart/laravel-modules` package. The system provides a robust modular architecture with user management, authentication, blog/CMS functionality, and extensible modules for building custom applications.
 
 ## Architecture
 
@@ -16,13 +15,17 @@ The application follows a **modular architecture** using Laravel Modules. All fe
 self-contained modules in the `Modules/` directory:
 
 - **Core**: Base models, enums, helpers, rules, traits, and shared components
-- **Doctor**: Medical system functionality (doctors, patients, clinics, examinations)
 - **AdminManagement**: User/role/permission management
+- **Auth**: Multi-guard authentication with social login
 - **Blog**: Blog posts, categories, tags
-- **CMS**: Content management
+- **CMS**: Content management and page builder
 - **Seo**: SEO meta management
-- **Notification**: Push notifications
-- **Theme**: UI themes and views
+- **Notification**: Email, SMS, and push notifications
+- **Theme**: UI themes and views (Vuexy Bootstrap 5)
+- **MCP**: AI chatbot integration
+- **Messaging**: Multi-channel messaging system
+- **Website**: Public-facing website
+- **Doctor/Patient/Booking**: Optional medical modules (can be removed for non-medical projects)
 
 Each module contains its own:
 

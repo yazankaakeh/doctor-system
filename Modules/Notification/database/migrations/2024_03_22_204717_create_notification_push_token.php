@@ -4,7 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      */
@@ -13,7 +14,7 @@ return new class extends Migration {
         Schema::create('notification_push_token', function (Blueprint $table) {
             $table->id();
             $table->morphs('tokenable'); // if null => customer did not login yet
-            $table->text('push_token', 80);
+            $table->text('push_token');
             $table->string('platform')->default('firebase');
             $table->timestamps();
         });
@@ -24,6 +25,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('customer_push_token');
+        Schema::dropIfExists('notification_push_token');
     }
 };

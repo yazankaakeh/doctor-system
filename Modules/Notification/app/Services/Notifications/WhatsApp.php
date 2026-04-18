@@ -41,5 +41,4 @@ class WhatsApp
         $status = json_decode($response->getBody()->getContents(), true);
         $this->saveLog($customerID, $templateId, $status['messageId']);
     }
-
 }

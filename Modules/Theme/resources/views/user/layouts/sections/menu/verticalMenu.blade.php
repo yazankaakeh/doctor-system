@@ -1,6 +1,8 @@
 @php
     use Illuminate\Support\Facades\Route;use Modules\Theme\Helpers\Helpers;
     $configData = Helpers::appClasses();
+    // Ensure menuData exists, provide empty fallback if not
+    $menuData = $menuData ?? [];
 @endphp
 
 <aside id="layout-menu" class="layout-menu menu-vertical menu" @foreach ($configData['menuAttributes'] as $attribute=>
@@ -26,7 +28,7 @@
 <div class="menu-inner-shadow"></div>
 
 <ul class="menu-inner py-1">
-    @foreach ($menuData[0]->menu as $menu)
+    @foreach ((isset($menuData[0]->menu) ? $menuData[0]->menu : []) as $menu)
         {{-- adding active and open class if child is active --}}
 
         {{-- menu headers --}}

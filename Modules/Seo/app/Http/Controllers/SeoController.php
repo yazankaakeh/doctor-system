@@ -7,11 +7,8 @@ use Modules\Seo\Http\Requests\SeoRequest;
 
 class SeoController extends Controller
 {
-
     /**
      * Update the specified resource in storage.
      */
     public function store(SeoRequest $request) {}
-
-
 }

@@ -2,9 +2,9 @@
 
 namespace Modules\MCP\Repository\ChatConversation;
 
-use Modules\MCP\Models\ChatConversation;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
+use Modules\MCP\Models\ChatConversation;
 
 class ChatConversationRepository implements ChatConversationInterface
 {
@@ -88,12 +88,14 @@ class ChatConversationRepository implements ChatConversationInterface
     public function close(int $id): bool
     {
         $conversation = $this->find($id);
+
         return $conversation->close();
     }
 
     public function archive(int $id): bool
     {
         $conversation = $this->find($id);
+
         return $conversation->archive();
     }
 }
