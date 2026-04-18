@@ -41,6 +41,7 @@ return [
             'personal_info' => 'Personal Information',
             'professional_info' => 'Professional Information',
             'security' => 'Account Security',
+            'img' => 'Profile Image',
         ],
         'edit' => [
             'title' => 'Edit Doctor',
@@ -90,9 +91,18 @@ return [
         'actions' => 'Actions',
         'create' => [
             'title' => 'Create Role',
-            'name' => 'Name',
+            'subtitle' => 'Define a new role with specific permissions',
+            'name' => 'Role Name',
+            'name_placeholder' => 'Enter role name (e.g., Manager, Editor)',
             'guard' => 'Guard',
-            'allCheckBoxes' => 'allCheck Boxes',
+            'allCheckBoxes' => 'Select All Permissions',
+            'select_all' => 'Select All',
+            'selected' => 'Selected',
+            'permissions' => 'Permissions',
+            'role_info' => 'Role Information',
+            'search_permissions' => 'Search permissions...',
+            'all_sections' => 'All Sections',
+            'submit' => 'Create Role',
         ],
         'edit' => [
             'title' => 'Edit Role',
@@ -118,6 +128,8 @@ return [
     'submit' => 'Submit',
     'close' => 'Close',
     'save' => 'Save Changes',
+    'back' => 'Back',
+    'cancel' => 'Cancel',
     'pleaseSelectOne' => 'Please Select One',
     'permissions' => [
         // Admin Management Permissions
@@ -185,8 +197,24 @@ return [
         'menus-update' => 'Update Menu',
         'menus-destroy' => 'Delete Menu',
 
+        'admin-portfolios-index' => 'View Portfolios',
+        'admin-portfolios-create' => 'Create Portfolio',
+        'admin-portfolios-store' => 'Store Portfolio',
+        'admin-portfolios-show' => 'View Portfolio Details',
+        'admin-portfolios-edit' => 'Edit Portfolio',
+        'admin-portfolios-update' => 'Update Portfolio',
+        'admin-portfolios-destroy' => 'Delete Portfolio',
+        'admin-portfolios-toggle-featured' => 'Toggle Portfolio Featured Status',
+        'admin-portfolios-toggle-status' => 'Toggle Portfolio Status',
+        'admin-portfolios-duplicate' => 'Duplicate Portfolio',
+        'admin-portfolios-reorder' => 'Reorder Portfolios',
+        'admin-portfolios-delete-gallery' => 'Delete Portfolio Gallery',
+
         // Doctor Permissions
         'doctor-dashboard' => 'View Dashboard',
+
+        'doctor-profile-index' => 'View Profile',
+        'doctor-profile-update' => 'Update Profile',
 
         'doctor-clinic-index' => 'View Clinic',
         'doctor-clinic-store' => 'Store Clinic Information',
@@ -234,6 +262,20 @@ return [
         'doctor-pdf-downloadMedicines' => 'Download Medicines PDF',
         'doctor-pdf-downloadMedicalTest' => 'Download Medical Test PDF',
         'doctor-pdf-downloadMedicinesPharmacy' => 'Download Pharmacy Medicines PDF',
+
+        // SEO Configuration Permissions
+        'doctor-seoConfig-get' => 'View SEO Configuration',
+        'doctor-seoConfig-update' => 'Update SEO Configuration',
+
+        // Theme Settings Permissions
+        'doctor-theme-settings-index' => 'View Theme Settings',
+        'doctor-theme-settings-update' => 'Update Theme Settings',
+        'doctor-theme-settings-reset' => 'Reset Theme Settings',
+
+        // Environment Configuration Permissions
+        'doctor-env-get' => 'View Environment Configuration',
+        'doctor-env-update' => 'Update Environment Configuration',
+        'doctor-env-sendTestEmail' => 'Send Test Email',
     ],
     'sections' => [
         'admin' => 'Admin Management',
@@ -245,6 +287,12 @@ return [
         'tags' => 'Tags',
         'cms' => 'CMS',
         'menus' => 'Menus',
+        'portfolios' => 'Portfolios',
+        'profile' => 'Profile',
+        'quillUpload' => 'Image Upload',
+        'seoConfig' => 'SEO Configuration',
+        'theme' => 'Theme Settings',
+        'env' => 'Environment Configuration',
         'dashboard' => 'Dashboard',
         'clinic' => 'Clinic',
         'patients' => 'Patients',

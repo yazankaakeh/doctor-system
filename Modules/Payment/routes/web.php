@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Modules\Payment\Http\Controllers\Admin\PaymentController;
+use Modules\Payment\Http\Controllers\CreditCardController;
 use Modules\Payment\Http\Controllers\Doctor\PaymentController as DoctorPaymentController;
 use Modules\Payment\Http\Controllers\OfflinePaymentController;
 use Modules\Payment\Http\Controllers\PayPalController;
@@ -28,6 +29,12 @@ Route::prefix('payment/paypal')->name('payment.paypal.')->middleware(['web', 'pa
 Route::prefix('payment/offline')->name('payment.offline.')->middleware(['web', 'patientMenu', 'auth:web', 'setLocale'])->group(function () {
     Route::get('/{booking}', [OfflinePaymentController::class, 'show'])->name('show');
     Route::post('/{booking}', [OfflinePaymentController::class, 'submit'])->name('submit');
+});
+
+// Credit-card payment (prototype) for patients
+Route::prefix('payment/credit-card')->name('payment.credit_card.')->middleware(['web', 'patientMenu', 'auth:web', 'setLocale'])->group(function () {
+    Route::get('/{booking}',  [CreditCardController::class, 'show'])->name('show');
+    Route::post('/{booking}', [CreditCardController::class, 'submit'])->name('submit');
 });
 
 // Admin payment routes

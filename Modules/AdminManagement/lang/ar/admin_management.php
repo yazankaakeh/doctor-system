@@ -41,6 +41,7 @@ return [
             'personal_info' => 'المعلومات الشخصية',
             'professional_info' => 'المعلومات المهنية',
             'security' => 'أمان الحساب',
+            'img' => 'صورة الملف الشخصي',
         ],
         'edit' => [
             'title' => 'تعديل الطبيب',
@@ -90,9 +91,18 @@ return [
         'actions' => 'الإجراءات',
         'create' => [
             'title' => 'إنشاء دور',
-            'name' => 'الاسم',
+            'subtitle' => 'تعريف دور جديد بصلاحيات محددة',
+            'name' => 'اسم الدور',
+            'name_placeholder' => 'أدخل اسم الدور (مثال: مدير، محرر)',
             'guard' => 'الحارس',
-            'allCheckBoxes' => 'جميع المربعات',
+            'allCheckBoxes' => 'تحديد جميع الصلاحيات',
+            'select_all' => 'تحديد الكل',
+            'selected' => 'محدد',
+            'permissions' => 'الصلاحيات',
+            'role_info' => 'معلومات الدور',
+            'search_permissions' => 'البحث عن صلاحيات...',
+            'all_sections' => 'جميع الأقسام',
+            'submit' => 'إنشاء الدور',
         ],
         'edit' => [
             'title' => 'تعديل الدور',
@@ -118,6 +128,8 @@ return [
     'submit' => 'إرسال',
     'close' => 'إغلاق',
     'save' => 'حفظ التغييرات',
+    'back' => 'رجوع',
+    'cancel' => 'إلغاء',
     'pleaseSelectOne' => 'يرجى اختيار واحد',
     'permissions' => [
         // Admin Management Permissions
@@ -185,8 +197,24 @@ return [
         'menus-update' => 'تحديث قائمة',
         'menus-destroy' => 'حذف قائمة',
 
+        'admin-portfolios-index' => 'عرض الملفات',
+        'admin-portfolios-create' => 'إنشاء ملف',
+        'admin-portfolios-store' => 'حفظ ملف',
+        'admin-portfolios-show' => 'عرض تفاصيل الملف',
+        'admin-portfolios-edit' => 'تعديل ملف',
+        'admin-portfolios-update' => 'تحديث ملف',
+        'admin-portfolios-destroy' => 'حذف ملف',
+        'admin-portfolios-toggle-featured' => 'تبديل حالة الملف البارز',
+        'admin-portfolios-toggle-status' => 'تبديل حالة الملف',
+        'admin-portfolios-duplicate' => 'نسخ الملف',
+        'admin-portfolios-reorder' => 'إعادة ترتيب الملفات',
+        'admin-portfolios-delete-gallery' => 'حذف معرض الملف',
+
         // Doctor Permissions
         'doctor-dashboard' => 'عرض لوحة التحكم',
+
+        'doctor-profile-index' => 'عرض الملف الشخصي',
+        'doctor-profile-update' => 'تحديث الملف الشخصي',
 
         'doctor-clinic-index' => 'عرض العيادة',
         'doctor-clinic-store' => 'حفظ معلومات العيادة',
@@ -234,6 +262,20 @@ return [
         'doctor-pdf-downloadMedicines' => 'تحميل PDF الأدوية',
         'doctor-pdf-downloadMedicalTest' => 'تحميل PDF الفحص الطبي',
         'doctor-pdf-downloadMedicinesPharmacy' => 'تحميل PDF أدوية الصيدلية',
+
+        // SEO Configuration Permissions
+        'doctor-seoConfig-get' => 'عرض إعدادات SEO',
+        'doctor-seoConfig-update' => 'تحديث إعدادات SEO',
+
+        // Theme Settings Permissions
+        'doctor-theme-settings-index' => 'عرض إعدادات القالب',
+        'doctor-theme-settings-update' => 'تحديث إعدادات القالب',
+        'doctor-theme-settings-reset' => 'إعادة تعيين إعدادات القالب',
+
+        // Environment Configuration Permissions
+        'doctor-env-get' => 'عرض إعدادات البيئة',
+        'doctor-env-update' => 'تحديث إعدادات البيئة',
+        'doctor-env-sendTestEmail' => 'إرسال بريد إلكتروني تجريبي',
     ],
     'sections' => [
         'admin' => 'إدارة النظام',
@@ -245,6 +287,12 @@ return [
         'tags' => 'العلامات',
         'cms' => 'نظام إدارة المحتوى',
         'menus' => 'القوائم',
+        'portfolios' => 'الملفات',
+        'profile' => 'الملف الشخصي',
+        'quillUpload' => 'رفع الصور',
+        'seoConfig' => 'إعدادات SEO',
+        'theme' => 'إعدادات القالب',
+        'env' => 'إعدادات البيئة',
         'dashboard' => 'لوحة التحكم',
         'clinic' => 'العيادة',
         'patients' => 'المرضى',

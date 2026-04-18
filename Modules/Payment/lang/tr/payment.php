@@ -95,6 +95,35 @@ return [
     'thank_you' => 'Ödemeniz için teşekkürler.',
     'booking_confirmed_message' => 'Rezervasyonunuz onaylandı. Konsültasyon detaylarını içeren bir e-posta alacaksınız.',
 
+    // Credit-card (prototip)
+    'credit_card' => [
+        'title'              => 'Kredi Kartı ile Öde',
+        'subtitle'           => 'Kart bilgilerinizi girin — prototip sandbox, gerçek ödeme alınmaz',
+        'sandbox_badge'      => 'Sandbox',
+        'pay_with_card'      => 'Kart ile Öde',
+        'cardholder'         => 'Kart Sahibi',
+        'cardholder_placeholder' => 'Örn. Ahmet Yılmaz',
+        'card'               => 'KART',
+        'card_number'        => 'Kart Numarası',
+        'expiry'             => 'Son Kullanma',
+        'expiry_month'       => 'Ay',
+        'expiry_year'        => 'Yıl',
+        'cvv'                => 'CVV',
+        'amount_due'         => 'Ödenecek Tutar',
+        'secure_note'        => 'Kart bilgileriniz şifreli bağlantı üzerinden gönderilir.',
+        'pay_now'            => ':amount Öde',
+        'processing'         => 'İşleniyor…',
+        'test_cards_title'   => 'Test kartları',
+        'test_cards_success' => 'Başarılı',
+        'test_cards_decline' => 'Reddedildi',
+        'invalid_card'       => 'Girdiğiniz kart numarası geçersiz.',
+        'invalid_expiry'     => 'Son kullanma ayı 01 ile 12 arasında olmalıdır.',
+        'card_expired'       => 'Kartın süresi dolmuş.',
+        'declined'           => 'Kartınız reddedildi. Lütfen farklı bir kart deneyin.',
+        'booking_not_payable'=> 'Bu rezervasyon şu anda ödenemez.',
+        'payment_success'    => 'Ödeme başarılı — randevunuz onaylandı.',
+    ],
+
     // Enum
     'enum' => [
         'PaymentStatusEnum' => [
@@ -105,12 +134,14 @@ return [
             5 => 'Doğrulama Bekliyor',
         ],
         'PaymentMethodEnum' => [
-            'paypal' => 'PayPal',
-            'offline' => 'Çevrimdışı Ödeme',
+            'paypal'      => 'PayPal',
+            'offline'     => 'Çevrimdışı Ödeme',
+            'credit_card' => 'Kredi Kartı',
         ],
         'PaymentMethodDescription' => [
-            'paypal' => 'PayPal hesabınızla güvenli ödeme yapın',
-            'offline' => 'Banka havalesi veya nakit ödeme ile kanıt yükleme',
+            'paypal'      => 'PayPal hesabınızla güvenli ödeme yapın',
+            'offline'     => 'Banka havalesi veya nakit ödeme ile kanıt yükleme',
+            'credit_card' => 'Visa, Mastercard veya Amex ile anında ödeyin',
         ],
     ],
 ];

@@ -5,7 +5,6 @@ namespace Modules\AdminManagement\Models;
 use DateTime;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Modules\Doctor\Models\Doctor;
 
@@ -106,12 +105,28 @@ class AuditLog extends Model
     }
 
     /**
-     * Legacy method for backward compatibility
+     * Legacy accessor for backward compatibility.
      *
-     * @deprecated Use auditable() instead
+     * Returns the related Doctor only when this audit row's auditable_type is
+     * actually Doctor — otherwise returns null. Uses the already-loaded
+     * polymorphic `auditable` relation when available to avoid extra queries.
+     *
+     * NOTE: the old definition below chained ->where() onto the relationship,
+     * which Laravel applies to the *related* table (`doctors`) producing
+     * "Unknown column 'auditable_type'" errors. Replaced with a safe accessor.
+     *
+     * @deprecated Use $audit->auditable (MorphTo) instead.
      */
-    public function doctor(): BelongsTo
+    public function getDoctorAttribute(): ?Doctor
     {
-        return $this->belongsTo(Doctor::class, 'auditable_id')->where('auditable_type', Doctor::class);
+        if ($this->auditable_type !== Doctor::class) {
+            return null;
+        }
+
+        if ($this->relationLoaded('auditable')) {
+            return $this->auditable instanceof Doctor ? $this->auditable : null;
+        }
+
+        return Doctor::query()->find($this->auditable_id);
     }
 }

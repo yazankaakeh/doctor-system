@@ -80,9 +80,9 @@
                                         @foreach ($data as $audit)
                                             <tr class="intro-x ">
                                                 <td>
-                                                    <a href="#" class="font-medium whitespace-nowrap">
-                                                        {{ $audit->doctor?->name }}
-                                                    </a>
+                                                    <span class="font-medium">
+                                                        {{ $audit->auditable?->name ?? '—' }}
+                                                    </span>
                                                 </td>
                                                 <td>
                                                     <a href="#" class="font-medium whitespace-nowrap">
@@ -121,8 +121,8 @@
             </div>
         </div>
     </div>
-    @includeIf('usermanagement::audit_log.modals.payloadModal')
-    @includeIf('usermanagement::audit_log.modals.filterModal')
+    @includeIf('adminmanagement::audit_log.modals.payloadModal')
+    @includeIf('adminmanagement::audit_log.modals.filterModal')
 @endsection
 @section('vendor-script')
     <script src="{{asset('assets/vendor/libs/select2/select2.js')}}"></script>

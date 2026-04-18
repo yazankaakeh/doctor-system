@@ -1,11 +1,12 @@
 @php
+    use Modules\AdminManagement\Action\Auditing\RouteName;
+    use Modules\AdminManagement\Models\AuditLog;
 
-    /* @var Admin $doctors */
-    use Modules\AdminManagement\Action\Auditing\RouteName;use Modules\AdminManagement\app\Models\Admin;use Modules\AdminManagement\Models\AuditLog;
-    $doctors = AuditLog::GetDoctors();
-
-    $startDate = app('request')->input('start_date');
-    $endDate = app('request')->input('end_date');
+    // AuditLog::GetDoctors() doesn't exist on the model. Use GetAuditableModels()
+    // which already returns Doctor::query()->select('name','id')->get().
+    $doctors     = AuditLog::GetAuditableModels();
+    $startDate   = app('request')->input('start_date');
+    $endDate     = app('request')->input('end_date');
     $route_names = RouteName::Routes();
 @endphp
 

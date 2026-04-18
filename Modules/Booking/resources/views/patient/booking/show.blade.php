@@ -124,16 +124,20 @@
                             @if($booking->isPending())
                                 <div class="alert alert-warning">
                                     <h6 class="alert-heading">{{ trans('payment::payment.select_payment_method') }}</h6>
-                                    <div class="d-flex gap-2 mt-3">
-                                        <form action="{{ route('payment.paypal.create', $booking) }}" method="POST">
+                                    <div class="d-flex gap-2 mt-3 flex-wrap">
+                                        <a href="{{ route('payment.credit_card.show', $booking) }}" class="btn btn-primary">
+                                            <i class="ti tabler-credit-card me-1"></i>
+                                            {{ trans('payment::payment.credit_card.pay_with_card') }}
+                                        </a>
+                                        <form action="{{ route('payment.paypal.create', $booking) }}" method="POST" class="m-0">
                                             @csrf
-                                            <button type="submit" class="btn btn-primary">
+                                            <button type="submit" class="btn btn-outline-primary">
                                                 <i class="ti tabler-brand-paypal me-1"></i>
                                                 {{ trans('payment::payment.pay_with_paypal') }}
                                             </button>
                                         </form>
-                                        <a href="{{ route('payment.offline.show', $booking) }}" class="btn btn-secondary">
-                                            <i class="ti tabler-credit-card me-1"></i>
+                                        <a href="{{ route('payment.offline.show', $booking) }}" class="btn btn-outline-secondary">
+                                            <i class="ti tabler-building-bank me-1"></i>
                                             {{ trans('payment::payment.offline_payment') }}
                                         </a>
                                     </div>

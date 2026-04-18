@@ -41,6 +41,7 @@ return [
             'personal_info' => 'Kişisel Bilgiler',
             'professional_info' => 'Mesleki Bilgiler',
             'security' => 'Hesap Güvenliği',
+            'img' => 'Profil Fotoğrafı',
         ],
         'edit' => [
             'title' => 'Doktoru Düzenle',
@@ -90,9 +91,18 @@ return [
         'actions' => 'İşlemler',
         'create' => [
             'title' => 'Rol Oluştur',
-            'name' => 'Ad',
+            'subtitle' => 'Belirli izinlerle yeni bir rol tanımlayın',
+            'name' => 'Rol Adı',
+            'name_placeholder' => 'Rol adını girin (örn: Yönetici, Editör)',
             'guard' => 'Koruma',
-            'allCheckBoxes' => 'Tüm Kutular',
+            'allCheckBoxes' => 'Tüm İzinleri Seç',
+            'select_all' => 'Tümünü Seç',
+            'selected' => 'Seçildi',
+            'permissions' => 'İzinler',
+            'role_info' => 'Rol Bilgileri',
+            'search_permissions' => 'İzinleri ara...',
+            'all_sections' => 'Tüm Bölümler',
+            'submit' => 'Rol Oluştur',
         ],
         'edit' => [
             'title' => 'Rolü Düzenle',
@@ -118,6 +128,8 @@ return [
     'submit' => 'Gönder',
     'close' => 'Kapat',
     'save' => 'Değişiklikleri Kaydet',
+    'back' => 'Geri',
+    'cancel' => 'İptal',
     'pleaseSelectOne' => 'Lütfen birini seçin',
     'permissions' => [
         // Admin Management Permissions
@@ -185,8 +197,24 @@ return [
         'menus-update' => 'Menüyü Güncelle',
         'menus-destroy' => 'Menüyü Sil',
 
+        'admin-portfolios-index' => 'Portföyleri Görüntüle',
+        'admin-portfolios-create' => 'Portföy Oluştur',
+        'admin-portfolios-store' => 'Portföy Kaydet',
+        'admin-portfolios-show' => 'Portföy Detaylarını Görüntüle',
+        'admin-portfolios-edit' => 'Portföyü Düzenle',
+        'admin-portfolios-update' => 'Portföyü Güncelle',
+        'admin-portfolios-destroy' => 'Portföyü Sil',
+        'admin-portfolios-toggle-featured' => 'Portföy Öne Çıkarma Durumunu Değiştir',
+        'admin-portfolios-toggle-status' => 'Portföy Durumunu Değiştir',
+        'admin-portfolios-duplicate' => 'Portföyü Kopyala',
+        'admin-portfolios-reorder' => 'Portföyleri Yeniden Sırala',
+        'admin-portfolios-delete-gallery' => 'Portföy Galerisini Sil',
+
         // Doctor Permissions
         'doctor-dashboard' => 'Kontrol Paneli Görüntüle',
+
+        'doctor-profile-index' => 'Profili Görüntüle',
+        'doctor-profile-update' => 'Profili Güncelle',
 
         'doctor-clinic-index' => 'Klinik Görüntüle',
         'doctor-clinic-store' => 'Klinik Bilgilerini Kaydet',
@@ -234,6 +262,20 @@ return [
         'doctor-pdf-downloadMedicines' => 'İlaçlar PDF İndir',
         'doctor-pdf-downloadMedicalTest' => 'Tıbbi Test PDF İndir',
         'doctor-pdf-downloadMedicinesPharmacy' => 'Eczane İlaçları PDF İndir',
+
+        // SEO Configuration Permissions
+        'doctor-seoConfig-get' => 'SEO Ayarlarını Görüntüle',
+        'doctor-seoConfig-update' => 'SEO Ayarlarını Güncelle',
+
+        // Theme Settings Permissions
+        'doctor-theme-settings-index' => 'Tema Ayarlarını Görüntüle',
+        'doctor-theme-settings-update' => 'Tema Ayarlarını Güncelle',
+        'doctor-theme-settings-reset' => 'Tema Ayarlarını Sıfırla',
+
+        // Environment Configuration Permissions
+        'doctor-env-get' => 'Ortam Ayarlarını Görüntüle',
+        'doctor-env-update' => 'Ortam Ayarlarını Güncelle',
+        'doctor-env-sendTestEmail' => 'Test E-postası Gönder',
     ],
     'sections' => [
         'admin' => 'Yönetici Yönetimi',
@@ -245,6 +287,12 @@ return [
         'tags' => 'Etiketler',
         'cms' => 'CMS',
         'menus' => 'Menüler',
+        'portfolios' => 'Portföyler',
+        'profile' => 'Profil',
+        'quillUpload' => 'Görsel Yükleme',
+        'seoConfig' => 'SEO Ayarları',
+        'theme' => 'Tema Ayarları',
+        'env' => 'Ortam Ayarları',
         'dashboard' => 'Kontrol Paneli',
         'clinic' => 'Klinik',
         'patients' => 'Hastalar',
