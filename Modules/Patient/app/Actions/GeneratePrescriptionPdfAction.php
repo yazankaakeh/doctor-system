@@ -18,7 +18,7 @@ class GeneratePrescriptionPdfAction
                 'medicines',
                 'finalDiagnosis',
                 'vitalSigns',
-                'medicalTests'
+                'medicalTests',
             ])
             ->findOrFail($examinationId);
 

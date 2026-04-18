@@ -23,14 +23,6 @@ class TagController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('blog::tags.create');
-    }
-
-    /**
      * Store a newly created tag via AJAX.
      */
     public function storeAjax(TagRequest $request): JsonResponse

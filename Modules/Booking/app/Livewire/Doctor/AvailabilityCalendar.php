@@ -15,28 +15,39 @@ use Modules\Booking\Repository\RecurringSchedule\RecurringScheduleInterface;
 class AvailabilityCalendar extends Component
 {
     public $events = [];
+
     public $showModal = false;
+
     public $showGenerateModal = false;
+
     public $editingAvailabilityId = null;
 
     // Form fields for manual availability
     public $date = '';
+
     public $start_time = '';
+
     public $end_time = '';
+
     public $slot_duration = 30;
+
     public $consultation_fee = '';
+
     public $is_active = true;
 
     // Generate form fields
     public $generate_start_date = '';
+
     public $generate_end_date = '';
 
     // Calendar state
     public $currentStart = null;
+
     public $currentEnd = null;
 
     // Selected availability for view/edit
     public $selectedAvailability = null;
+
     public $showDetailsModal = false;
 
     protected $listeners = [
@@ -129,7 +140,7 @@ class AvailabilityCalendar extends Component
 
     public function editAvailability(): void
     {
-        if (!$this->selectedAvailability) {
+        if (! $this->selectedAvailability) {
             return;
         }
 
@@ -147,12 +158,13 @@ class AvailabilityCalendar extends Component
 
     public function deleteAvailability(): void
     {
-        if (!$this->selectedAvailability) {
+        if (! $this->selectedAvailability) {
             return;
         }
 
         if ($this->selectedAvailability['has_bookings']) {
             session()->flash('error', __('booking::calendar.cannot_delete_with_bookings'));
+
             return;
         }
 
@@ -223,6 +235,7 @@ class AvailabilityCalendar extends Component
 
         if ($startDate->diffInDays($endDate) > 90) {
             $this->addError('generate_end_date', __('booking::recurring.validation.max_days_exceeded'));
+
             return;
         }
 
@@ -232,6 +245,7 @@ class AvailabilityCalendar extends Component
         if ($activeSchedules->isEmpty()) {
             session()->flash('error', __('booking::calendar.no_recurring_schedules'));
             $this->closeGenerateModal();
+
             return;
         }
 

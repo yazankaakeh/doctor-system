@@ -21,7 +21,15 @@ class Admin extends Authenticatable
 {
     use HasRoles;
 
+    /**
+     * Auth guard this model belongs to.
+     * `$guard` is read by Laravel's Authenticatable plumbing; `$guard_name`
+     * is read by Spatie Permission when matching roles/permissions. Both
+     * must be set to keep those two systems in sync.
+     */
     protected string $guard = 'admin';
+
+    protected string $guard_name = 'admin';
 
     protected $table = 'admins';
 
@@ -49,6 +57,7 @@ class Admin extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'phone',
         'password',
         'img',
         'is_active',

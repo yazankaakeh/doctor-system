@@ -16,7 +16,11 @@ class UpdateStatusAminRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => ['required', 'integer', 'exists:admins,id'],
+            // The "user management" screens actually toggle Doctor records
+            // (the admin persona is a Doctor with the SUPER_ADMIN role).
+            // Validating against `admins,id` made every toggle silently
+            // fail — the record was never found in that table.
+            'id' => ['required', 'integer', 'exists:doctors,id'],
             'is_active' => ['nullable', 'in:on,off'],
         ];
     }

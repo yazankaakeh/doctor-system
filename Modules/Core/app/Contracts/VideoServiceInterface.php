@@ -2,8 +2,8 @@
 
 namespace Modules\Core\Contracts;
 
-use Modules\Core\DataTransferObjects\MeetingRoom;
 use Modules\Core\DataTransferObjects\MeetingParticipant;
+use Modules\Core\DataTransferObjects\MeetingRoom;
 
 interface VideoServiceInterface
 {

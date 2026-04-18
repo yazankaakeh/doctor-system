@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Modules\Booking\Actions\Booking\CheckSlotAvailabilityAction;
 use Modules\Booking\Enums\BookingStatusEnum;
 use Modules\Booking\Tests\BookingTestCase;
+use Modules\Doctor\Models\Doctor;
 
 class CheckSlotAvailabilityActionTest extends BookingTestCase
 {
@@ -99,7 +100,7 @@ class CheckSlotAvailabilityActionTest extends BookingTestCase
     /** @test */
     public function it_checks_slot_for_specific_doctor(): void
     {
-        $otherDoctor = \Modules\Doctor\Models\Doctor::factory()->create([
+        $otherDoctor = Doctor::factory()->create([
             'medical_specialty_id' => $this->medicalSpecialty->id,
         ]);
 

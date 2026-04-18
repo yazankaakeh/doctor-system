@@ -22,6 +22,7 @@ class GenerateRecurringAvailabilitiesCommand extends Command
 
         if ($days < 1 || $days > 90) {
             $this->error('Days must be between 1 and 90.');
+
             return self::FAILURE;
         }
 
@@ -43,6 +44,7 @@ class GenerateRecurringAvailabilitiesCommand extends Command
 
         if ($doctors->isEmpty()) {
             $this->warn('No doctors with active recurring schedules found.');
+
             return self::SUCCESS;
         }
 
@@ -56,7 +58,7 @@ class GenerateRecurringAvailabilitiesCommand extends Command
         });
 
         $this->newLine(2);
-        $this->info("Generation complete!");
+        $this->info('Generation complete!');
         $this->table(
             ['Metric', 'Value'],
             [

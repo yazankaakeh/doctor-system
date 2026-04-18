@@ -20,7 +20,7 @@ use Modules\Core\Services\Video\VideoServiceManager;
  * @method static VideoServiceManager extend(string $driver, callable $callback)
  * @method static array getAvailableDrivers()
  *
- * @see \Modules\Core\Services\Video\VideoServiceManager
+ * @see VideoServiceManager
  */
 class VideoService extends Facade
 {

@@ -5,7 +5,6 @@ namespace Modules\AdminManagement\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
-use Modules\Core\App\Enums\ActiveEnum;
 use Modules\Core\App\Enums\Gender;
 
 /**
@@ -30,9 +29,14 @@ class UpdateDoctorRequest extends FormRequest
             'email' => ['required', Rule::unique('doctors')->ignore($this->id), 'string', 'email', 'max:255'],
             'password' => ['nullable', 'string', 'min:8', 'confirmed'],
             'img' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
-            'is_active' => ['required', new Enum(ActiveEnum::class)],
-            'age' => ['required', 'numeric', 'between:18,100'],
-            'medicalSpecialtyId' => ['required', 'exists:medical_specialties,id'],
+            // Form checkbox posts "on" / nothing; mirror DoctorRequest so the
+            // create and update flows accept the same is_active shape.
+            'is_active' => ['nullable', 'in:on,off'],
+            // age / medicalSpecialtyId are nullable on update because most
+            // admin-side update forms don't re-submit them. On create they
+            // stay required (see DoctorRequest).
+            'age' => ['nullable', 'numeric', 'between:18,100'],
+            'medicalSpecialtyId' => ['nullable', 'exists:medical_specialties,id'],
             'gender' => ['required', new Enum(Gender::class)],
         ];
     }

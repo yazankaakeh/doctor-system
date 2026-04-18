@@ -5,7 +5,6 @@ namespace Modules\Messaging\Notifications;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\BroadcastMessage;
-use Illuminate\Notifications\Messages\DatabaseMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Modules\Messaging\Models\Message;
@@ -101,6 +100,6 @@ class NewMessageNotification extends Notification implements ShouldQueue
             return $content;
         }
 
-        return substr($content, 0, $length) . '...';
+        return substr($content, 0, $length).'...';
     }
 }

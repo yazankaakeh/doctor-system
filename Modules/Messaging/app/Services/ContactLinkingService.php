@@ -91,8 +91,8 @@ class ContactLinkingService
                 foreach ($phoneFields as $field) {
                     // Check if column exists
                     try {
-                        $q->orWhere($field, 'LIKE', '%' . $identifier);
-                        $q->orWhere($field, 'LIKE', '%' . ltrim($identifier, '+'));
+                        $q->orWhere($field, 'LIKE', '%'.$identifier);
+                        $q->orWhere($field, 'LIKE', '%'.ltrim($identifier, '+'));
                     } catch (\Exception $e) {
                         // Column doesn't exist, skip
                         continue;
@@ -147,7 +147,7 @@ class ContactLinkingService
             $lead = Lead::create([
                 'full_mobile' => $conversation->participant_identifier,
                 'name' => $conversation->participant_name ?? 'Unknown',
-                'source' => 'messaging_' . $conversation->channel->type->value,
+                'source' => 'messaging_'.$conversation->channel->type->value,
                 'status' => 'new',
             ]);
 
@@ -167,6 +167,7 @@ class ContactLinkingService
                 'conversation_id' => $conversation->id,
                 'error' => $e->getMessage(),
             ]);
+
             return null;
         }
     }
@@ -193,6 +194,7 @@ class ContactLinkingService
             Log::channel('messaging')->error('Failed to link conversation', [
                 'error' => $e->getMessage(),
             ]);
+
             return false;
         }
     }

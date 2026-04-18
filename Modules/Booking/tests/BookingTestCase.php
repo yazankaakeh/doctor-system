@@ -3,7 +3,9 @@
 namespace Modules\Booking\Tests;
 
 use Carbon\Carbon;
+use Illuminate\Contracts\Notifications\Dispatcher;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Notification;
 use Modules\Booking\Enums\BookingStatusEnum;
 use Modules\Booking\Models\Booking;
 use Modules\Booking\Models\DoctorAvailability;
@@ -30,6 +32,15 @@ abstract class BookingTestCase extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+
+        // Stop notifications from hitting real channels (SMS/email/FCM/etc.)
+        // during tests. We bind the NotificationFake explicitly to the
+        // container's Dispatcher contract because Notifiable::notify() goes
+        // through `app(Dispatcher::class)`, NOT through the Notification
+        // facade. Without the explicit bind, calls via $notifiable->notify()
+        // bypass Notification::fake() and hit the real channels.
+        $fake = Notification::fake();
+        $this->app->instance(Dispatcher::class, $fake);
 
         $this->setupPermissions();
         $this->setupMedicalSpecialty();
@@ -135,7 +146,7 @@ abstract class BookingTestCase extends TestCase
     protected function createBooking(array $attributes = []): Booking
     {
         $availability = $attributes['doctor_availability_id'] ?? null;
-        if (!$availability) {
+        if (! $availability) {
             $availability = $this->createAvailability();
         }
 

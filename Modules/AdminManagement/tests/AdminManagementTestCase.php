@@ -2,7 +2,10 @@
 
 namespace Modules\AdminManagement\Tests;
 
+use Illuminate\Contracts\Notifications\Dispatcher;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Storage;
 use Modules\Doctor\Models\Doctor;
 use Modules\Doctor\Models\MedicalSpecialty;
 use Spatie\Permission\Models\Permission;
@@ -22,6 +25,16 @@ abstract class AdminManagementTestCase extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+
+        // Mute any notifications (mail / sms / push) and swap media uploads
+        // to an in-memory disk. We bind the NotificationFake explicitly to
+        // the container's Dispatcher contract because Notifiable::notify()
+        // goes through `app(Dispatcher::class)` rather than the Notification
+        // facade — facade swap alone leaks calls through to real channels.
+        $fake = Notification::fake();
+        $this->app->instance(Dispatcher::class, $fake);
+        Storage::fake('public');
+        Storage::fake('default');
 
         $this->setupPermissions();
         $this->setupMedicalSpecialty();

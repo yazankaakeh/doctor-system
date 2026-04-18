@@ -6,27 +6,36 @@ use Livewire\Component;
 use Modules\Booking\Actions\RecurringSchedule\CreateRecurringScheduleAction;
 use Modules\Booking\Actions\RecurringSchedule\DeleteRecurringScheduleAction;
 use Modules\Booking\Actions\RecurringSchedule\UpdateRecurringScheduleAction;
-use Modules\Booking\Models\DoctorRecurringSchedule;
 use Modules\Booking\Repository\RecurringSchedule\RecurringScheduleInterface;
 
 class RecurringScheduleManager extends Component
 {
     public $schedules = [];
+
     public $showModal = false;
+
     public $editingScheduleId = null;
 
     // Form fields
     public $day_of_week = '';
+
     public $start_time = '';
+
     public $end_time = '';
+
     public $slot_duration = 30;
+
     public $consultation_fee = '';
+
     public $effective_from = '';
+
     public $effective_until = '';
+
     public $is_active = true;
 
     // Delete confirmation
     public $confirmingDelete = false;
+
     public $scheduleToDelete = null;
 
     protected $listeners = ['refreshSchedules' => 'loadSchedules'];
@@ -138,7 +147,7 @@ class RecurringScheduleManager extends Component
         }
 
         $action = app(UpdateRecurringScheduleAction::class);
-        $action->handle($id, ['is_active' => !$schedule->is_active]);
+        $action->handle($id, ['is_active' => ! $schedule->is_active]);
 
         $this->loadSchedules();
         session()->flash('success', $schedule->is_active
@@ -160,7 +169,7 @@ class RecurringScheduleManager extends Component
 
     public function delete(): void
     {
-        if (!$this->scheduleToDelete) {
+        if (! $this->scheduleToDelete) {
             return;
         }
 

@@ -54,7 +54,7 @@ trait HasVideoConsultation
      */
     public function hasMeetingRoom(): bool
     {
-        return !empty($this->{$this->getMeetingLinkColumn()});
+        return ! empty($this->{$this->getMeetingLinkColumn()});
     }
 
     /**

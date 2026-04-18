@@ -20,7 +20,7 @@ class SecureFileController extends Controller
         $media = Media::findOrFail($mediaId);
 
         // Check if user is authenticated (doctor, patient, or admin)
-        if (!auth('web')->check() && !auth('doctor')->check() && !auth()->check()) {
+        if (! auth('web')->check() && ! auth('doctor')->check() && ! auth()->check()) {
             abort(403, 'Unauthorized access to file.');
         }
 
@@ -32,7 +32,7 @@ class SecureFileController extends Controller
         $path = $media->getPath();
 
         // Check if file exists
-        if (!Storage::disk($disk)->exists($path)) {
+        if (! Storage::disk($disk)->exists($path)) {
             abort(404, 'File not found.');
         }
 
@@ -43,7 +43,7 @@ class SecureFileController extends Controller
         // Return file as response
         return response($file, 200)
             ->header('Content-Type', $mimeType)
-            ->header('Content-Disposition', 'inline; filename="' . $media->file_name . '"');
+            ->header('Content-Disposition', 'inline; filename="'.$media->file_name.'"');
     }
 
     /**

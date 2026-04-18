@@ -20,6 +20,13 @@ class AuditLog extends Model
         'payload',
         'ip',
         'route_name',
+        // Allow callers (and tests) to backdate entries. Without these two
+        // in $fillable, Eloquent silently drops explicit `created_at` /
+        // `updated_at` values passed to `AuditLog::create([...])`, which
+        // breaks time-based queries like `latestAuditLog()` and date-range
+        // filters when every row ends up with the same timestamp.
+        'created_at',
+        'updated_at',
     ];
 
     protected $casts = [
@@ -120,6 +127,10 @@ class AuditLog extends Model
     public function getDoctorAttribute(): ?Doctor
     {
         if ($this->auditable_type !== Doctor::class) {
+            return null;
+        }
+
+        if (empty($this->auditable_id)) {
             return null;
         }
 

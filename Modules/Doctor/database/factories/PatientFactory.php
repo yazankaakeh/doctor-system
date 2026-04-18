@@ -5,7 +5,6 @@ namespace Modules\Doctor\Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Modules\Core\App\Enums\ActiveEnum;
 use Modules\Core\App\Enums\Gender;
-use Modules\Core\app\Models\Country;
 use Modules\Doctor\Enums\BloodType;
 use Modules\Doctor\Enums\MaritalStatus;
 use Modules\Doctor\Models\Patient;

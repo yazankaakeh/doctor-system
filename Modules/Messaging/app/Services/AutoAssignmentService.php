@@ -9,6 +9,7 @@ use Modules\Messaging\Enums\ChannelTypeEnum;
 use Modules\Messaging\Enums\ConversationStatusEnum;
 use Modules\Messaging\Events\ConversationAssigned;
 use Modules\Messaging\Models\Conversation;
+use Modules\Messaging\Models\Message;
 
 class AutoAssignmentService
 {
@@ -16,8 +17,11 @@ class AutoAssignmentService
      * Assignment strategies.
      */
     public const STRATEGY_ROUND_ROBIN = 'round_robin';
+
     public const STRATEGY_LEAST_BUSY = 'least_busy';
+
     public const STRATEGY_RANDOM = 'random';
+
     public const STRATEGY_MANUAL = 'manual';
 
     protected string $strategy;
@@ -49,6 +53,7 @@ class AutoAssignmentService
                 'conversation_id' => $conversation->id,
                 'channel' => $conversation->channel->type->value,
             ]);
+
             return null;
         }
 
@@ -215,7 +220,7 @@ class AutoAssignmentService
             'total_today' => Conversation::where('assigned_to', $agent->id)
                 ->whereDate('assigned_at', today())
                 ->count(),
-            'messages_today' => \Modules\Messaging\Models\Message::whereHas('conversation', function ($q) use ($agent) {
+            'messages_today' => Message::whereHas('conversation', function ($q) use ($agent) {
                 $q->where('assigned_to', $agent->id);
             })->whereDate('created_at', today())->count(),
         ];

@@ -5,7 +5,6 @@ namespace Modules\Payment\Actions\PayPal;
 use Modules\Booking\Models\Booking;
 use Modules\Payment\Enums\PaymentMethodEnum;
 use Modules\Payment\Enums\PaymentStatusEnum;
-use Modules\Payment\Models\Payment;
 use Modules\Payment\Repository\Payment\PaymentInterface;
 use Modules\Payment\Services\PayPalService;
 

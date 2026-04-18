@@ -33,7 +33,9 @@
       "Bash(where:*)",
       "Bash(where \"C:\\\\Program Files\\\\Google\\\\Chrome\\\\Application\\\\chrome.exe\")",
       "Bash(where \"C:\\\\Program Files \\(x86\\)\\\\Google\\\\Chrome\\\\Application\\\\chrome.exe\")",
-      "Bash(composer test:*)"
+      "Bash(composer test:*)",
+      "Bash(composer translations:fix:*)",
+      "Bash(vendor/bin/phpstan analyse:*)"
     ]
   }
 }

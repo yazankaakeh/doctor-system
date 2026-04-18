@@ -13,7 +13,7 @@ class PatientLoginActionTest extends AuthTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->action = new LoginAction();
+        $this->action = new LoginAction;
 
         // Initialize session for unit tests
         $this->withSession([]);

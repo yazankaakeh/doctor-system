@@ -3,11 +3,9 @@
 namespace Modules\Booking\Tests\Unit;
 
 use Carbon\Carbon;
-use Modules\Booking\Actions\Booking\CheckSlotAvailabilityAction;
 use Modules\Booking\Actions\Booking\CreateBookingAction;
 use Modules\Booking\Enums\BookingStatusEnum;
 use Modules\Booking\Models\Booking;
-use Modules\Booking\Repository\Booking\BookingInterface;
 use Modules\Booking\Tests\BookingTestCase;
 
 class CreateBookingActionTest extends BookingTestCase

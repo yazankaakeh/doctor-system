@@ -4,6 +4,16 @@ namespace Modules\CMS\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Modules\CMS\Repository\Menu\MenuInterface;
+use Modules\CMS\Repository\Menu\MenuRepository;
+use Modules\CMS\Repository\Page\PageInterface;
+use Modules\CMS\Repository\Page\PageRepository;
+use Modules\CMS\Repository\Panel\PanelInterface;
+use Modules\CMS\Repository\Panel\PanelRepository;
+use Modules\CMS\Repository\PanelItem\PanelItemInterface;
+use Modules\CMS\Repository\PanelItem\PanelItemRepository;
+use Modules\CMS\Repository\Portfolio\PortfolioInterface;
+use Modules\CMS\Repository\Portfolio\PortfolioRepository;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -45,28 +55,28 @@ class CMSServiceProvider extends ServiceProvider
     protected function registerRepositories(): void
     {
         $this->app->bind(
-            \Modules\CMS\Repository\Page\PageInterface::class,
-            \Modules\CMS\Repository\Page\PageRepository::class
+            PageInterface::class,
+            PageRepository::class
         );
 
         $this->app->bind(
-            \Modules\CMS\Repository\Menu\MenuInterface::class,
-            \Modules\CMS\Repository\Menu\MenuRepository::class
+            MenuInterface::class,
+            MenuRepository::class
         );
 
         $this->app->bind(
-            \Modules\CMS\Repository\Panel\PanelInterface::class,
-            \Modules\CMS\Repository\Panel\PanelRepository::class
+            PanelInterface::class,
+            PanelRepository::class
         );
 
         $this->app->bind(
-            \Modules\CMS\Repository\PanelItem\PanelItemInterface::class,
-            \Modules\CMS\Repository\PanelItem\PanelItemRepository::class
+            PanelItemInterface::class,
+            PanelItemRepository::class
         );
 
         $this->app->bind(
-            \Modules\CMS\Repository\Portfolio\PortfolioInterface::class,
-            \Modules\CMS\Repository\Portfolio\PortfolioRepository::class
+            PortfolioInterface::class,
+            PortfolioRepository::class
         );
     }
 

@@ -4,6 +4,7 @@ namespace Modules\Booking\Tests\Feature;
 
 use Modules\Booking\Enums\BookingStatusEnum;
 use Modules\Booking\Tests\BookingTestCase;
+use Modules\Doctor\Models\Doctor;
 
 class DoctorBookingTest extends BookingTestCase
 {
@@ -91,7 +92,7 @@ class DoctorBookingTest extends BookingTestCase
     {
         $this->createBooking(['doctor_id' => $this->doctor->id]);
 
-        $otherDoctor = \Modules\Doctor\Models\Doctor::factory()->create([
+        $otherDoctor = Doctor::factory()->create([
             'medical_specialty_id' => $this->medicalSpecialty->id,
         ]);
 

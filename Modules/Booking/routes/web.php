@@ -55,8 +55,8 @@ Route::prefix('doctor')->name('doctor.')->middleware(['auth:doctor', 'doctorMenu
 
     // Calendar views
     Route::prefix('calendar')->name('calendar.')->group(function () {
-        Route::get('/availability', fn() => view('booking::calendar.availability'))->name('availability');
-        Route::get('/appointments', fn() => view('booking::calendar.appointments'))->name('appointments');
+        Route::get('/availability', fn () => view('booking::calendar.availability'))->name('availability');
+        Route::get('/appointments', fn () => view('booking::calendar.appointments'))->name('appointments');
     });
 });
 

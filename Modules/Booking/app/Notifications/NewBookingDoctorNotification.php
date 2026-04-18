@@ -43,23 +43,23 @@ class NewBookingDoctorNotification extends Notification implements ShouldQueue
     {
         $mail = (new MailMessage)
             ->subject(__('booking::booking.email.new_booking_subject'))
-            ->greeting(__('booking::booking.email.greeting', ['name' => 'Dr. ' . $notifiable->name]))
+            ->greeting(__('booking::booking.email.greeting', ['name' => 'Dr. '.$notifiable->name]))
             ->line(__('booking::booking.email.new_booking_line1'))
             ->line('')
             ->line('---')
             ->line('');
 
         // Patient Details
-        $mail->line('**' . __('booking::booking.email.patient_details') . '**')
+        $mail->line('**'.__('booking::booking.email.patient_details').'**')
             ->line('')
-            ->line(__('booking::booking.email.patient_name_label') . ': **' . $this->booking->patient->name . '**');
+            ->line(__('booking::booking.email.patient_name_label').': **'.$this->booking->patient->name.'**');
 
         if ($this->booking->patient->phone) {
-            $mail->line(__('booking::booking.email.phone_label') . ': ' . $this->booking->patient->phone);
+            $mail->line(__('booking::booking.email.phone_label').': '.$this->booking->patient->phone);
         }
 
         if ($this->booking->patient->email) {
-            $mail->line(__('booking::booking.email.email_label') . ': ' . $this->booking->patient->email);
+            $mail->line(__('booking::booking.email.email_label').': '.$this->booking->patient->email);
         }
 
         $mail->line('')
@@ -67,19 +67,19 @@ class NewBookingDoctorNotification extends Notification implements ShouldQueue
             ->line('');
 
         // Appointment Details
-        $mail->line('**' . __('booking::booking.email.appointment_details') . '**')
+        $mail->line('**'.__('booking::booking.email.appointment_details').'**')
             ->line('')
-            ->line(__('booking::booking.email.date_label') . ': **' . $this->booking->booking_date->format('l, F j, Y') . '**')
-            ->line(__('booking::booking.email.time_label') . ': **' . $this->booking->start_time->format('H:i') . ' - ' . $this->booking->end_time->format('H:i') . '**')
-            ->line(__('booking::booking.email.duration_label') . ': ' . $this->booking->duration . ' ' . __('booking::booking.minutes'))
-            ->line(__('booking::booking.email.fee_label') . ': **$' . number_format($this->booking->consultation_fee, 2) . '**');
+            ->line(__('booking::booking.email.date_label').': **'.$this->booking->booking_date->format('l, F j, Y').'**')
+            ->line(__('booking::booking.email.time_label').': **'.$this->booking->start_time->format('H:i').' - '.$this->booking->end_time->format('H:i').'**')
+            ->line(__('booking::booking.email.duration_label').': '.$this->booking->duration.' '.__('booking::booking.minutes'))
+            ->line(__('booking::booking.email.fee_label').': **$'.number_format($this->booking->consultation_fee, 2).'**');
 
         // Notes if any
         if ($this->booking->notes) {
             $mail->line('')
                 ->line('---')
                 ->line('')
-                ->line('**' . __('booking::booking.email.patient_notes') . ':**')
+                ->line('**'.__('booking::booking.email.patient_notes').':**')
                 ->line($this->booking->notes);
         }
 

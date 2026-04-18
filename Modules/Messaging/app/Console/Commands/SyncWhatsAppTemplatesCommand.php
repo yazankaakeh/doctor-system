@@ -28,6 +28,7 @@ class SyncWhatsAppTemplatesCommand extends Command
         if (! $service->isConfigured()) {
             $this->error('WhatsApp channel is not properly configured.');
             $this->error('Make sure you have set access_token and business_account_id in the channel configuration.');
+
             return self::FAILURE;
         }
 
@@ -36,6 +37,7 @@ class SyncWhatsAppTemplatesCommand extends Command
 
         if (! $result['success']) {
             $this->error($result['message']);
+
             return self::FAILURE;
         }
 

@@ -39,6 +39,7 @@ class RegenerateMeetingRoom extends Command
 
         if ($bookings->isEmpty()) {
             $this->warn('No confirmed bookings with meeting rooms found.');
+
             return self::SUCCESS;
         }
 
@@ -65,11 +66,12 @@ class RegenerateMeetingRoom extends Command
         }
 
         $this->newLine();
-        $this->info("Regeneration complete!");
+        $this->info('Regeneration complete!');
         $this->info("Successfully regenerated: {$regenerated}");
 
         if ($failed > 0) {
             $this->warn("Failed: {$failed}");
+
             return self::FAILURE;
         }
 

@@ -1,8 +1,5 @@
 <?php
 
-use App\Enum\ActiveCardEnum;
-use App\Enum\UserStatusEnum;
-
 return [
     'underMaintenance' => [
         'title' => 'Kart aktif değil 🚧',
@@ -10,16 +7,7 @@ return [
 Erişmeye çalıştığınız Tagiy kartı ya devre dışı bırakılmış ya da sahibi tarafından henüz etkinleştirilmemiş.<br> Yine de Tagiy\'e katılabilir ve kendi akıllı kartınızı oluşturmaya bugün başlayabilirsiniz.',
         'btn' => 'Tagiy\'e Katıl',
     ],
-    'enum' => [
-        /*'ActiveCardEnum' => [
-          ActiveCardEnum::ACTIVE->value => 'Aktif',
-          ActiveCardEnum::DEACTIVATE->value => 'Devre Dışı',
-        ],
-        'UserStatusEnum' => [
-          UserStatusEnum::ACTIVE->value => 'Aktif',
-          UserStatusEnum::DEACTIVATE->value => 'Devre Dışı',
-        ]*/
-    ],
+    'enum' => [],
     'breadcrumbs' => [
         'cards' => [
             'name' => 'Kartlar',
@@ -57,9 +45,9 @@ Erişmeye çalıştığınız Tagiy kartı ya devre dışı bırakılmış ya da
         'action' => 'İşlem',
         'exportSelected' => 'Seçilenleri Dışa Aktar',
         'allCards' => 'Tüm Kartlar',
-        '10' => 'Sayfa başına 10',
-        '25' => 'Sayfa başına 25',
-        '50' => 'Sayfa başına 50',
+        10 => 'Sayfa başına 10',
+        25 => 'Sayfa başına 25',
+        50 => 'Sayfa başına 50',
         'searchByName' => 'İsme Göre Ara',
     ],
     'sidebar' => [
@@ -68,7 +56,6 @@ Erişmeye çalıştığınız Tagiy kartı ya devre dışı bırakılmış ya da
         'account' => 'Hesap',
         'connections' => 'Bağlantılar',
         'profile' => 'Profil',
-        'customer' => 'Müşteri',
         'audits' => 'Denetim Kayıtları',
         'roles' => 'Roller',
         'admins' => 'Yönetici Yönetimi',
@@ -83,6 +70,16 @@ Erişmeye çalıştığınız Tagiy kartı ya devre dışı bırakılmış ya da
         'blogCategories' => 'Blog Kategorileri',
         'blogPosts' => 'Blog Gönderileri',
         'blogTags' => 'Blog Etiketleri',
+        'medicalExaminations' => 'Tıbbi Muayeneler',
+        'medicalPreviewSettings' => 'Tıbbi Önizleme Ayarları',
+        'clinic' => 'Klinik',
+        'patients' => 'Hastalar',
+        'medicalTest' => 'Tıbbi Test',
+        'vitalSign' => 'Vital Bulgular',
+        'finalDiagnosis' => 'Son Tanı',
+        'dosageForm' => 'Dozaj Formu',
+        'medicine' => 'İlaç',
+        'medicalSpecialty' => 'Tıbbi Uzmanlık',
     ],
     'card' => [
         'doneText' => '🎉 Tamamlandı!',
@@ -215,5 +212,4 @@ Erişmeye çalıştığınız Tagiy kartı ya devre dışı bırakılmış ya da
     'cancel' => 'İptal',
     'crop&Save' => 'Kırp & Kaydet',
     'cropImage' => 'Resmi Kırp',
-
 ];

@@ -11,11 +11,17 @@ use Modules\Core\DataTransferObjects\MeetingRoom;
 class JitsiVideoService implements VideoServiceInterface
 {
     protected string $domain;
+
     protected ?string $appId;
+
     protected ?string $secret;
+
     protected bool $selfHosted;
+
     protected array $roomConfig;
+
     protected array $uiConfig;
+
     protected array $defaults;
 
     public function __construct()
@@ -68,7 +74,7 @@ class JitsiVideoService implements VideoServiceInterface
             $params['userInfo.avatarURL'] = $participant->avatar;
         }
 
-        return $baseUrl . '#' . http_build_query($params);
+        return $baseUrl.'#'.http_build_query($params);
     }
 
     /**
@@ -77,7 +83,7 @@ class JitsiVideoService implements VideoServiceInterface
     public function generateToken(string $roomName, MeetingParticipant $participant, int $expiresInMinutes = 60): ?string
     {
         // JWT is only available for self-hosted or 8x8 JaaS
-        if (!$this->appId || !$this->secret) {
+        if (! $this->appId || ! $this->secret) {
             return null;
         }
 
@@ -125,7 +131,7 @@ class JitsiVideoService implements VideoServiceInterface
      */
     public function getEmbedConfig(string $roomName, MeetingParticipant $participant): array
     {
-        $hasAuthentication = !empty($this->appId) && !empty($this->secret);
+        $hasAuthentication = ! empty($this->appId) && ! empty($this->secret);
         $token = $hasAuthentication ? $this->generateToken($roomName, $participant) : null;
 
         $config = [
@@ -185,6 +191,7 @@ class JitsiVideoService implements VideoServiceInterface
     protected function buildRoomUrl(string $roomName): string
     {
         $protocol = $this->selfHosted ? 'https' : 'https';
+
         return sprintf('%s://%s/%s', $protocol, $this->domain, $roomName);
     }
 
@@ -222,7 +229,7 @@ class JitsiVideoService implements VideoServiceInterface
      */
     protected function getConfigOverwrite(MeetingParticipant $participant): array
     {
-        $hasAuthentication = !empty($this->appId) && !empty($this->secret);
+        $hasAuthentication = ! empty($this->appId) && ! empty($this->secret);
 
         // Base configuration for all meetings
         $config = [
@@ -250,7 +257,7 @@ class JitsiVideoService implements VideoServiceInterface
 
         // For public Jitsi without JWT: DO NOT set any lobby/prejoin configs
         // Setting them to false can still trigger lobby logic
-        if (!$hasAuthentication) {
+        if (! $hasAuthentication) {
             // Completely omit lobby-related configs for public Jitsi
             return $config;
         }

@@ -8,8 +8,11 @@ use Illuminate\Support\Facades\Log;
 class PayPalService
 {
     private string $clientId;
+
     private string $clientSecret;
+
     private string $baseUrl;
+
     private ?string $accessToken = null;
 
     public function __construct()
@@ -45,7 +48,7 @@ class PayPalService
                 ],
             ]);
 
-        if (!$response->successful()) {
+        if (! $response->successful()) {
             Log::error('PayPal create order failed', [
                 'status' => $response->status(),
                 'body' => $response->json(),
@@ -71,7 +74,7 @@ class PayPalService
             ->withHeaders(['Content-Type' => 'application/json'])
             ->post("{$this->baseUrl}/v2/checkout/orders/{$orderId}/capture");
 
-        if (!$response->successful()) {
+        if (! $response->successful()) {
             Log::error('PayPal capture order failed', [
                 'order_id' => $orderId,
                 'status' => $response->status(),
@@ -102,7 +105,7 @@ class PayPalService
         $response = Http::withToken($this->accessToken)
             ->get("{$this->baseUrl}/v2/checkout/orders/{$orderId}");
 
-        if (!$response->successful()) {
+        if (! $response->successful()) {
             throw new \Exception(__('payment::payment.paypal_order_not_found'));
         }
 
@@ -121,7 +124,7 @@ class PayPalService
                 'grant_type' => 'client_credentials',
             ]);
 
-        if (!$response->successful()) {
+        if (! $response->successful()) {
             Log::error('PayPal authentication failed', [
                 'status' => $response->status(),
                 'body' => $response->json(),

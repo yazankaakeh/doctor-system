@@ -90,7 +90,7 @@ class CoreServiceProvider extends ServiceProvider
         );
         $this->mergeConfigFrom(module_path($this->moduleName, 'config/config.php'), $this->moduleNameLower);
         $this->mergeConfigFrom(module_path($this->moduleName, 'config/services.php'), $this->moduleNameLower);
-        $this->mergeConfigFrom(module_path($this->moduleName, 'config/video.php'), $this->moduleNameLower . '.video');
+        $this->mergeConfigFrom(module_path($this->moduleName, 'config/video.php'), $this->moduleNameLower.'.video');
     }
 
     /**
@@ -151,7 +151,7 @@ class CoreServiceProvider extends ServiceProvider
     {
         // Register the Video Service Manager as singleton
         $this->app->singleton('video.service', function ($app) {
-            return new VideoServiceManager();
+            return new VideoServiceManager;
         });
 
         // Bind the interface to the default driver

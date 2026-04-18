@@ -6,39 +6,58 @@ use Illuminate\Contracts\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Component;
+use Modules\Booking\Models\Booking;
 use Modules\Core\Actions\Video\GetMeetingConfigAction;
 use Modules\Core\DataTransferObjects\MeetingParticipant;
 use Modules\Core\DataTransferObjects\ParticipantRole;
+use Modules\Doctor\Models\MedicalExamination;
 
 class VideoRoom extends Component
 {
     // Room properties
     public string $roomName;
+
     public ?string $roomUrl = null;
+
     public ?string $meetingPassword = null;
 
     // Participant properties
     public string $participantId;
+
     public string $participantName;
+
     public string $participantEmail;
+
     public string $participantRole = 'participant';
+
     public ?string $participantAvatar = null;
 
     // UI State
     public bool $isJoined = false;
+
     public bool $isLoading = true;
+
     public bool $hasError = false;
+
     public ?string $errorMessage = null;
+
     public bool $showPreJoinScreen = true;
+
     public bool $cameraEnabled = true;
+
     public bool $micEnabled = true;
 
     // Booking context (optional)
     public ?int $bookingId = null;
+
     public ?string $doctorName = null;
+
     public ?string $patientName = null;
+
     public ?string $appointmentTime = null;
+
     public ?int $patientId = null;
+
     public ?int $medicalExaminationId = null;
 
     // Callbacks
@@ -78,14 +97,14 @@ class VideoRoom extends Component
 
         // Load booking details if booking ID provided
         if ($bookingId && class_exists('\Modules\Booking\Models\Booking')) {
-            $booking = \Modules\Booking\Models\Booking::with(['patient', 'doctor'])->find($bookingId);
+            $booking = Booking::with(['patient', 'doctor'])->find($bookingId);
             if ($booking) {
                 $this->patientId = $booking->patient_id;
 
                 // Populate names/time from the booking if the caller didn't pass them explicitly.
                 // We don't overwrite values the caller already provided.
                 if (! $this->doctorName && $booking->doctor) {
-                    $this->doctorName = 'Dr. ' . $booking->doctor->name;
+                    $this->doctorName = 'Dr. '.$booking->doctor->name;
                 }
                 if (! $this->patientName && $booking->patient) {
                     $this->patientName = $booking->patient->name;
@@ -93,12 +112,12 @@ class VideoRoom extends Component
                 if (! $this->appointmentTime) {
                     $datePart = $booking->booking_date?->format('Y-m-d');
                     $timePart = $booking->start_time?->format('H:i');
-                    $this->appointmentTime = trim(($datePart ?? '') . ' ' . ($timePart ?? '')) ?: null;
+                    $this->appointmentTime = trim(($datePart ?? '').' '.($timePart ?? '')) ?: null;
                 }
 
                 // Check if a medical examination already exists for this doctor+patient pair
                 if (class_exists('\Modules\Doctor\Models\MedicalExamination')) {
-                    $examination = \Modules\Doctor\Models\MedicalExamination::where([
+                    $examination = MedicalExamination::where([
                         'patient_id' => $booking->patient_id,
                         'doctor_id' => $booking->doctor_id,
                     ])->latest()->first();
@@ -148,7 +167,7 @@ class VideoRoom extends Component
      */
     public function toggleCamera(): void
     {
-        $this->cameraEnabled = !$this->cameraEnabled;
+        $this->cameraEnabled = ! $this->cameraEnabled;
     }
 
     /**
@@ -156,7 +175,7 @@ class VideoRoom extends Component
      */
     public function toggleMic(): void
     {
-        $this->micEnabled = !$this->micEnabled;
+        $this->micEnabled = ! $this->micEnabled;
     }
 
     /**

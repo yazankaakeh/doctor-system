@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use Modules\AdminManagement\Action\Auditing\RouteName;
 use Modules\AdminManagement\Models\AuditLog;
+use Modules\AdminManagement\Traits\AuditLogTrait;
 
 class AuditLogMiddleware
 {
@@ -53,7 +54,7 @@ class AuditLogMiddleware
 
                 // Use the user's createAuditLog method if it has the trait
                 if (method_exists($user, 'createAuditLog') && is_callable([$user, 'createAuditLog'])) {
-                    /** @var \Modules\AdminManagement\Traits\AuditLogTrait $user */
+                    /** @var AuditLogTrait $user */
                     $user->createAuditLog($auditLogData);
                 } else {
                     // Fallback to direct creation with morph fields

@@ -85,6 +85,7 @@ return [
         'submit' => 'Mesaj Gönder',
         'more' => 'Daha Fazla',
         'support' => 'Destek',
+        '' => '[TODO:tr] ',
     ],
     'footer' => [
         'desc' => 'Bugün katılın ve networking\'in geleceğini bizzat deneyimleyin.',
@@ -168,5 +169,4 @@ Geri Ödeme
 İadeniz onaylanırsa 15 gün içinde geri ödeme yapılır.
 Geri ödeme, orijinal ödeme yöntemi veya üzerinde anlaşmaya varılan alternatif bir yöntemle yapılır.',
     ],
-
 ];

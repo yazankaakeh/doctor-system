@@ -57,7 +57,7 @@ class InteractiveMessageService
                     return [
                         'type' => 'reply',
                         'reply' => [
-                            'id' => $button['id'] ?? 'btn_' . $index,
+                            'id' => $button['id'] ?? 'btn_'.$index,
                             'title' => substr($button['title'], 0, 20), // Max 20 chars
                         ],
                     ];
@@ -199,7 +199,7 @@ class InteractiveMessageService
 
             $response = Http::withToken($this->accessToken)
                 ->timeout(30)
-                ->post(self::API_BASE_URL . "/{$this->apiVersion}/{$phoneNumberId}/messages", $payload);
+                ->post(self::API_BASE_URL."/{$this->apiVersion}/{$phoneNumberId}/messages", $payload);
 
             if ($response->successful()) {
                 Log::channel('messaging')->info('Interactive message sent', [

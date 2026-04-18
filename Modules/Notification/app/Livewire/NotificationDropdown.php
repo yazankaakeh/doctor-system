@@ -21,9 +21,10 @@ class NotificationDropdown extends Component
     {
         $user = Auth::user();
 
-        if (!$user) {
+        if (! $user) {
             $this->notifications = [];
             $this->unreadCount = 0;
+
             return;
         }
 
@@ -55,7 +56,7 @@ class NotificationDropdown extends Component
     {
         $user = Auth::user();
 
-        if (!$user) {
+        if (! $user) {
             return;
         }
 
@@ -72,7 +73,7 @@ class NotificationDropdown extends Component
     {
         $user = Auth::user();
 
-        if (!$user) {
+        if (! $user) {
             return;
         }
 

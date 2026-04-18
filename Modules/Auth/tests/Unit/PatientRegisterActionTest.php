@@ -17,7 +17,7 @@ class PatientRegisterActionTest extends AuthTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->action = new RegisterAction();
+        $this->action = new RegisterAction;
     }
 
     /** @test */

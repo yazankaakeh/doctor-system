@@ -3,7 +3,6 @@
 namespace Modules\Booking\Tests\Feature;
 
 use Carbon\Carbon;
-use Modules\Booking\Models\DoctorAvailability;
 use Modules\Booking\Tests\BookingTestCase;
 
 class DoctorAvailabilityTest extends BookingTestCase

@@ -11,12 +11,16 @@ use Modules\Booking\Repository\Booking\BookingInterface;
 class AppointmentCalendar extends Component
 {
     public $events = [];
+
     public $statusFilter = null;
+
     public $showDetailsModal = false;
+
     public $selectedBooking = null;
 
     // Calendar state
     public $currentStart = null;
+
     public $currentEnd = null;
 
     protected $listeners = [
@@ -116,7 +120,7 @@ class AppointmentCalendar extends Component
 
     public function completeBooking(): void
     {
-        if (!$this->selectedBooking || !$this->selectedBooking['can_be_completed']) {
+        if (! $this->selectedBooking || ! $this->selectedBooking['can_be_completed']) {
             return;
         }
 
@@ -132,7 +136,7 @@ class AppointmentCalendar extends Component
 
     public function markNoShow(): void
     {
-        if (!$this->selectedBooking || !$this->selectedBooking['can_be_marked_no_show']) {
+        if (! $this->selectedBooking || ! $this->selectedBooking['can_be_marked_no_show']) {
             return;
         }
 

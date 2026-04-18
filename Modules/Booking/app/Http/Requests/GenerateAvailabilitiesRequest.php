@@ -2,6 +2,7 @@
 
 namespace Modules\Booking\Http\Requests;
 
+use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 
 class GenerateAvailabilitiesRequest extends FormRequest
@@ -23,8 +24,8 @@ class GenerateAvailabilitiesRequest extends FormRequest
     {
         $validator->after(function ($validator) {
             if ($this->start_date && $this->end_date) {
-                $start = \Carbon\Carbon::parse($this->start_date);
-                $end = \Carbon\Carbon::parse($this->end_date);
+                $start = Carbon::parse($this->start_date);
+                $end = Carbon::parse($this->end_date);
 
                 if ($start->diffInDays($end) > 90) {
                     $validator->errors()->add('end_date', __('booking::recurring.validation.max_days_exceeded'));

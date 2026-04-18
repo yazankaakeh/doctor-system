@@ -98,7 +98,7 @@ class SendAppointmentRemindersCommand extends Command
 
         foreach ($bookings as $booking) {
             // Send patient reminder
-            if (!$booking->reminder_24h_sent_at) {
+            if (! $booking->reminder_24h_sent_at) {
                 if ($dryRun) {
                     $this->line("  [DRY] Would send 24h patient reminder for booking #{$booking->id} to {$booking->patient->name}");
                 } else {
@@ -110,7 +110,7 @@ class SendAppointmentRemindersCommand extends Command
             }
 
             // Send doctor reminder
-            if (!$booking->doctor_reminder_24h_sent_at) {
+            if (! $booking->doctor_reminder_24h_sent_at) {
                 if ($dryRun) {
                     $this->line("  [DRY] Would send 24h doctor reminder for booking #{$booking->id} to Dr. {$booking->doctor->name}");
                 } else {
@@ -142,7 +142,7 @@ class SendAppointmentRemindersCommand extends Command
 
         foreach ($bookings as $booking) {
             // Send patient reminder
-            if (!$booking->reminder_1h_sent_at) {
+            if (! $booking->reminder_1h_sent_at) {
                 if ($dryRun) {
                     $this->line("  [DRY] Would send 1h patient reminder for booking #{$booking->id} to {$booking->patient->name}");
                 } else {
@@ -154,7 +154,7 @@ class SendAppointmentRemindersCommand extends Command
             }
 
             // Send doctor reminder
-            if (!$booking->doctor_reminder_1h_sent_at) {
+            if (! $booking->doctor_reminder_1h_sent_at) {
                 if ($dryRun) {
                     $this->line("  [DRY] Would send 1h doctor reminder for booking #{$booking->id} to Dr. {$booking->doctor->name}");
                 } else {

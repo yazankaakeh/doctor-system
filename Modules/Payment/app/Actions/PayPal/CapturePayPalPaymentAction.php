@@ -20,7 +20,7 @@ class CapturePayPalPaymentAction
     {
         $payment = $this->repository->findByPayPalOrderId($paypalOrderId);
 
-        if (!$payment) {
+        if (! $payment) {
             throw new \Exception(__('payment::payment.not_found'));
         }
 

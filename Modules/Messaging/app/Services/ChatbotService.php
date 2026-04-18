@@ -2,7 +2,6 @@
 
 namespace Modules\Messaging\Services;
 
-use Illuminate\Support\Facades\Log;
 use Modules\Messaging\Enums\MessageDirectionEnum;
 use Modules\Messaging\Enums\MessageTypeEnum;
 use Modules\Messaging\Models\Conversation;
@@ -99,6 +98,7 @@ class ChatbotService
         // Check for transfer keywords
         if ($this->shouldTransferToAgent($content)) {
             $this->requestAgentTransfer($conversation);
+
             return "I'll connect you with an agent shortly. Please wait...";
         }
 
@@ -196,12 +196,12 @@ class ChatbotService
      */
     protected function getMenuResponse(): string
     {
-        return "Here are your options:\n\n" .
-            "1. Products - Learn about our products\n" .
-            "2. Pricing - Get pricing information\n" .
-            "3. Support - Get help with an issue\n" .
-            "4. Agent - Talk to a human agent\n\n" .
-            "Reply with the number or keyword to select an option.";
+        return "Here are your options:\n\n".
+            "1. Products - Learn about our products\n".
+            "2. Pricing - Get pricing information\n".
+            "3. Support - Get help with an issue\n".
+            "4. Agent - Talk to a human agent\n\n".
+            'Reply with the number or keyword to select an option.';
     }
 
     /**

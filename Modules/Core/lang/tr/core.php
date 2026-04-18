@@ -1,51 +1,18 @@
 <?php
 
-use Modules\Core\App\Enums\AddressEnum;
+use Modules\Core\App\Enums\ActiveEnum;
 
 return [
-    'enums' => [
-        'AddressEnum' => [
-            AddressEnum::USER->value => 'Kullanıcı',
-            AddressEnum::ADMIN->value => 'Yönetici',
+    'enum' => [
+        'ActiveClinic' => [
+            ActiveEnum::ACTIVE->value => 'Aktif',
+            ActiveEnum::INACTIVE->value => 'Pasif',
         ],
-    ],
-    'validation' => [
-        'password_mismatch' => 'Şifreleriniz eşleşmiyor',
-    ],
-    'sidebar' => [
-        'dashboard' => 'Kontrol Paneli',
-        'accounting' => 'Muhasebe',
-        'paymentReports' => 'Ödeme Raporları',
-        'extracts' => 'Ekstreler',
-        'consensus' => 'Mutabakat',
-        'protectionAccountReport' => 'Koruma Hesabı Raporu',
-        'paMoneyTransfer' => 'Koruma Hesabı Transferi',
-        'payments' => 'Ödemeler',
-        'refund' => 'İade',
-        'createPayment' => 'Ödeme Oluştur',
-        'users' => 'Kullanıcılar',
-        'clients' => 'Müşteriler',
-        'userManagement' => 'Müşteri Yönetimi',
-        'posFraudManagement' => 'POS Fraud Yönetimi',
-        'fraudManagement' => 'Fraud Yönetimi',
-        'fraudTransactions' => 'Fraud İşlemleri',
-        'fraudScenarios' => 'Fraud Senaryoları',
-        'POSSettings' => 'POS Ayarları',
-        'banks' => 'Bankalar',
-        'agreements' => 'Sözleşmeler',
-        'complaints' => 'Şikayetler',
-        'documents' => 'Belgeler',
-        'settings' => 'Ayarlar',
-        'adminManagement' => 'Kullanıcı Yönetimi',
-        'updateSMTP' => 'SMTP Güncelle',
-        'auditingLog' => 'Denetim Günlüğü',
-        'roles' => 'Roller',
     ],
     'env' => [
         'save' => 'Kaydet',
         'sendTestEmail' => 'Test E-postası Gönder',
         'submit' => 'Gönder',
-        'cancel' => 'İptal',
         'email' => 'E-posta',
         'titles' => [
             'title' => 'Ortam Ayarlarını Güncelle',
@@ -135,5 +102,22 @@ return [
         'reset_confirm' => 'Varsayılan ayarlara sıfırlamak istediğinizden emin misiniz? Bu işlem geri alınamaz.',
         'updated' => 'Tema ayarları başarıyla güncellendi.',
         'reset' => 'Tema ayarları varsayılanlara sıfırlandı.',
+        'font_import_url' => 'Yazı Tipi İçe Aktarma URL\'si',
+        'custom_fonts' => 'Özel Yazı Tipi CSS\'i',
     ],
+    'save' => 'Kaydet',
+    'cancel' => 'İptal',
+    'edit' => 'Düzenle',
+    'actions' => 'İşlemler',
+    'back' => 'Geri',
+    'clear' => 'Temizle',
+    'saving' => 'Kaydediliyor...',
+    'notifications' => [
+        'title' => 'Bildirimler',
+        'viewAll' => 'Tüm Bildirimleri Görüntüle',
+        'noNotifications' => 'Henüz bildirim yok',
+        'markAsRead' => 'Okundu Olarak İşaretle',
+        'markAllAsRead' => 'Tümünü Okundu Olarak İşaretle',
+    ],
+    'close' => 'Kapat',
 ];

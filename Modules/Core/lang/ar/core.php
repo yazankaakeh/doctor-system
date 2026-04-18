@@ -52,7 +52,6 @@ return [
             'testNotificationBody' => 'هذا إشعار تجريبي من نظام الطبيب.',
             'sendTestNotification' => 'إرسال إشعار تجريبي',
         ],
-
     ],
     'notifications' => [
         'title' => 'الإشعارات',
@@ -95,5 +94,21 @@ return [
         'reset_confirm' => 'هل أنت متأكد أنك تريد إعادة تعيين الإعدادات الافتراضية؟ لا يمكن التراجع عن هذا الإجراء.',
         'updated' => 'تم تحديث إعدادات المظهر بنجاح.',
         'reset' => 'تم إعادة تعيين إعدادات المظهر إلى الإعدادات الافتراضية.',
+        'font_import_url' => '[TODO:ar] Font Import URL',
+        'custom_fonts' => '[TODO:ar] Custom Font CSS',
     ],
+    'enum' => [
+        'ActiveClinic' => [
+            1 => '[TODO:ar] Active',
+            0 => '[TODO:ar] Inactive',
+        ],
+    ],
+    'save' => '[TODO:ar] Save',
+    'cancel' => '[TODO:ar] Cancel',
+    'edit' => '[TODO:ar] Edit',
+    'actions' => '[TODO:ar] Actions',
+    'back' => '[TODO:ar] Back',
+    'clear' => '[TODO:ar] Clear',
+    'saving' => '[TODO:ar] Saving...',
+    'close' => '[TODO:ar] Close',
 ];

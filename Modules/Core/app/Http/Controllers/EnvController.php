@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Mail;
 use Modules\Core\Action\EnvUpdateClass;
 use Modules\Core\App\Emails\TestMail;
 use Modules\Core\App\Http\Requests\EnvUpdateRequest;
+use Modules\Notification\App\Services\Notifications\FireBase;
+use Modules\Notification\Models\NotificationPushToken;
 
 class EnvController extends Controller
 {
@@ -119,7 +121,7 @@ class EnvController extends Controller
             $user = auth()->user();
 
             // Check if token already exists for this user and platform
-            $existingToken = \Modules\Notification\Models\NotificationPushToken::where('tokenable_id', $user->id)
+            $existingToken = NotificationPushToken::where('tokenable_id', $user->id)
                 ->where('tokenable_type', get_class($user))
                 ->where('platform', $request->platform)
                 ->first();
@@ -129,7 +131,7 @@ class EnvController extends Controller
                 $existingToken->update(['push_token' => $request->push_token]);
             } else {
                 // Create new token
-                \Modules\Notification\Models\NotificationPushToken::create([
+                NotificationPushToken::create([
                     'tokenable_id' => $user->id,
                     'tokenable_type' => get_class($user),
                     'push_token' => $request->push_token,
@@ -172,7 +174,7 @@ class EnvController extends Controller
             }
 
             // Send notification using Firebase service
-            $firebaseService = new \Modules\Notification\App\Services\Notifications\FireBase;
+            $firebaseService = new FireBase;
 
             $notificationData = [
                 'title' => $request->title,

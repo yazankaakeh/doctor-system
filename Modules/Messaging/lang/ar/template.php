@@ -7,9 +7,4 @@ return [
         'rejected' => 'مرفوض',
         'disabled' => 'معطل',
     ],
-    'category' => [
-        'marketing' => 'تسويق',
-        'utility' => 'خدمة',
-        'authentication' => 'مصادقة',
-    ],
 ];

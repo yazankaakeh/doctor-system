@@ -2,6 +2,7 @@
 
 namespace Modules\Booking\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -63,12 +64,12 @@ class DoctorRecurringSchedule extends Model
 
     public function getDayNameAttribute(): string
     {
-        return __('booking::days.' . strtolower(self::DAYS[$this->day_of_week]));
+        return __('booking::days.'.strtolower(self::DAYS[$this->day_of_week]));
     }
 
     public function getFormattedTimeRangeAttribute(): string
     {
-        return $this->start_time->format('H:i') . ' - ' . $this->end_time->format('H:i');
+        return $this->start_time->format('H:i').' - '.$this->end_time->format('H:i');
     }
 
     public function scopeActive($query)
@@ -97,7 +98,7 @@ class DoctorRecurringSchedule extends Model
 
     public function isEffectiveOn($date): bool
     {
-        $date = is_string($date) ? \Carbon\Carbon::parse($date) : $date;
+        $date = is_string($date) ? Carbon::parse($date) : $date;
 
         if ($this->effective_from > $date) {
             return false;
@@ -113,7 +114,7 @@ class DoctorRecurringSchedule extends Model
     public function generateSlotsForDate($date): array
     {
         $slots = [];
-        $date = is_string($date) ? \Carbon\Carbon::parse($date) : $date;
+        $date = is_string($date) ? Carbon::parse($date) : $date;
 
         $currentTime = $date->copy()->setTimeFromTimeString($this->start_time->format('H:i:s'));
         $endTime = $date->copy()->setTimeFromTimeString($this->end_time->format('H:i:s'));

@@ -74,6 +74,6 @@ final class MeetingRoom implements Arrayable, JsonSerializable
             return false;
         }
 
-        return $this->expiresAt < new \DateTimeImmutable();
+        return $this->expiresAt < new \DateTimeImmutable;
     }
 }

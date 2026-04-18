@@ -5,6 +5,21 @@ namespace Modules\Website\Providers;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
+use Modules\Website\Livewire\Admin\SortPanelItems;
+use Modules\Website\Livewire\Admin\SortPanels;
+use Modules\Website\Livewire\NewLandingPage;
+use Modules\Website\Livewire\Panels\ContactPanel;
+use Modules\Website\Livewire\Panels\CtaPanel;
+use Modules\Website\Livewire\Panels\CustomPanel;
+use Modules\Website\Livewire\Panels\FaqPanel;
+use Modules\Website\Livewire\Panels\FeaturesPanel;
+use Modules\Website\Livewire\Panels\GalleryPanel;
+use Modules\Website\Livewire\Panels\HeroPanel;
+use Modules\Website\Livewire\Panels\ReviewsPanel;
+use Modules\Website\Livewire\Panels\StatsPanel;
+use Modules\Website\Livewire\Panels\TeamPanel;
+use Modules\Website\Repository\Blog\BlogFrontInterface;
+use Modules\Website\Repository\Blog\BlogFrontRepository;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -41,8 +56,8 @@ class WebsiteServiceProvider extends ServiceProvider
 
         // Register repositories
         $this->app->bind(
-            \Modules\Website\Repository\Blog\BlogFrontInterface::class,
-            \Modules\Website\Repository\Blog\BlogFrontRepository::class
+            BlogFrontInterface::class,
+            BlogFrontRepository::class
         );
     }
 
@@ -166,22 +181,22 @@ class WebsiteServiceProvider extends ServiceProvider
     protected function registerLivewireComponents(): void
     {
         // Main landing page component
-        Livewire::component('website::new-landing-page', \Modules\Website\Livewire\NewLandingPage::class);
+        Livewire::component('website::new-landing-page', NewLandingPage::class);
 
         // Panel components
-        Livewire::component('website.panels.faq-panel', \Modules\Website\Livewire\Panels\FaqPanel::class);
-        Livewire::component('website.panels.team-panel', \Modules\Website\Livewire\Panels\TeamPanel::class);
-        Livewire::component('website.panels.cta-panel', \Modules\Website\Livewire\Panels\CtaPanel::class);
-        Livewire::component('website.panels.features-panel', \Modules\Website\Livewire\Panels\FeaturesPanel::class);
-        Livewire::component('website.panels.hero-panel', \Modules\Website\Livewire\Panels\HeroPanel::class);
-        Livewire::component('website.panels.reviews-panel', \Modules\Website\Livewire\Panels\ReviewsPanel::class);
-        Livewire::component('website.panels.contact-panel', \Modules\Website\Livewire\Panels\ContactPanel::class);
-        Livewire::component('website.panels.stats-panel', \Modules\Website\Livewire\Panels\StatsPanel::class);
-        Livewire::component('website.panels.gallery-panel', \Modules\Website\Livewire\Panels\GalleryPanel::class);
-        Livewire::component('website.panels.custom-panel', \Modules\Website\Livewire\Panels\CustomPanel::class);
+        Livewire::component('website.panels.faq-panel', FaqPanel::class);
+        Livewire::component('website.panels.team-panel', TeamPanel::class);
+        Livewire::component('website.panels.cta-panel', CtaPanel::class);
+        Livewire::component('website.panels.features-panel', FeaturesPanel::class);
+        Livewire::component('website.panels.hero-panel', HeroPanel::class);
+        Livewire::component('website.panels.reviews-panel', ReviewsPanel::class);
+        Livewire::component('website.panels.contact-panel', ContactPanel::class);
+        Livewire::component('website.panels.stats-panel', StatsPanel::class);
+        Livewire::component('website.panels.gallery-panel', GalleryPanel::class);
+        Livewire::component('website.panels.custom-panel', CustomPanel::class);
 
         // Admin components
-        Livewire::component('website::admin.sort-panels', \Modules\Website\Livewire\Admin\SortPanels::class);
-        Livewire::component('website::admin.sort-panel-items', \Modules\Website\Livewire\Admin\SortPanelItems::class);
+        Livewire::component('website::admin.sort-panels', SortPanels::class);
+        Livewire::component('website::admin.sort-panel-items', SortPanelItems::class);
     }
 }

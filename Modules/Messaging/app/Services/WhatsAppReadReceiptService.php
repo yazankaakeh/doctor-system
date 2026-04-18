@@ -54,7 +54,7 @@ class WhatsAppReadReceiptService
 
             $response = Http::withToken($this->accessToken)
                 ->timeout(30)
-                ->post(self::API_BASE_URL . "/{$this->apiVersion}/{$phoneNumberId}/messages", [
+                ->post(self::API_BASE_URL."/{$this->apiVersion}/{$phoneNumberId}/messages", [
                     'messaging_product' => 'whatsapp',
                     'status' => 'read',
                     'message_id' => $message->external_id,
@@ -65,6 +65,7 @@ class WhatsAppReadReceiptService
                     'message_id' => $message->id,
                     'external_id' => $message->external_id,
                 ]);
+
                 return true;
             }
 
@@ -72,12 +73,14 @@ class WhatsAppReadReceiptService
                 'message_id' => $message->id,
                 'error' => $response->json('error'),
             ]);
+
             return false;
         } catch (\Exception $e) {
             Log::channel('messaging')->error('Exception sending read receipt', [
                 'message_id' => $message->id,
                 'error' => $e->getMessage(),
             ]);
+
             return false;
         }
     }

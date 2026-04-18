@@ -5,8 +5,6 @@ namespace Modules\Auth\Tests\Unit;
 use Illuminate\Validation\ValidationException;
 use Modules\Auth\Actions\Doctor\LoginAction;
 use Modules\Auth\Tests\AuthTestCase;
-use Modules\Core\App\Enums\ActiveEnum;
-use Modules\Doctor\Models\Doctor;
 
 class DoctorLoginActionTest extends AuthTestCase
 {
@@ -15,7 +13,7 @@ class DoctorLoginActionTest extends AuthTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->action = new LoginAction();
+        $this->action = new LoginAction;
 
         // Initialize session for unit tests
         $this->withSession([]);

@@ -37,7 +37,7 @@ class PayPalController extends Controller
     ): View|RedirectResponse {
         $token = $request->query('token');
 
-        if (!$token) {
+        if (! $token) {
             return redirect()
                 ->route('patient.dashboard')
                 ->with('error', __('payment::payment.invalid_token'));

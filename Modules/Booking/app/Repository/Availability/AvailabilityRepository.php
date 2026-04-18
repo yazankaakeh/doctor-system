@@ -5,6 +5,7 @@ namespace Modules\Booking\Repository\Availability;
 use App\Enum\Pagination;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use Modules\Booking\Enums\BookingStatusEnum;
 use Modules\Booking\Models\DoctorAvailability;
 
 class AvailabilityRepository implements AvailabilityInterface
@@ -72,7 +73,7 @@ class AvailabilityRepository implements AvailabilityInterface
             ->where('date', $date)
             ->first();
 
-        if (!$availability) {
+        if (! $availability) {
             return [];
         }
 
@@ -97,8 +98,8 @@ class AvailabilityRepository implements AvailabilityInterface
             ->where('is_recurring_generated', true)
             ->whereDoesntHave('bookings', function ($query) {
                 $query->whereIn('status', [
-                    \Modules\Booking\Enums\BookingStatusEnum::PENDING->value,
-                    \Modules\Booking\Enums\BookingStatusEnum::CONFIRMED->value,
+                    BookingStatusEnum::PENDING->value,
+                    BookingStatusEnum::CONFIRMED->value,
                 ]);
             })
             ->delete();
@@ -111,8 +112,8 @@ class AvailabilityRepository implements AvailabilityInterface
             ->where('date', '>=', now()->toDateString())
             ->whereDoesntHave('bookings', function ($query) {
                 $query->whereIn('status', [
-                    \Modules\Booking\Enums\BookingStatusEnum::PENDING->value,
-                    \Modules\Booking\Enums\BookingStatusEnum::CONFIRMED->value,
+                    BookingStatusEnum::PENDING->value,
+                    BookingStatusEnum::CONFIRMED->value,
                 ]);
             })
             ->delete();

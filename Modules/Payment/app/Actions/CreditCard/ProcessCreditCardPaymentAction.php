@@ -38,7 +38,7 @@ class ProcessCreditCardPaymentAction
     /**
      * @param  array{cardholder_name:string,card_number:string,expiry_month:string,expiry_year:string,cvv:string}  $data
      *
-     * @throws \Exception  if the booking is already paid, is not pending, or the test card is declined
+     * @throws \Exception if the booking is already paid, is not pending, or the test card is declined
      */
     public function handle(Booking $booking, array $data): Payment
     {
@@ -60,16 +60,16 @@ class ProcessCreditCardPaymentAction
             // Prototype "decline" path for QA
             if (in_array($cardNumber, $this->declinedTestCards, true)) {
                 $this->repository->store([
-                    'booking_id'      => $booking->id,
-                    'patient_id'      => $booking->patient_id,
-                    'payment_method'  => PaymentMethodEnum::CREDIT_CARD,
-                    'amount'          => $booking->consultation_fee,
-                    'currency'        => config('payment.currency', 'USD'),
-                    'status'          => PaymentStatusEnum::FAILED,
+                    'booking_id' => $booking->id,
+                    'patient_id' => $booking->patient_id,
+                    'payment_method' => PaymentMethodEnum::CREDIT_CARD,
+                    'amount' => $booking->consultation_fee,
+                    'currency' => config('payment.currency', 'USD'),
+                    'status' => PaymentStatusEnum::FAILED,
                     'payment_details' => [
                         'card_last4' => substr($cardNumber, -4),
                         'card_brand' => $this->detectBrand($cardNumber),
-                        'gateway'    => 'prototype',
+                        'gateway' => 'prototype',
                         'decline_reason' => 'test_card_declined',
                     ],
                 ]);
@@ -78,21 +78,21 @@ class ProcessCreditCardPaymentAction
 
             // Create a COMPLETED payment — this is the prototype "authorize & capture" step
             $payment = $this->repository->store([
-                'booking_id'      => $booking->id,
-                'patient_id'      => $booking->patient_id,
-                'payment_method'  => PaymentMethodEnum::CREDIT_CARD,
-                'amount'          => $booking->consultation_fee,
-                'currency'        => config('payment.currency', 'USD'),
-                'status'          => PaymentStatusEnum::COMPLETED,
-                'transaction_id'  => 'CC-TEST-' . strtoupper(Str::random(14)),
-                'paid_at'         => now(),
+                'booking_id' => $booking->id,
+                'patient_id' => $booking->patient_id,
+                'payment_method' => PaymentMethodEnum::CREDIT_CARD,
+                'amount' => $booking->consultation_fee,
+                'currency' => config('payment.currency', 'USD'),
+                'status' => PaymentStatusEnum::COMPLETED,
+                'transaction_id' => 'CC-TEST-'.strtoupper(Str::random(14)),
+                'paid_at' => now(),
                 'payment_details' => [
-                    'card_last4'       => substr($cardNumber, -4),
-                    'card_brand'       => $this->detectBrand($cardNumber),
-                    'cardholder_name'  => $data['cardholder_name'],
-                    'expiry'           => $data['expiry_month'] . '/' . substr($data['expiry_year'], -2),
-                    'gateway'          => 'prototype',
-                    'captured_at'      => now()->toIso8601String(),
+                    'card_last4' => substr($cardNumber, -4),
+                    'card_brand' => $this->detectBrand($cardNumber),
+                    'cardholder_name' => $data['cardholder_name'],
+                    'expiry' => $data['expiry_month'].'/'.substr($data['expiry_year'], -2),
+                    'gateway' => 'prototype',
+                    'captured_at' => now()->toIso8601String(),
                 ],
             ]);
 
@@ -108,10 +108,19 @@ class ProcessCreditCardPaymentAction
      */
     protected function detectBrand(string $number): string
     {
-        if (preg_match('/^4\d{12}(\d{3})?(\d{3})?$/', $number)) return 'visa';
-        if (preg_match('/^(5[1-5]\d{14}|2(2[2-9][1-9]|[3-6]\d{2}|7([01]\d|20))\d{12})$/', $number)) return 'mastercard';
-        if (preg_match('/^3[47]\d{13}$/', $number)) return 'amex';
-        if (preg_match('/^6(?:011|5\d{2})\d{12}$/', $number)) return 'discover';
+        if (preg_match('/^4\d{12}(\d{3})?(\d{3})?$/', $number)) {
+            return 'visa';
+        }
+        if (preg_match('/^(5[1-5]\d{14}|2(2[2-9][1-9]|[3-6]\d{2}|7([01]\d|20))\d{12})$/', $number)) {
+            return 'mastercard';
+        }
+        if (preg_match('/^3[47]\d{13}$/', $number)) {
+            return 'amex';
+        }
+        if (preg_match('/^6(?:011|5\d{2})\d{12}$/', $number)) {
+            return 'discover';
+        }
+
         return 'unknown';
     }
 }

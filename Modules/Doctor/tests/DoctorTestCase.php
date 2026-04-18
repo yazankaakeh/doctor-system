@@ -37,7 +37,7 @@ abstract class DoctorTestCase extends TestCase
     protected function setupCountriesTable(): void
     {
         // Create countries table if it doesn't exist (for testing)
-        if (!Schema::hasTable('countries')) {
+        if (! Schema::hasTable('countries')) {
             Schema::create('countries', function ($table) {
                 $table->id();
                 $table->string('name');

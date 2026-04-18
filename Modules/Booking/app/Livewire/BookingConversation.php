@@ -6,6 +6,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 use Livewire\Attributes\On;
 use Livewire\Component;
+use Modules\Booking\Actions\Booking\CreateBookingConversationAction;
 use Modules\Booking\Models\Booking;
 use Modules\Doctor\Models\Doctor;
 use Modules\Doctor\Models\Patient;
@@ -20,10 +21,15 @@ use Modules\Messaging\Models\Message;
 class BookingConversation extends Component
 {
     public Booking $booking;
+
     public ?Conversation $conversation = null;
+
     public Collection $messages;
+
     public string $newMessage = '';
+
     public string $userType; // 'doctor' or 'patient'
+
     public bool $isExpanded = true;
 
     public function mount(Booking $booking, string $userType): void
@@ -34,7 +40,7 @@ class BookingConversation extends Component
         $this->messages = collect();
 
         // Create conversation if it doesn't exist yet
-        if (!$this->conversation) {
+        if (! $this->conversation) {
             $this->createConversation();
         }
 
@@ -47,7 +53,7 @@ class BookingConversation extends Component
     protected function createConversation(): void
     {
         try {
-            $action = app(\Modules\Booking\Actions\Booking\CreateBookingConversationAction::class);
+            $action = app(CreateBookingConversationAction::class);
             $this->conversation = $action->handle($this->booking);
 
             // Refresh booking relationship
@@ -126,7 +132,7 @@ class BookingConversation extends Component
 
     public function getListeners()
     {
-        if (!$this->conversation) {
+        if (! $this->conversation) {
             return [];
         }
 

@@ -71,13 +71,13 @@ class GlobalMessagingPanel extends Component
 
     public function loadConversations(): void
     {
-        if (!auth()->check()) {
+        if (! auth()->check()) {
             return;
         }
 
         $user = auth()->user();
 
-        $query = Conversation::with(['channel', 'assignedUser', 'messages' => fn($q) => $q->latest()->limit(1)])
+        $query = Conversation::with(['channel', 'assignedUser', 'messages' => fn ($q) => $q->latest()->limit(1)])
             ->where(function ($q) use ($user) {
                 // Conversations assigned to current user (as agent/sender)
                 $q->where('assigned_user_id', $user->id);
@@ -97,7 +97,7 @@ class GlobalMessagingPanel extends Component
         if ($this->channelFilter) {
             $channelType = ChannelTypeEnum::tryFrom($this->channelFilter);
             if ($channelType) {
-                $query->whereHas('channel', fn($q) => $q->where('type', $channelType));
+                $query->whereHas('channel', fn ($q) => $q->where('type', $channelType));
             }
         }
 
@@ -110,9 +110,9 @@ class GlobalMessagingPanel extends Component
 
         if ($this->searchQuery) {
             $query->where(function ($q) {
-                $q->where('participant_name', 'like', '%' . $this->searchQuery . '%')
-                    ->orWhere('participant_identifier', 'like', '%' . $this->searchQuery . '%')
-                    ->orWhereHas('messages', fn($mq) => $mq->where('content', 'like', '%' . $this->searchQuery . '%'));
+                $q->where('participant_name', 'like', '%'.$this->searchQuery.'%')
+                    ->orWhere('participant_identifier', 'like', '%'.$this->searchQuery.'%')
+                    ->orWhereHas('messages', fn ($mq) => $mq->where('content', 'like', '%'.$this->searchQuery.'%'));
             });
         }
 
@@ -121,7 +121,7 @@ class GlobalMessagingPanel extends Component
 
     public function toggle(): void
     {
-        $this->isOpen = !$this->isOpen;
+        $this->isOpen = ! $this->isOpen;
 
         if ($this->isOpen) {
             $this->loadConversations();
@@ -162,7 +162,7 @@ class GlobalMessagingPanel extends Component
 
     public function getConversationCountsProperty(): array
     {
-        if (!auth()->check()) {
+        if (! auth()->check()) {
             return ['all' => 0];
         }
 
@@ -185,7 +185,7 @@ class GlobalMessagingPanel extends Component
 
         foreach (ChannelTypeEnum::cases() as $channelType) {
             $counts[$channelType->value] = (clone $baseQuery)
-                ->whereHas('channel', fn($q) => $q->where('type', $channelType))
+                ->whereHas('channel', fn ($q) => $q->where('type', $channelType))
                 ->count();
         }
 
@@ -263,10 +263,10 @@ class GlobalMessagingPanel extends Component
             $this->searchedUsers = User::query()
                 ->with('userInfo')
                 ->where(function ($query) {
-                    $query->where('name', 'like', '%' . $this->userSearch . '%')
-                        ->orWhere('email', 'like', '%' . $this->userSearch . '%')
+                    $query->where('name', 'like', '%'.$this->userSearch.'%')
+                        ->orWhere('email', 'like', '%'.$this->userSearch.'%')
                         ->orWhereHas('userInfo', function ($q) {
-                            $q->where('mobile', 'like', '%' . $this->userSearch . '%');
+                            $q->where('mobile', 'like', '%'.$this->userSearch.'%');
                         });
                 })
                 ->whereHas('userInfo', function ($q) {
@@ -324,7 +324,7 @@ class GlobalMessagingPanel extends Component
             );
 
             // Check if message was created (even if sending failed)
-            if (!$result->isSuccess() && !$result->message) {
+            if (! $result->isSuccess() && ! $result->message) {
                 // Channel not configured or other issue - create message manually
                 Message::create([
                     'conversation_id' => $conversation->id,
@@ -377,14 +377,14 @@ class GlobalMessagingPanel extends Component
     public function getChannelOptions(): array
     {
         return collect(ChannelTypeEnum::cases())
-            ->mapWithKeys(fn($case) => [$case->value => $case->label()])
+            ->mapWithKeys(fn ($case) => [$case->value => $case->label()])
             ->toArray();
     }
 
     public function getStatusOptions(): array
     {
         return collect(ConversationStatusEnum::cases())
-            ->mapWithKeys(fn($case) => [$case->value => $case->label()])
+            ->mapWithKeys(fn ($case) => [$case->value => $case->label()])
             ->toArray();
     }
 
@@ -392,7 +392,7 @@ class GlobalMessagingPanel extends Component
     {
         return Channel::active()
             ->get()
-            ->mapWithKeys(fn($channel) => [
+            ->mapWithKeys(fn ($channel) => [
                 $channel->type->value => [
                     'name' => $channel->name,
                     'type' => $channel->type,

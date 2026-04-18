@@ -25,7 +25,7 @@ return new class extends Migration
             Schema::table('audit_logs', function (Blueprint $table) {
                 $table->index(['auditable_type', 'auditable_id'], 'audit_logs_auditable_index');
             });
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // Index might already exist
         }
     }
@@ -38,7 +38,7 @@ return new class extends Migration
         Schema::table('audit_logs', function (Blueprint $table) {
             try {
                 $table->dropIndex('audit_logs_auditable_index');
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 // Index might not exist
             }
             if (Schema::hasColumn('audit_logs', 'auditable_id')) {

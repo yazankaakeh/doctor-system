@@ -23,7 +23,7 @@ class CreateBookingAction
         $booking = DB::transaction(function () use ($data) {
             $availability = DoctorAvailability::findOrFail($data['doctor_availability_id']);
 
-            if (!$this->checkSlotAction->handle(
+            if (! $this->checkSlotAction->handle(
                 $availability->doctor_id,
                 $data['booking_date'],
                 $data['start_time']

@@ -28,6 +28,7 @@ class DoctorScheduleException extends Model
     ];
 
     public const TYPE_SKIP = 'skip';
+
     public const TYPE_MODIFIED = 'modified';
 
     public function doctor(): BelongsTo
@@ -77,10 +78,10 @@ class DoctorScheduleException extends Model
 
     public function getFormattedAlternateTimeRangeAttribute(): ?string
     {
-        if (!$this->isModified() || !$this->alternate_start_time || !$this->alternate_end_time) {
+        if (! $this->isModified() || ! $this->alternate_start_time || ! $this->alternate_end_time) {
             return null;
         }
 
-        return $this->alternate_start_time->format('H:i') . ' - ' . $this->alternate_end_time->format('H:i');
+        return $this->alternate_start_time->format('H:i').' - '.$this->alternate_end_time->format('H:i');
     }
 }

@@ -10,20 +10,22 @@ class SubmitOfflinePaymentRequest extends FormRequest
     {
         $booking = $this->route('booking');
 
-        if (!$booking) {
+        if (! $booking) {
             \Log::warning('Offline payment authorization failed: No booking found');
+
             return false;
         }
 
         // Check if user is authenticated
-        if (!auth('web')->check()) {
+        if (! auth('web')->check()) {
             \Log::warning('Offline payment authorization failed: User not authenticated');
+
             return false;
         }
 
         $authorized = $booking->patient_id === auth('web')->id();
 
-        if (!$authorized) {
+        if (! $authorized) {
             \Log::warning('Offline payment authorization failed: Patient mismatch', [
                 'booking_patient_id' => $booking->patient_id,
                 'auth_user_id' => auth('web')->id(),

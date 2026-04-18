@@ -12,42 +12,46 @@ class AdminModelTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_admin_can_be_created(): void
+    /**
+     * Build a valid Admin payload. The migration declares `phone` as NOT NULL
+     * with no default, so every test must supply one to satisfy the schema.
+     *
+     * @param  array<string, mixed>  $overrides
+     * @return array<string, mixed>
+     */
+    private function adminAttributes(array $overrides = []): array
     {
-        $admin = Admin::create([
+        return array_merge([
             'name' => 'Test Admin',
             'email' => 'test@admin.com',
+            'phone' => '+15555550100',
             'password' => 'password123',
             'is_active' => ActiveAdminEnum::ACTIVE->value,
-        ]);
+        ], $overrides);
+    }
+
+    public function test_admin_can_be_created(): void
+    {
+        Admin::create($this->adminAttributes());
 
         $this->assertDatabaseHas('admins', [
             'email' => 'test@admin.com',
             'name' => 'Test Admin',
+            'phone' => '+15555550100',
         ]);
     }
 
     public function test_admin_password_is_hashed(): void
     {
-        $admin = Admin::create([
-            'name' => 'Test Admin',
-            'email' => 'test@admin.com',
-            'password' => 'password123',
-            'is_active' => ActiveAdminEnum::ACTIVE->value,
-        ]);
+        $admin = Admin::create($this->adminAttributes());
 
         $this->assertNotEquals('password123', $admin->password);
+        $this->assertTrue(password_verify('password123', $admin->password));
     }
 
     public function test_admin_hidden_attributes(): void
     {
-        $admin = Admin::create([
-            'name' => 'Test Admin',
-            'email' => 'test@admin.com',
-            'password' => 'password123',
-            'is_active' => ActiveAdminEnum::ACTIVE->value,
-        ]);
-
+        $admin = Admin::create($this->adminAttributes());
         $array = $admin->toArray();
 
         $this->assertArrayNotHasKey('password', $array);
@@ -56,12 +60,7 @@ class AdminModelTest extends TestCase
 
     public function test_admin_is_active_cast_to_enum(): void
     {
-        $admin = Admin::create([
-            'name' => 'Test Admin',
-            'email' => 'test@admin.com',
-            'password' => 'password123',
-            'is_active' => ActiveAdminEnum::ACTIVE->value,
-        ]);
+        $admin = Admin::create($this->adminAttributes());
 
         $this->assertInstanceOf(ActiveAdminEnum::class, $admin->is_active);
         $this->assertEquals(ActiveAdminEnum::ACTIVE, $admin->is_active);
@@ -69,12 +68,7 @@ class AdminModelTest extends TestCase
 
     public function test_admin_can_be_deactivated(): void
     {
-        $admin = Admin::create([
-            'name' => 'Test Admin',
-            'email' => 'test@admin.com',
-            'password' => 'password123',
-            'is_active' => ActiveAdminEnum::ACTIVE->value,
-        ]);
+        $admin = Admin::create($this->adminAttributes());
 
         $admin->update(['is_active' => ActiveAdminEnum::DE_ACTIVE->value]);
 
@@ -83,13 +77,10 @@ class AdminModelTest extends TestCase
 
     public function test_admin_has_roles_trait(): void
     {
-        $admin = Admin::create([
-            'name' => 'Test Admin',
-            'email' => 'test@admin.com',
-            'password' => 'password123',
-            'is_active' => ActiveAdminEnum::ACTIVE->value,
-        ]);
+        $admin = Admin::create($this->adminAttributes());
 
+        // Match the model's declared guard (`admin`) so the role's guard
+        // matches at assign time.
         $role = Role::create(['name' => 'admin', 'guard_name' => 'admin']);
         $admin->assignRole($role);
 
@@ -98,18 +89,16 @@ class AdminModelTest extends TestCase
 
     public function test_admin_fillable_fields(): void
     {
-        $data = [
+        $admin = Admin::create($this->adminAttributes([
             'name' => 'Fillable Test',
             'email' => 'fillable@test.com',
-            'password' => 'password',
+            'phone' => '+15555550101',
             'img' => 'test.jpg',
-            'is_active' => ActiveAdminEnum::ACTIVE->value,
-        ];
+        ]));
 
-        $admin = Admin::create($data);
-
-        $this->assertEquals('Fillable Test', $admin->name);
-        $this->assertEquals('fillable@test.com', $admin->email);
-        $this->assertEquals('test.jpg', $admin->img);
+        $this->assertSame('Fillable Test', $admin->name);
+        $this->assertSame('fillable@test.com', $admin->email);
+        $this->assertSame('+15555550101', $admin->phone);
+        $this->assertSame('test.jpg', $admin->img);
     }
 }

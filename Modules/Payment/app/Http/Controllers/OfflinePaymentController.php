@@ -22,11 +22,10 @@ class OfflinePaymentController extends Controller
     }
 
     public function submit(
-        Booking                     $booking,
+        Booking $booking,
         SubmitOfflinePaymentRequest $request,
-        SubmitOfflinePaymentAction  $action
-    ): RedirectResponse
-    {
+        SubmitOfflinePaymentAction $action
+    ): RedirectResponse {
         try {
             // Log for debugging
             \Log::info('Offline payment submission started', [

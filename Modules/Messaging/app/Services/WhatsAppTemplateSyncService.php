@@ -104,7 +104,7 @@ class WhatsAppTemplateSyncService
     protected function fetchTemplatesFromApi(): ?array
     {
         try {
-            $url = self::API_BASE_URL . "/{$this->apiVersion}/{$this->businessAccountId}/message_templates";
+            $url = self::API_BASE_URL."/{$this->apiVersion}/{$this->businessAccountId}/message_templates";
 
             $response = Http::withToken($this->accessToken)
                 ->timeout(30)
@@ -117,6 +117,7 @@ class WhatsAppTemplateSyncService
                     'status' => $response->status(),
                     'error' => $response->json('error'),
                 ]);
+
                 return null;
             }
 
@@ -142,6 +143,7 @@ class WhatsAppTemplateSyncService
             Log::channel('messaging')->error('Exception fetching WhatsApp templates', [
                 'exception' => $e->getMessage(),
             ]);
+
             return null;
         }
     }
@@ -211,10 +213,12 @@ class WhatsAppTemplateSyncService
 
         if ($template) {
             $template->update($templateData);
+
             return 'updated';
         }
 
         Template::create($templateData);
+
         return 'created';
     }
 
@@ -242,7 +246,7 @@ class WhatsAppTemplateSyncService
             return null;
         }
 
-        $url = self::API_BASE_URL . "/{$this->apiVersion}/{$this->businessAccountId}/message_templates";
+        $url = self::API_BASE_URL."/{$this->apiVersion}/{$this->businessAccountId}/message_templates";
 
         $response = Http::withToken($this->accessToken)
             ->timeout(30)

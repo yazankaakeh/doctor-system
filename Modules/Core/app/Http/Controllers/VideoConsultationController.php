@@ -5,6 +5,7 @@ namespace Modules\Core\Http\Controllers;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Route;
 use Modules\Core\Actions\Video\CreateMeetingRoomAction;
 use Modules\Core\Actions\Video\GetMeetingConfigAction;
 use Modules\Core\DataTransferObjects\MeetingParticipant;
@@ -118,7 +119,7 @@ class VideoConsultationController extends Controller
         };
 
         $name = match ($guard) {
-            'doctor' => 'Dr. ' . $user->name,
+            'doctor' => 'Dr. '.$user->name,
             default => $user->name,
         };
 
@@ -151,14 +152,14 @@ class VideoConsultationController extends Controller
     protected function getDefaultReturnUrl(string $guard): string
     {
         $candidates = match ($guard) {
-            'doctor'  => ['doctor.dashboard', 'doctor.home', 'doctor.bookings.index'],
+            'doctor' => ['doctor.dashboard', 'doctor.home', 'doctor.bookings.index'],
             'patient' => ['patient.dashboard', 'patient.home', 'patient.bookings.index'],
-            'admin'   => ['admin.dashboard', 'admin.home'],
-            default   => ['home', 'dashboard'],
+            'admin' => ['admin.dashboard', 'admin.home'],
+            default => ['home', 'dashboard'],
         };
 
         foreach ($candidates as $name) {
-            if (\Illuminate\Support\Facades\Route::has($name)) {
+            if (Route::has($name)) {
                 return route($name);
             }
         }

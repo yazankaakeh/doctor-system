@@ -29,10 +29,12 @@ Broadcast::channel('conversation.{conversationId}', function ($user, $conversati
         // Check if this conversation belongs to a booking for this doctor
         if ($conversation->conversable_type === Booking::class) {
             $booking = $conversation->conversable;
+
             return $booking && $booking->doctor_id === $user->id;
         }
         // Check metadata for doctor_id
         $metadata = $conversation->metadata ?? [];
+
         return isset($metadata['doctor_id']) && $metadata['doctor_id'] === $user->id;
     }
 
@@ -41,10 +43,12 @@ Broadcast::channel('conversation.{conversationId}', function ($user, $conversati
         // Check if this conversation belongs to a booking for this patient
         if ($conversation->conversable_type === Booking::class) {
             $booking = $conversation->conversable;
+
             return $booking && $booking->patient_id === $user->id;
         }
         // Check metadata for patient_id
         $metadata = $conversation->metadata ?? [];
+
         return isset($metadata['patient_id']) && $metadata['patient_id'] === $user->id;
     }
 
@@ -87,6 +91,7 @@ Broadcast::channel('doctor.{doctorId}', function ($user, $doctorId) {
     if ($user instanceof Doctor) {
         return (int) $user->id === (int) $doctorId;
     }
+
     return false;
 });
 
@@ -95,6 +100,7 @@ Broadcast::channel('patient.{patientId}', function ($user, $patientId) {
     if ($user instanceof Patient) {
         return (int) $user->id === (int) $patientId;
     }
+
     return false;
 });
 

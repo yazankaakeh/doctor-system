@@ -3,7 +3,6 @@
 namespace Modules\Messaging\Events;
 
 use App\Models\User;
-use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
@@ -27,7 +26,7 @@ class AgentTyping implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new PresenceChannel('messaging.conversation.' . $this->conversation->id),
+            new PresenceChannel('messaging.conversation.'.$this->conversation->id),
         ];
     }
 

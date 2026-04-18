@@ -40,7 +40,7 @@ class CreateBookingConversationAction
         }
 
         // Build participant identifier using booking ID
-        $participantIdentifier = 'booking:' . $booking->id;
+        $participantIdentifier = 'booking:'.$booking->id;
 
         // Create conversation with booking as conversable
         $dto = CreateConversationDTO::make(

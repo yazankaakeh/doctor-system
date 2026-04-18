@@ -45,7 +45,7 @@ class VideoServiceManager
             return $this->callCustomCreator($driver);
         }
 
-        $method = 'create' . ucfirst($driver) . 'Driver';
+        $method = 'create'.ucfirst($driver).'Driver';
 
         if (method_exists($this, $method)) {
             return $this->$method();
@@ -77,7 +77,7 @@ class VideoServiceManager
      */
     protected function createJitsiDriver(): VideoServiceInterface
     {
-        return new JitsiVideoService();
+        return new JitsiVideoService;
     }
 
     /**

@@ -33,7 +33,7 @@ Route::prefix('payment/offline')->name('payment.offline.')->middleware(['web', '
 
 // Credit-card payment (prototype) for patients
 Route::prefix('payment/credit-card')->name('payment.credit_card.')->middleware(['web', 'patientMenu', 'auth:web', 'setLocale'])->group(function () {
-    Route::get('/{booking}',  [CreditCardController::class, 'show'])->name('show');
+    Route::get('/{booking}', [CreditCardController::class, 'show'])->name('show');
     Route::post('/{booking}', [CreditCardController::class, 'submit'])->name('submit');
 });
 

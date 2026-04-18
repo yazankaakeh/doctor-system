@@ -24,6 +24,7 @@ class WebhookDeduplicationService
                 'webhook_id' => $webhookId,
                 'channel' => $channel,
             ]);
+
             return true;
         }
 
@@ -54,6 +55,7 @@ class WebhookDeduplicationService
                 'webhook_id' => $webhookId,
                 'channel' => $channel,
             ]);
+
             return false;
         }
 
@@ -87,12 +89,12 @@ class WebhookDeduplicationService
 
         // For messages
         if (isset($value['messages'][0]['id'])) {
-            return 'msg_' . $value['messages'][0]['id'];
+            return 'msg_'.$value['messages'][0]['id'];
         }
 
         // For status updates
         if (isset($value['statuses'][0]['id'])) {
-            return 'status_' . $value['statuses'][0]['id'] . '_' . ($value['statuses'][0]['status'] ?? '');
+            return 'status_'.$value['statuses'][0]['id'].'_'.($value['statuses'][0]['status'] ?? '');
         }
 
         // Fallback to hash
@@ -106,12 +108,12 @@ class WebhookDeduplicationService
     {
         // Telegram provides update_id
         if (isset($payload['update_id'])) {
-            return 'update_' . $payload['update_id'];
+            return 'update_'.$payload['update_id'];
         }
 
         // Message ID
         if (isset($payload['message']['message_id'])) {
-            return 'msg_' . $payload['message']['message_id'];
+            return 'msg_'.$payload['message']['message_id'];
         }
 
         // Fallback to hash

@@ -5,7 +5,6 @@ namespace Modules\Booking\Http\Controllers\Doctor;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Modules\Booking\Actions\RecurringSchedule\CreateRecurringScheduleAction;
 use Modules\Booking\Actions\RecurringSchedule\DeleteRecurringScheduleAction;
@@ -82,7 +81,7 @@ class RecurringScheduleController extends Controller
             abort(403);
         }
 
-        $action->handle($id, ['is_active' => !$schedule->is_active]);
+        $action->handle($id, ['is_active' => ! $schedule->is_active]);
 
         $message = $schedule->is_active
             ? __('booking::recurring.messages.deactivated')

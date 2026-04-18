@@ -2,7 +2,6 @@
 
 namespace Modules\Messaging\Services;
 
-use Carbon\Carbon;
 use Modules\Messaging\Enums\MessageDirectionEnum;
 use Modules\Messaging\Models\Conversation;
 use Modules\Messaging\Models\Message;

@@ -17,7 +17,7 @@ class CancelBookingAction
     {
         $booking = $this->repository->find($bookingId);
 
-        if (!$booking->canBeCancelled()) {
+        if (! $booking->canBeCancelled()) {
             throw new \Exception(__('booking::booking.cannot_cancel'));
         }
 

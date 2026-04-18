@@ -28,21 +28,35 @@ class AuditLogController extends Controller
     public function getPayload($id): JsonResponse
     {
         $auditing = AuditLog::query()->find($id);
+
+        if (! $auditing) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Audit log not found.',
+            ], 404);
+        }
+
+        $rawPayload = is_array($auditing->payload)
+            ? $auditing->payload
+            : (json_decode((string) $auditing->payload, true) ?: []);
+
         $payload_html = "<table class='table table-vcenter' style='direction: ltr !important;'>";
-        foreach (
-            ! is_array($auditing->payload) ? json_decode(
-                $auditing->payload,
-            ) : $auditing->payload as $index => $payload
-        ) {
-            if (is_string($payload) && $index != '_token') {
+        foreach ($rawPayload as $index => $payload) {
+            if (is_string($payload) && $index !== '_token') {
                 $payload_html .= '<tr>';
-                $payload_html .= "<td>$index : </td><td>$payload</td>";
+                $payload_html .= "<td>{$index} : </td><td>{$payload}</td>";
                 $payload_html .= '</tr>';
             }
         }
         $payload_html .= '</table>';
 
-        return response()->json(['payload' => $payload_html]);
+        return response()->json([
+            'status' => true,
+            // Both keys are returned so legacy callers (which read `payload`)
+            // and the test suite (which reads `html`) keep working.
+            'html' => $payload_html,
+            'payload' => $payload_html,
+        ]);
     }
 
     /**

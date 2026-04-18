@@ -4,6 +4,7 @@ namespace Modules\Booking\Repository\Booking;
 
 use App\Enum\Pagination;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
 use Modules\Booking\Enums\BookingStatusEnum;
 use Modules\Booking\Models\Booking;
 
@@ -39,7 +40,7 @@ class BookingRepository implements BookingInterface
             ->paginate(Pagination::PAG->value);
     }
 
-    public function getAllForDoctor(int $doctorId): \Illuminate\Database\Eloquent\Collection
+    public function getAllForDoctor(int $doctorId): Collection
     {
         return Booking::query()
             ->forDoctor($doctorId)
@@ -69,7 +70,7 @@ class BookingRepository implements BookingInterface
 
     public function isSlotAvailable(int $doctorId, string $date, string $startTime): bool
     {
-        return !Booking::query()
+        return ! Booking::query()
             ->where('doctor_id', $doctorId)
             ->where('booking_date', $date)
             ->where('start_time', $startTime)

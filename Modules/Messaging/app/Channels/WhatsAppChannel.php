@@ -12,6 +12,8 @@ use Modules\Messaging\DataTransferObjects\WebhookPayloadDTO;
 use Modules\Messaging\Enums\ChannelTypeEnum;
 use Modules\Messaging\Enums\MessageStatusEnum;
 use Modules\Messaging\Enums\MessageTypeEnum;
+use Modules\Messaging\Events\MessageStatusUpdated;
+use Modules\Messaging\Models\Message;
 
 class WhatsAppChannel extends AbstractChannel
 {
@@ -157,6 +159,7 @@ class WhatsAppChannel extends AbstractChannel
         $statuses = data_get($value, 'statuses', []);
         if (! empty($statuses)) {
             $this->processStatusUpdate($statuses);
+
             return null;
         }
 
@@ -234,13 +237,14 @@ class WhatsAppChannel extends AbstractChannel
             }
 
             // Find the message by external_message_id
-            $message = \Modules\Messaging\Models\Message::where('external_message_id', $externalMessageId)->first();
+            $message = Message::where('external_message_id', $externalMessageId)->first();
 
             if (! $message) {
                 $this->log('warning', 'Status update for unknown message', [
                     'external_message_id' => $externalMessageId,
                     'status' => $status,
                 ]);
+
                 continue;
             }
 
@@ -282,7 +286,7 @@ class WhatsAppChannel extends AbstractChannel
                 ]);
 
                 // Dispatch event for real-time updates
-                event(new \Modules\Messaging\Events\MessageStatusUpdated($message));
+                event(new MessageStatusUpdated($message));
             }
         }
     }

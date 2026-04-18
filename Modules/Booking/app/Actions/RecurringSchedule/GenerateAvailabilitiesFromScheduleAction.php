@@ -34,7 +34,7 @@ class GenerateAvailabilitiesFromScheduleAction
 
         $exceptionMap = [];
         foreach ($exceptions as $exception) {
-            $key = $exception->exception_date->format('Y-m-d') . '_' . ($exception->recurring_schedule_id ?? 'all');
+            $key = $exception->exception_date->format('Y-m-d').'_'.($exception->recurring_schedule_id ?? 'all');
             $exceptionMap[$key] = $exception;
         }
 
@@ -52,19 +52,20 @@ class GenerateAvailabilitiesFromScheduleAction
                         continue;
                     }
 
-                    if (!$schedule->isEffectiveOn($date)) {
+                    if (! $schedule->isEffectiveOn($date)) {
                         continue;
                     }
 
                     // Check for specific schedule exception
-                    $specificKey = $date->format('Y-m-d') . '_' . $schedule->id;
-                    $globalKey = $date->format('Y-m-d') . '_all';
+                    $specificKey = $date->format('Y-m-d').'_'.$schedule->id;
+                    $globalKey = $date->format('Y-m-d').'_all';
 
                     $exception = $exceptionMap[$specificKey] ?? $exceptionMap[$globalKey] ?? null;
 
                     if ($exception) {
                         if ($exception->isSkip()) {
                             $skippedCount++;
+
                             continue;
                         }
 
@@ -80,6 +81,7 @@ class GenerateAvailabilitiesFromScheduleAction
                                 $schedule->id
                             );
                             $createdCount++;
+
                             continue;
                         }
                     }

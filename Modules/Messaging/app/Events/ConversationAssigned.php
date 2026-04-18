@@ -3,7 +3,6 @@
 namespace Modules\Messaging\Events;
 
 use App\Models\User;
-use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
@@ -27,12 +26,12 @@ class ConversationAssigned implements ShouldBroadcast
     public function broadcastOn(): array
     {
         $channels = [
-            new PrivateChannel('messaging.agent.' . $this->assignedTo->id),
+            new PrivateChannel('messaging.agent.'.$this->assignedTo->id),
         ];
 
         // Also notify the previous agent if there was one
         if ($this->previousAgentId) {
-            $channels[] = new PrivateChannel('messaging.agent.' . $this->previousAgentId);
+            $channels[] = new PrivateChannel('messaging.agent.'.$this->previousAgentId);
         }
 
         return $channels;

@@ -5,6 +5,9 @@ namespace Modules\Doctor\Http\Controllers;
 use App\Enum\Pagination;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Modules\Booking\Enums\BookingStatusEnum;
+use Modules\Booking\Models\Booking;
+use Modules\Core\App\Enums\ActiveEnum;
 use Modules\Doctor\Enums\MedicalExaminationStatusEnum;
 use Modules\Doctor\Http\Requests\MedicalExaminationRequest;
 use Modules\Doctor\Models\Clinic;
@@ -86,12 +89,12 @@ class MedicalExaminationController extends Controller
         // Try to get clinic from patient first, otherwise use the first active clinic
         $clinicId = $patient?->clinics?->first()?->id;
 
-        if (!$clinicId) {
+        if (! $clinicId) {
             // Fallback to the first active clinic
-            $clinic = \Modules\Doctor\Models\Clinic::where('is_active', \Modules\Core\App\Enums\ActiveEnum::ACTIVE->value)
+            $clinic = Clinic::where('is_active', ActiveEnum::ACTIVE->value)
                 ->first();
 
-            if (!$clinic) {
+            if (! $clinic) {
                 return redirect()->back()->with('error', 'No active clinic found. Please contact the administrator.');
             }
 
@@ -125,13 +128,13 @@ class MedicalExaminationController extends Controller
         // Find active booking for this patient and doctor if Booking module exists
         $booking = null;
         if (class_exists('\Modules\Booking\Models\Booking')) {
-            $booking = \Modules\Booking\Models\Booking::where([
+            $booking = Booking::where([
                 'patient_id' => $patient->id,
                 'doctor_id' => auth()->id(),
             ])
-            ->where('status', \Modules\Booking\Enums\BookingStatusEnum::CONFIRMED)
-            ->latest()
-            ->first();
+                ->where('status', BookingStatusEnum::CONFIRMED)
+                ->latest()
+                ->first();
         }
 
         return view(

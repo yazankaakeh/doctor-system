@@ -31,7 +31,7 @@ class DoctorController extends Controller
 
         // Search by name
         if ($request->filled('search')) {
-            $query->where('name', 'like', '%' . $request->search . '%');
+            $query->where('name', 'like', '%'.$request->search.'%');
         }
 
         $doctors = $query->paginate(12);

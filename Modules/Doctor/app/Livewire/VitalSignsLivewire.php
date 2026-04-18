@@ -46,6 +46,7 @@ class VitalSignsLivewire extends Component
                 type: 'error',
                 message: __('Value is out of normal range. Not saved.')
             );
+
             return;
         }
 
@@ -74,6 +75,7 @@ class VitalSignsLivewire extends Component
                     "values.{$intId}",
                     trans('doctor::doctor.vitalSign.out_of_range')
                 );
+
                 continue;
             }
 
@@ -86,6 +88,7 @@ class VitalSignsLivewire extends Component
                 type: 'error',
                 message: __('Some vital signs are out of normal range and were not saved.')
             );
+
             // Don't persist the rest either — keep the bulk save atomic so the
             // doctor explicitly fixes invalid values before re-saving.
             return;

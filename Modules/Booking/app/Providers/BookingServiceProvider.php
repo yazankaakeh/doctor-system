@@ -6,6 +6,12 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
+use Modules\Booking\Actions\Booking\ConfirmBookingAction;
+use Modules\Booking\Actions\Booking\CreateBookingConversationAction;
+use Modules\Booking\Console\CreateMissingConversations;
+use Modules\Booking\Console\GenerateRecurringAvailabilitiesCommand;
+use Modules\Booking\Console\RegenerateMeetingRoom;
+use Modules\Booking\Console\SendAppointmentRemindersCommand;
 use Modules\Booking\Livewire\BookingConversation;
 use Modules\Booking\Livewire\Doctor\AppointmentCalendar;
 use Modules\Booking\Livewire\Doctor\AvailabilityCalendar;
@@ -20,6 +26,7 @@ use Modules\Booking\Repository\RecurringSchedule\RecurringScheduleInterface;
 use Modules\Booking\Repository\RecurringSchedule\RecurringScheduleRepository;
 use Modules\Booking\Repository\ScheduleException\ScheduleExceptionInterface;
 use Modules\Booking\Repository\ScheduleException\ScheduleExceptionRepository;
+use Modules\Messaging\Services\ConversationService;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -60,17 +67,18 @@ class BookingServiceProvider extends ServiceProvider
         $this->app->bind(ScheduleExceptionInterface::class, ScheduleExceptionRepository::class);
 
         // Conditionally bind CreateBookingConversationAction based on Messaging module availability
-        $this->app->when(\Modules\Booking\Actions\Booking\ConfirmBookingAction::class)
-            ->needs(\Modules\Booking\Actions\Booking\CreateBookingConversationAction::class)
+        $this->app->when(ConfirmBookingAction::class)
+            ->needs(CreateBookingConversationAction::class)
             ->give(function ($app) {
                 // Check if Messaging module is enabled
-                if (class_exists(\Modules\Messaging\Services\ConversationService::class)) {
+                if (class_exists(ConversationService::class)) {
                     try {
-                        return $app->make(\Modules\Booking\Actions\Booking\CreateBookingConversationAction::class);
+                        return $app->make(CreateBookingConversationAction::class);
                     } catch (\Exception $e) {
                         return null;
                     }
                 }
+
                 return null;
             });
     }
@@ -81,10 +89,10 @@ class BookingServiceProvider extends ServiceProvider
     protected function registerCommands(): void
     {
         $this->commands([
-            \Modules\Booking\Console\GenerateRecurringAvailabilitiesCommand::class,
-            \Modules\Booking\Console\SendAppointmentRemindersCommand::class,
-            \Modules\Booking\Console\CreateMissingConversations::class,
-            \Modules\Booking\Console\RegenerateMeetingRoom::class,
+            GenerateRecurringAvailabilitiesCommand::class,
+            SendAppointmentRemindersCommand::class,
+            CreateMissingConversations::class,
+            RegenerateMeetingRoom::class,
         ]);
     }
 

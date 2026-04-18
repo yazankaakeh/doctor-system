@@ -55,8 +55,8 @@ class DoctorAvailability extends Model
     public function generateSlots(): array
     {
         $slots = [];
-        $start = Carbon::parse($this->date->format('Y-m-d') . ' ' . $this->start_time->format('H:i'));
-        $end = Carbon::parse($this->date->format('Y-m-d') . ' ' . $this->end_time->format('H:i'));
+        $start = Carbon::parse($this->date->format('Y-m-d').' '.$this->start_time->format('H:i'));
+        $end = Carbon::parse($this->date->format('Y-m-d').' '.$this->end_time->format('H:i'));
 
         while ($start->copy()->addMinutes($this->slot_duration)->lte($end)) {
             $slotEnd = $start->copy()->addMinutes($this->slot_duration);
@@ -82,7 +82,7 @@ class DoctorAvailability extends Model
             ->map(fn ($t) => Carbon::parse($t)->format('H:i'))
             ->toArray();
 
-        return array_filter($allSlots, fn ($slot) => !in_array($slot['start'], $bookedSlots));
+        return array_filter($allSlots, fn ($slot) => ! in_array($slot['start'], $bookedSlots));
     }
 
     public function scopeActive(Builder $query): Builder

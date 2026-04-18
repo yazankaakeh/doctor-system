@@ -7,9 +7,4 @@ return [
         'rejected' => 'Reddedildi',
         'disabled' => 'Devre Dışı',
     ],
-    'category' => [
-        'marketing' => 'Pazarlama',
-        'utility' => 'Hizmet',
-        'authentication' => 'Doğrulama',
-    ],
 ];

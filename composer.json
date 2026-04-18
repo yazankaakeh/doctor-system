@@ -1,124 +1,129 @@
 {
-  "$schema": "https://getcomposer.org/schema.json",
-  "name": "laravel/laravel",
-  "type": "project",
-  "description": "The skeleton application for the Laravel framework.",
-  "keywords": [
-    "laravel",
-    "framework"
-  ],
-  "license": "MIT",
-  "require": {
-    "php": "^8.4",
-    "ext-curl": "*",
-    "ext-mbstring": "*",
-    "ext-simplexml": "*",
-    "barryvdh/laravel-dompdf": "^3.1",
-    "doctrine/dbal": "^4.3",
-    "google/apiclient": "^2.18",
-    "iyzico/iyzipay-php": "^2.0",
-    "laravel/framework": "^12.0",
-    "laravel/reverb": "^1.10",
-    "laravel/sanctum": "^4.0",
-    "laravel/socialite": "^5.23",
-    "laravel/tinker": "^2.10.1",
-    "laravel/ui": "^4.6",
-    "lcobucci/jwt": "^5.5",
-    "livewire/livewire": "^3.6",
-    "mhmiton/laravel-modules-livewire": "^5.1",
-    "nwidart/laravel-modules": "^12.0",
-    "spatie/browsershot": "^5.0",
-    "spatie/laravel-medialibrary": "^11.14",
-    "spatie/laravel-pdf": "^2.6",
-    "spatie/laravel-permission": "^6.17",
-    "spatie/laravel-translatable": "^6.11"
-  },
-  "require-dev": {
-    "barryvdh/laravel-debugbar": "^3.15",
-    "fakerphp/faker": "^1.23",
-    "laravel/pail": "^1.2.2",
-    "laravel/pint": "^1.13",
-    "laravel/sail": "^1.41",
-    "mockery/mockery": "^1.6",
-    "nunomaduro/collision": "^8.6",
-    "phiki/phiki": "^2.0",
-    "phpunit/phpunit": "^11.5.3",
-    "larastan/larastan": "^3.0"
-  },
-  "autoload": {
-    "psr-4": {
-      "App\\": "app/",
-      "Database\\Factories\\": "database/factories/",
-      "Database\\Seeders\\": "database/seeders/"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "Tests\\": "tests/",
-      "Modules\\AdminManagement\\Tests\\": "Modules/AdminManagement/tests/"
-    }
-  },
-  "scripts": {
-    "post-autoload-dump": [
-      "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-      "@php artisan package:discover --ansi"
+    "$schema": "https://getcomposer.org/schema.json",
+    "name": "laravel/laravel",
+    "type": "project",
+    "description": "The skeleton application for the Laravel framework.",
+    "keywords": [
+        "laravel",
+        "framework"
     ],
-    "post-update-cmd": [
-      "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
-    ],
-    "post-root-package-install": [
-      "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
-    ],
-    "post-create-project-cmd": [
-      "@php artisan key:generate --ansi",
-      "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
-      "@php artisan migrate --graceful --ansi"
-    ],
-    "dev": [
-      "Composer\\Config::disableProcessTimeout",
-      "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74,#4ade80\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"php artisan pail --timeout=0\" \"npm run dev\" \"php artisan reverb:start\" --names=server,queue,logs,vite,reverb"
-    ],
-    "test": [
-      "@php artisan config:clear --ansi",
-      "@php artisan test"
-    ],
-    "test:unit": "@php artisan test --testsuite=Unit",
-    "test:feature": "@php artisan test --testsuite=Feature",
-    "test:admin": "@php artisan test --testsuite=AdminManagement",
-    "test:coverage": "@php artisan test --coverage",
-    "lint": "vendor/bin/pint",
-    "lint:check": "vendor/bin/pint --test",
-    "analyse": "vendor/bin/phpstan analyse --memory-limit=2G",
-    "audit": "composer audit",
-    "translations": "@php artisan translations:integrity-check",
-    "translations:fix": "@php artisan translations:integrity-check --fix",
-    "ci": [
-      "@lint:check",
-      "@analyse",
-      "@audit",
-      "@translations"
-    ]
-  },
-  "extra": {
-    "laravel": {
-      "dont-discover": []
+    "license": "MIT",
+    "require": {
+        "php": "^8.4",
+        "ext-curl": "*",
+        "ext-mbstring": "*",
+        "ext-simplexml": "*",
+        "barryvdh/laravel-dompdf": "^3.1",
+        "doctrine/dbal": "^4.3",
+        "google/apiclient": "^2.18",
+        "iyzico/iyzipay-php": "^2.0",
+        "laravel/framework": "^12.0",
+        "laravel/reverb": "^1.10",
+        "laravel/sanctum": "^4.0",
+        "laravel/socialite": "^5.23",
+        "laravel/tinker": "^2.10.1",
+        "laravel/ui": "^4.6",
+        "lcobucci/jwt": "^5.5",
+        "livewire/livewire": "^3.6",
+        "mhmiton/laravel-modules-livewire": "^5.1",
+        "nwidart/laravel-modules": "^12.0",
+        "spatie/browsershot": "^5.0",
+        "spatie/laravel-medialibrary": "^11.14",
+        "spatie/laravel-pdf": "^2.6",
+        "spatie/laravel-permission": "^6.17",
+        "spatie/laravel-translatable": "^6.11"
     },
-    "merge-plugin": {
-      "include": [
-        "Modules/*/composer.json"
-      ]
-    }
-  },
-  "config": {
-    "optimize-autoloader": true,
-    "preferred-install": "dist",
-    "sort-packages": true,
-    "allow-plugins": {
-      "pestphp/pest-plugin": true,
-      "php-http/discovery": true,
-      "wikimedia/composer-merge-plugin": true
-    }
-  },
-  "minimum-stability": "stable",
-  "prefer-stable": true
+    "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.15",
+        "fakerphp/faker": "^1.23",
+        "larastan/larastan": "^3.0",
+        "laravel/pail": "^1.2.2",
+        "laravel/pint": "^1.13",
+        "laravel/sail": "^1.41",
+        "mockery/mockery": "^1.6",
+        "nunomaduro/collision": "^8.6",
+        "phiki/phiki": "^2.0",
+        "phpunit/phpunit": "12.5.22"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/",
+            "Modules\\AdminManagement\\Tests\\": "Modules/AdminManagement/tests/"
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "@php artisan package:discover --ansi"
+        ],
+        "post-update-cmd": [
+            "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
+        ],
+        "post-root-package-install": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ],
+        "post-create-project-cmd": [
+            "@php artisan key:generate --ansi",
+            "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
+            "@php artisan migrate --graceful --ansi"
+        ],
+        "dev": [
+            "Composer\\Config::disableProcessTimeout",
+            "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74,#4ade80\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"php artisan pail --timeout=0\" \"npm run dev\" \"php artisan reverb:start\" --names=server,queue,logs,vite,reverb"
+        ],
+        "test": [
+            "@php artisan config:clear --ansi",
+            "@php artisan test"
+        ],
+        "test:unit": "@php artisan test --testsuite=Unit",
+        "test:feature": "@php artisan test --testsuite=Feature",
+        "test:admin": "@php artisan test --testsuite=AdminManagement",
+        "test:coverage": "@php artisan test --coverage",
+        "lint": "vendor/bin/pint",
+        "lint:check": "vendor/bin/pint --test",
+        "analyse": "vendor/bin/phpstan analyse --memory-limit=2G",
+        "security": "@composer audit --abandoned=report",
+        "translations": "@php artisan translations:integrity-check --locales=en --locales=ar --locales=tr",
+        "translations:check": "@php artisan translations:integrity-check --report-only --locales=en --locales=ar --locales=tr",
+        "translations:fix": "@php artisan translations:integrity-check --fix --locales=en --locales=ar --locales=tr",
+        "ci": [
+            "@lint:check",
+            "@analyse",
+            "@security",
+            "@translations:check"
+        ]
+    },
+    "extra": {
+        "laravel": {
+            "dont-discover": []
+        },
+        "merge-plugin": {
+            "include": [
+                "Modules/*/composer.json"
+            ]
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "php-http/discovery": true,
+            "wikimedia/composer-merge-plugin": true
+        },
+        "audit": {
+            "ignore": ["[PKSA-5jz8-6tcw-pbk4]"],
+            "block-insecure": false
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
 }

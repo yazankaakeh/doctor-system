@@ -30,7 +30,7 @@ class UpdateProfileRequest extends FormRequest
             'phone' => ['required', 'string', 'max:20', Rule::unique('doctors', 'phone')->ignore($doctorId)],
             'password' => ['nullable', 'string', 'confirmed', Password::defaults()],
             'age' => ['nullable', 'date'],
-            'gender' => ['nullable', 'string', 'in:' . implode(',', array_column(Gender::cases(), 'value'))],
+            'gender' => ['nullable', 'string', 'in:'.implode(',', array_column(Gender::cases(), 'value'))],
             'medical_specialty_id' => ['nullable', 'exists:medical_specialties,id'],
             'bio' => ['nullable', 'string', 'max:1000'],
             'avatar' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],

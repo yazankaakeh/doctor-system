@@ -4,6 +4,7 @@ namespace Modules\AdminManagement\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Modules\AdminManagement\Console\CreateRoutePermissionsCommand;
 use Modules\AdminManagement\Repository\Role\RoleInterface;
 use Modules\AdminManagement\Repository\Role\RoleRepository;
 use Modules\AdminManagement\Repository\User\DoctorInterface;
@@ -39,7 +40,7 @@ class AdminManagementServiceProvider extends ServiceProvider
     protected function registerCommands(): void
     {
         $this->commands([
-            \Modules\AdminManagement\Console\CreateRoutePermissionsCommand::class,
+            CreateRoutePermissionsCommand::class,
         ]);
     }
 

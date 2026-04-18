@@ -181,7 +181,7 @@ class MessageSearchService
     {
         // For MySQL with full-text index
         // Adjust based on your database setup
-        return Message::whereRaw("MATCH(content) AGAINST(? IN NATURAL LANGUAGE MODE)", [$query])
+        return Message::whereRaw('MATCH(content) AGAINST(? IN NATURAL LANGUAGE MODE)', [$query])
             ->with(['conversation', 'conversation.channel'])
             ->limit($limit)
             ->get();

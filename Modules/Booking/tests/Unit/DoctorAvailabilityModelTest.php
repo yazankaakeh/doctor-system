@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Modules\Booking\Enums\BookingStatusEnum;
 use Modules\Booking\Models\DoctorAvailability;
 use Modules\Booking\Tests\BookingTestCase;
+use Modules\Doctor\Models\Doctor;
 
 class DoctorAvailabilityModelTest extends BookingTestCase
 {
@@ -151,7 +152,7 @@ class DoctorAvailabilityModelTest extends BookingTestCase
     /** @test */
     public function it_can_scope_for_doctor(): void
     {
-        $otherDoctor = \Modules\Doctor\Models\Doctor::factory()->create([
+        $otherDoctor = Doctor::factory()->create([
             'medical_specialty_id' => $this->medicalSpecialty->id,
         ]);
 

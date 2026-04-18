@@ -6,7 +6,6 @@ use Modules\Core\App\Enums\ActiveEnum;
 use Modules\Core\App\Enums\Gender;
 use Modules\Doctor\Enums\BloodType;
 use Modules\Doctor\Enums\MaritalStatus;
-use Modules\Doctor\Models\Clinic;
 use Modules\Doctor\Models\Patient;
 use Modules\Doctor\Tests\DoctorTestCase;
 

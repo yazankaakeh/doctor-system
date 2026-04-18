@@ -1,43 +1,36 @@
 <?php
 
-use Modules\Core\App\Enums\Gender;
-use Modules\Doctor\Enums\BloodType;
-use Modules\Doctor\Enums\MaritalStatus;
-use Modules\Doctor\Enums\MedicalExaminationStatusEnum;
-use Modules\Doctor\Enums\MedicalTestTypeEnum;
-
 return [
     'enum' => [
         'Gender' => [
-            Gender::MALE->value => 'ذكر',
-            Gender::FEMALE->value => 'أنثى',
+            1 => 'ذكر',
+            0 => 'أنثى',
         ],
         'MedicalExaminationStatusEnum' => [
-            MedicalExaminationStatusEnum::ACTIVE->value => 'نشط',
-            MedicalExaminationStatusEnum::DONE->value => 'منجز',
-            MedicalExaminationStatusEnum::PENDING->value => 'قيد الانتظار',
-            MedicalExaminationStatusEnum::ARCHIVED->value => 'مؤرشف',
+            1 => 'نشط',
+            2 => 'منجز',
+            3 => 'قيد الانتظار',
+            4 => 'مؤرشف',
         ],
         'MedicalTestTypeEnum' => [
-            MedicalTestTypeEnum::LABORATORY_TESTS->value => 'تحاليل مختبرية',
-            MedicalTestTypeEnum::RADIOLOGY_TESTS->value => 'فحوصات أشعة',
+            1 => 'تحاليل مختبرية',
+            0 => 'فحوصات أشعة',
         ],
         'MaritalStatus' => [
-            MaritalStatus::SINGLE->value => 'أعزب',
-            MaritalStatus::MARRIED->value => 'متزوج',
-            MaritalStatus::DIVORCED->value => 'مطلق',
+            1 => 'أعزب',
+            2 => 'متزوج',
+            3 => 'مطلق',
         ],
         'BloodType' => [
-            BloodType::A_POSITIVE->value => 'A موجب',
-            BloodType::A_NEGATIVE->value => 'A سالب',
-            BloodType::B_POSITIVE->value => 'B موجب',
-            BloodType::B_NEGATIVE->value => 'B سالب',
-            BloodType::AB_POSITIVE->value => 'AB موجب',
-            BloodType::AB_NEGATIVE->value => 'AB سالب',
-            BloodType::O_POSITIVE->value => 'O موجب',
-            BloodType::O_NEGATIVE->value => 'O سالب',
+            1 => 'A موجب',
+            2 => 'A سالب',
+            3 => 'B موجب',
+            4 => 'B سالب',
+            5 => 'AB موجب',
+            6 => 'AB سالب',
+            7 => 'O موجب',
+            8 => 'O سالب',
         ],
-
     ],
     'doctor' => [
         'medicalSpecialtyId' => 'التخصص الطبي',
@@ -81,6 +74,7 @@ return [
         'unit' => 'وحدة الفحص الطبي',
         'createMedicalTest' => 'إضافة فحص طبي',
         'updateMedicalTest' => 'تعديل فحص طبي',
+        'type' => '[TODO:ar] Medical Test Type',
     ],
     'medicine' => [
         'name' => 'اسم الدواء',
@@ -105,8 +99,8 @@ return [
     ],
     'dosageForm' => [
         'name' => 'اسم شكل الجرعة',
-        'createFinalDiagnosis' => 'إضافة شكل الجرعة',
-        'updateFinalDiagnosis' => 'تعديل شكل الجرعة',
+        'create' => 'إضافة شكل الجرعة',
+        'update' => 'تعديل شكل الجرعة',
     ],
     'medicalSpecialty' => [
         'name' => 'اسم التخصص الطبي',
@@ -135,11 +129,9 @@ return [
         'medicalPreviewInfo' => 'معلومات المعاينة الطبية',
         'finalDiagnosisInfo' => 'معلومات التشخيص النهائي',
         'vitalSignsInfo' => 'معلومات العلامات الحيوية',
-
         'printMedicalTests' => 'طباعة الفحوصات الطبية',
         'printMedicines' => 'طباعة الأدوية',
         'printMedicinesPharmacy' => 'طباعة أدوية الصيدلية',
-
         'clinical_examination' => 'الفحص السريري',
         'impression' => 'الانطباع',
         'reasonOfVisiting' => 'الشكوى الرئيسية',
@@ -148,7 +140,6 @@ return [
         'laboratoryTests' => 'تحاليل مختبرية',
         'radiologyTests' => 'فحوصات أشعة',
         'medicines' => 'معلومات الأدوية',
-
         'drugName' => 'اسم الدواء',
         'dosage' => 'الجرعة',
         'dose' => 'العيار',
@@ -157,7 +148,6 @@ return [
         'note' => 'ملاحظة',
         'medicalStory' => 'القصة المرضية',
         'addMedicalTest' => 'إضافة الفحوصات الطبية',
-
         'value' => 'القيمة :name',
         'file' => 'الملف :name',
         'uploadFile' => 'رفع الملفات',
@@ -168,10 +158,14 @@ return [
             'vitalSigns' => 'العلامات الحيوية',
             'medicines' => 'الأدوية',
             'medicalTest' => 'الفحص الطبي',
-
             'medicalTestResult' => 'نتيجة الفحص الطبي',
             'medicalTestType' => 'نوع الفحص الطبي',
         ],
+        'selectTests' => '[TODO:ar] Select tests to add',
+        'searchTests' => '[TODO:ar] Search tests...',
+        'testsSelected' => '[TODO:ar] tests selected',
+        'noTestsAdded' => '[TODO:ar] No tests added yet',
+        'noTestsFound' => '[TODO:ar] No tests found',
     ],
     'modalUploadFile' => [
         'title' => 'رفع الملفات',
@@ -222,4 +216,10 @@ return [
     'saveAll' => 'حفظ الكل',
     'clearAll' => 'مسح الكل',
     'viewFile' => 'عرض الملف',
+    'reports' => [
+        'numberOfDoctors' => '[TODO:ar] Total Number Of Doctors',
+        'numberOfPatients' => '[TODO:ar] Total Number Of Patients',
+        'numberOfClinics' => '[TODO:ar] Total Number Of Clinics',
+        'numberOfMedicalPreviews' => '[TODO:ar] Number Of MedicalPreviews',
+    ],
 ];

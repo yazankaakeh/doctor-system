@@ -29,7 +29,8 @@ class CoreController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        //
+        // Stub — concrete modules override this with their create logic.
+        return redirect()->back();
     }
 
     /**
@@ -53,7 +54,8 @@ class CoreController extends Controller
      */
     public function update(Request $request, $id): RedirectResponse
     {
-        //
+        // Stub — concrete modules override this with their update logic.
+        return redirect()->back();
     }
 
     /**

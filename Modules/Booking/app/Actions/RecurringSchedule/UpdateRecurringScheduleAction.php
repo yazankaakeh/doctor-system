@@ -18,7 +18,7 @@ class UpdateRecurringScheduleAction
         $schedule = $this->repository->update($id, $data);
 
         // If schedule was deactivated, optionally clean up future unbooked slots
-        if (isset($data['is_active']) && !$data['is_active']) {
+        if (isset($data['is_active']) && ! $data['is_active']) {
             $this->availabilityRepository->deleteFutureUnbookedByScheduleId($id);
         }
 

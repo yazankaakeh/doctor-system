@@ -10,6 +10,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 use Modules\Messaging\Channels\ChannelFactory;
 use Modules\Messaging\DataTransferObjects\WebhookPayloadDTO;
+use Modules\Messaging\Enums\ChannelTypeEnum;
 use Modules\Messaging\Models\WebhookLog;
 use Modules\Messaging\Services\AutoAssignmentService;
 use Modules\Messaging\Services\ChatbotService;
@@ -119,7 +120,7 @@ class ProcessWebhookJob implements ShouldQueue
                 }
 
                 // Dispatch media download job if message has media
-                if ($message->media_url && $channelType === \Modules\Messaging\Enums\ChannelTypeEnum::WHATSAPP) {
+                if ($message->media_url && $channelType === ChannelTypeEnum::WHATSAPP) {
                     DownloadWhatsAppMediaJob::dispatch($message->id);
                 }
 

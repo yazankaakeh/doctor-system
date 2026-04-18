@@ -91,8 +91,8 @@ class Channel extends Model
     public function isConfigured(): bool
     {
         return match ($this->type) {
-            ChannelTypeEnum::WHATSAPP => !empty($this->getConfigValue('access_token')) && !empty($this->getConfigValue('phone_number_id')),
-            ChannelTypeEnum::TELEGRAM => !empty($this->getConfigValue('bot_token')),
+            ChannelTypeEnum::WHATSAPP => ! empty($this->getConfigValue('access_token')) && ! empty($this->getConfigValue('phone_number_id')),
+            ChannelTypeEnum::TELEGRAM => ! empty($this->getConfigValue('bot_token')),
             ChannelTypeEnum::WEBCHAT => true, // WebChat doesn't require external config
             default => false,
         };

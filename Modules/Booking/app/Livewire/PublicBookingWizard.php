@@ -20,26 +20,38 @@ class PublicBookingWizard extends Component
 {
     // Wizard state
     public int $step = 1;
+
     public int $totalSteps = 5;
 
     // Selection data
     public ?int $selectedSpecialtyId = null;
+
     public ?int $selectedDoctorId = null;
+
     public ?int $selectedAvailabilityId = null;
+
     public ?string $selectedDate = null;
+
     public ?string $selectedTime = null;
+
     public ?string $notes = null;
 
     // Filtered/loaded data
     public Collection $specialties;
+
     public Collection $doctors;
+
     public Collection $filteredDoctors;
+
     public Collection $availableDates;
+
     public array $availableSlots = [];
+
     public ?DoctorAvailability $selectedAvailability = null;
 
     // Calendar state
     public int $calendarMonth;
+
     public int $calendarYear;
 
     // Auth mode: 'login' or 'register'
@@ -47,14 +59,20 @@ class PublicBookingWizard extends Component
 
     // Login form
     public string $loginEmail = '';
+
     public string $loginPassword = '';
+
     public bool $remember = false;
 
     // Register form
     public string $registerName = '';
+
     public string $registerEmail = '';
+
     public string $registerPhone = '';
+
     public string $registerPassword = '';
+
     public string $registerPassword_confirmation = '';
 
     // Error handling

@@ -126,7 +126,7 @@ class ConversationTransferService
             ]),
         ]);
 
-        return $this->transfer($conversation, $supervisor, null, "ESCALATED: " . ($reason ?? 'No reason provided'));
+        return $this->transfer($conversation, $supervisor, null, 'ESCALATED: '.($reason ?? 'No reason provided'));
     }
 
     /**

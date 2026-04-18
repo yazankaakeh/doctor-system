@@ -4,7 +4,6 @@ namespace Modules\Patient\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Response;
 use Illuminate\View\View;
 use Modules\Patient\Actions\GeneratePrescriptionPdfAction;
 use Modules\Patient\Actions\UploadTestResultAction;
@@ -41,7 +40,7 @@ class AppointmentController extends Controller
                 'medicines',
                 'medicalTests',
                 'vitalSigns',
-                'finalDiagnosis'
+                'finalDiagnosis',
             ])
             ->findOrFail($id);
 
@@ -81,7 +80,7 @@ class AppointmentController extends Controller
         } catch (\Exception $e) {
             return redirect()
                 ->back()
-                ->with('error', trans('patient::patient.test_result_upload_failed') . ': ' . $e->getMessage());
+                ->with('error', trans('patient::patient.test_result_upload_failed').': '.$e->getMessage());
         }
     }
 
@@ -96,6 +95,6 @@ class AppointmentController extends Controller
 
         $pdf = $action->handle($id, $patientId);
 
-        return $pdf->download('prescription-' . $id . '.pdf');
+        return $pdf->download('prescription-'.$id.'.pdf');
     }
 }

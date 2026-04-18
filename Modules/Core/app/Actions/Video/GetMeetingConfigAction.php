@@ -36,7 +36,7 @@ class GetMeetingConfigAction
     {
         $participant = MeetingParticipant::doctor(
             id: (string) $doctor->id,
-            name: 'Dr. ' . $doctor->name,
+            name: 'Dr. '.$doctor->name,
             email: $doctor->email,
             avatar: $doctor->avatar ?? null,
         );

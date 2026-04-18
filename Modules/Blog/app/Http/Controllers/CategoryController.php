@@ -29,14 +29,6 @@ class CategoryController extends Controller
     }
 
     /**
-     * Show the specified resource.
-     */
-    public function show($id)
-    {
-        return view('blog::show');
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit($id)

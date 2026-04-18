@@ -39,6 +39,7 @@ class WhatsAppMediaService
     {
         if (! $this->accessToken) {
             Log::channel('messaging')->error('WhatsApp not configured for media download');
+
             return null;
         }
 
@@ -60,8 +61,8 @@ class WhatsAppMediaService
             // Step 3: Store locally
             $mimeType = $mimeType ?? $mediaInfo['mime_type'];
             $extension = $this->getExtensionFromMime($mimeType);
-            $filename = Str::uuid() . '.' . $extension;
-            $path = 'messaging/media/' . date('Y/m') . '/' . $filename;
+            $filename = Str::uuid().'.'.$extension;
+            $path = 'messaging/media/'.date('Y/m').'/'.$filename;
 
             Storage::disk('public')->put($path, $fileContent);
 
@@ -77,6 +78,7 @@ class WhatsAppMediaService
                 'media_id' => $mediaId,
                 'error' => $e->getMessage(),
             ]);
+
             return null;
         }
     }
@@ -120,7 +122,7 @@ class WhatsAppMediaService
     {
         $response = Http::withToken($this->accessToken)
             ->timeout(30)
-            ->get(self::API_BASE_URL . "/{$this->apiVersion}/{$mediaId}");
+            ->get(self::API_BASE_URL."/{$this->apiVersion}/{$mediaId}");
 
         if (! $response->successful()) {
             Log::channel('messaging')->error('Failed to get WhatsApp media info', [
@@ -128,6 +130,7 @@ class WhatsAppMediaService
                 'status' => $response->status(),
                 'error' => $response->json('error'),
             ]);
+
             return null;
         }
 
@@ -153,6 +156,7 @@ class WhatsAppMediaService
                 'url' => $url,
                 'status' => $response->status(),
             ]);
+
             return null;
         }
 
@@ -203,7 +207,7 @@ class WhatsAppMediaService
             $response = Http::withToken($this->accessToken)
                 ->timeout(60)
                 ->attach('file', file_get_contents($filePath), basename($filePath))
-                ->post(self::API_BASE_URL . "/{$this->apiVersion}/{$phoneNumberId}/media", [
+                ->post(self::API_BASE_URL."/{$this->apiVersion}/{$phoneNumberId}/media", [
                     'messaging_product' => 'whatsapp',
                     'type' => $mimeType,
                 ]);
@@ -215,11 +219,13 @@ class WhatsAppMediaService
             Log::channel('messaging')->error('Failed to upload WhatsApp media', [
                 'error' => $response->json('error'),
             ]);
+
             return null;
         } catch (\Exception $e) {
             Log::channel('messaging')->error('Exception uploading WhatsApp media', [
                 'error' => $e->getMessage(),
             ]);
+
             return null;
         }
     }

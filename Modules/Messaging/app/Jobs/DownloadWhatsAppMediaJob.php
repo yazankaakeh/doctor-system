@@ -33,6 +33,7 @@ class DownloadWhatsAppMediaJob implements ShouldQueue
             Log::channel('messaging')->warning('DownloadWhatsAppMediaJob: Message not found', [
                 'message_id' => $this->messageId,
             ]);
+
             return;
         }
 

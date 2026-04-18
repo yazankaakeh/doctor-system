@@ -8,25 +8,33 @@ use Illuminate\View\View;
 use Livewire\Component;
 use Modules\Booking\Actions\Booking\CreateBookingAction;
 use Modules\Booking\Models\DoctorAvailability;
-use Modules\Doctor\Models\Doctor;
-use Modules\Doctor\Models\MedicalSpecialty;
 
 class BookingWizard extends Component
 {
     public int $step = 1;
+
     public Collection $specialties;
+
     public Collection $doctors;
 
     public ?int $selectedSpecialtyId = null;
+
     public ?int $selectedDoctorId = null;
+
     public ?int $selectedAvailabilityId = null;
+
     public ?string $selectedDate = null;
+
     public ?string $selectedTime = null;
+
     public ?string $notes = null;
 
     public Collection $filteredDoctors;
+
     public Collection $availableDates;
+
     public array $availableSlots = [];
+
     public ?DoctorAvailability $selectedAvailability = null;
 
     public function mount(Collection $specialties, Collection $doctors): void

@@ -3,6 +3,7 @@
 namespace Modules\Booking\Repository\Booking;
 
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
 use Modules\Booking\Models\Booking;
 
 interface BookingInterface
@@ -13,7 +14,7 @@ interface BookingInterface
 
     public function getUpcomingForDoctor(int $doctorId): LengthAwarePaginator;
 
-    public function getAllForDoctor(int $doctorId): \Illuminate\Database\Eloquent\Collection;
+    public function getAllForDoctor(int $doctorId): Collection;
 
     public function store(array $data): Booking;
 

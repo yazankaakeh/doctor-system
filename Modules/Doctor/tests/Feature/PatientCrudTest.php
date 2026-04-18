@@ -2,7 +2,6 @@
 
 namespace Modules\Doctor\Tests\Feature;
 
-use Modules\Core\App\Enums\ActiveEnum;
 use Modules\Core\App\Enums\Gender;
 use Modules\Doctor\Enums\BloodType;
 use Modules\Doctor\Models\Patient;

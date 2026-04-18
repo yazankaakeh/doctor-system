@@ -18,7 +18,7 @@ class VerifyOfflinePaymentAction
     {
         $payment = $this->repository->find($paymentId);
 
-        if (!$payment->isAwaitingVerification()) {
+        if (! $payment->isAwaitingVerification()) {
             throw new \Exception(__('payment::payment.not_awaiting_verification'));
         }
 
@@ -40,7 +40,7 @@ class VerifyOfflinePaymentAction
     {
         $payment = $this->repository->find($paymentId);
 
-        if (!$payment->isAwaitingVerification()) {
+        if (! $payment->isAwaitingVerification()) {
             throw new \Exception(__('payment::payment.not_awaiting_verification'));
         }
 

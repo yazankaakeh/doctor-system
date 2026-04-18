@@ -46,12 +46,13 @@ class RateLimitService
                 'count' => $conversationCount,
                 'limit' => $limits['per_conversation'],
             ]);
+
             return false;
         }
 
         // Check channel-level limit for WhatsApp
         if ($channelType === 'whatsapp') {
-            $phoneKey = "rate_limit:whatsapp:phone";
+            $phoneKey = 'rate_limit:whatsapp:phone';
             $phoneCount = Cache::get($phoneKey, 0);
 
             if ($phoneCount >= ($limits['per_phone'] ?? 1000)) {
@@ -59,6 +60,7 @@ class RateLimitService
                     'count' => $phoneCount,
                     'limit' => $limits['per_phone'],
                 ]);
+
                 return false;
             }
         }
@@ -80,7 +82,7 @@ class RateLimitService
 
         // Increment channel-level counter for WhatsApp
         if ($channelType === 'whatsapp') {
-            $phoneKey = "rate_limit:whatsapp:phone";
+            $phoneKey = 'rate_limit:whatsapp:phone';
             Cache::increment($phoneKey);
             Cache::put($phoneKey, Cache::get($phoneKey, 1), 60);
         }
@@ -95,7 +97,7 @@ class RateLimitService
             return true;
         }
 
-        $key = "rate_limit:whatsapp:template:" . date('Y-m-d');
+        $key = 'rate_limit:whatsapp:template:'.date('Y-m-d');
         $count = Cache::get($key, 0);
         $limit = $this->limits['whatsapp']['template_per_day'] ?? 100000;
 
@@ -107,7 +109,7 @@ class RateLimitService
      */
     public function recordTemplateSend(): void
     {
-        $key = "rate_limit:whatsapp:template:" . date('Y-m-d');
+        $key = 'rate_limit:whatsapp:template:'.date('Y-m-d');
         Cache::increment($key);
         // Keep for 24 hours
         Cache::put($key, Cache::get($key, 1), 86400);
@@ -133,7 +135,7 @@ class RateLimitService
     public function getResetTime(Conversation $conversation): int
     {
         $conversationKey = "rate_limit:conversation:{$conversation->id}";
-        $ttl = Cache::getStore()->connection()->ttl(config('cache.prefix') . $conversationKey);
+        $ttl = Cache::getStore()->connection()->ttl(config('cache.prefix').$conversationKey);
 
         return max(0, $ttl);
     }

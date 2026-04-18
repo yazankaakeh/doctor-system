@@ -4,6 +4,12 @@ namespace Modules\MCP\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Modules\MCP\Repository\BusinessKnowledge\BusinessKnowledgeInterface;
+use Modules\MCP\Repository\BusinessKnowledge\BusinessKnowledgeRepository;
+use Modules\MCP\Repository\ChatConversation\ChatConversationInterface;
+use Modules\MCP\Repository\ChatConversation\ChatConversationRepository;
+use Modules\MCP\Repository\ChatMessage\ChatMessageInterface;
+use Modules\MCP\Repository\ChatMessage\ChatMessageRepository;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -47,18 +53,18 @@ class MCPServiceProvider extends ServiceProvider
     protected function registerRepositories(): void
     {
         $this->app->bind(
-            \Modules\MCP\Repository\ChatConversation\ChatConversationInterface::class,
-            \Modules\MCP\Repository\ChatConversation\ChatConversationRepository::class
+            ChatConversationInterface::class,
+            ChatConversationRepository::class
         );
 
         $this->app->bind(
-            \Modules\MCP\Repository\ChatMessage\ChatMessageInterface::class,
-            \Modules\MCP\Repository\ChatMessage\ChatMessageRepository::class
+            ChatMessageInterface::class,
+            ChatMessageRepository::class
         );
 
         $this->app->bind(
-            \Modules\MCP\Repository\BusinessKnowledge\BusinessKnowledgeInterface::class,
-            \Modules\MCP\Repository\BusinessKnowledge\BusinessKnowledgeRepository::class
+            BusinessKnowledgeInterface::class,
+            BusinessKnowledgeRepository::class
         );
     }
 

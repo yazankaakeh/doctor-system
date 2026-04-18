@@ -50,25 +50,25 @@ class BookingConfirmedNotification extends Notification implements ShouldQueue
             ->line('');
 
         // Appointment Details
-        $mail->line('**' . __('booking::booking.email.appointment_details') . '**')
+        $mail->line('**'.__('booking::booking.email.appointment_details').'**')
             ->line('')
-            ->line(__('booking::booking.email.doctor_label') . ': **Dr. ' . $this->booking->doctor->name . '**');
+            ->line(__('booking::booking.email.doctor_label').': **Dr. '.$this->booking->doctor->name.'**');
 
         if ($this->booking->doctor->medicalSpecialty) {
-            $mail->line(__('booking::booking.email.specialty_label') . ': ' . $this->booking->doctor->medicalSpecialty->name);
+            $mail->line(__('booking::booking.email.specialty_label').': '.$this->booking->doctor->medicalSpecialty->name);
         }
 
-        $mail->line(__('booking::booking.email.date_label') . ': **' . $this->booking->booking_date->format('l, F j, Y') . '**')
-            ->line(__('booking::booking.email.time_label') . ': **' . $this->booking->start_time->format('H:i') . ' - ' . $this->booking->end_time->format('H:i') . '**')
-            ->line(__('booking::booking.email.duration_label') . ': ' . $this->booking->duration . ' ' . __('booking::booking.minutes'))
-            ->line(__('booking::booking.email.fee_label') . ': **$' . number_format($this->booking->consultation_fee, 2) . '**')
+        $mail->line(__('booking::booking.email.date_label').': **'.$this->booking->booking_date->format('l, F j, Y').'**')
+            ->line(__('booking::booking.email.time_label').': **'.$this->booking->start_time->format('H:i').' - '.$this->booking->end_time->format('H:i').'**')
+            ->line(__('booking::booking.email.duration_label').': '.$this->booking->duration.' '.__('booking::booking.minutes'))
+            ->line(__('booking::booking.email.fee_label').': **$'.number_format($this->booking->consultation_fee, 2).'**')
             ->line('')
             ->line('---')
             ->line('');
 
         // Video Consultation Link
         if ($this->booking->meeting_link) {
-            $mail->line('**' . __('booking::booking.email.video_consultation') . '**')
+            $mail->line('**'.__('booking::booking.email.video_consultation').'**')
                 ->line(__('booking::booking.email.video_consultation_ready'))
                 ->action(
                     __('booking::booking.email.join_consultation'),

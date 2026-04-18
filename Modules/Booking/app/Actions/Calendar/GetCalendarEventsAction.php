@@ -3,7 +3,6 @@
 namespace Modules\Booking\Actions\Calendar;
 
 use Carbon\Carbon;
-use Illuminate\Support\Collection;
 use Modules\Booking\Enums\BookingStatusEnum;
 use Modules\Booking\Models\Booking;
 use Modules\Booking\Models\DoctorAvailability;
@@ -30,10 +29,10 @@ class GetCalendarEventsAction
             $borderColor = $availability->is_active ? $backgroundColor : '#6c757d';
 
             return [
-                'id' => 'availability_' . $availability->id,
-                'title' => $availability->start_time->format('H:i') . ' - ' . $availability->end_time->format('H:i'),
-                'start' => $availability->date->format('Y-m-d') . 'T' . $availability->start_time->format('H:i:s'),
-                'end' => $availability->date->format('Y-m-d') . 'T' . $availability->end_time->format('H:i:s'),
+                'id' => 'availability_'.$availability->id,
+                'title' => $availability->start_time->format('H:i').' - '.$availability->end_time->format('H:i'),
+                'start' => $availability->date->format('Y-m-d').'T'.$availability->start_time->format('H:i:s'),
+                'end' => $availability->date->format('Y-m-d').'T'.$availability->end_time->format('H:i:s'),
                 'backgroundColor' => $backgroundColor,
                 'borderColor' => $borderColor,
                 'extendedProps' => [
@@ -67,8 +66,8 @@ class GetCalendarEventsAction
             return [
                 'id' => $booking->id,
                 'title' => $booking->patient?->name ?? __('booking::calendar.unknown_patient'),
-                'start' => $booking->booking_date->format('Y-m-d') . 'T' . $booking->start_time->format('H:i:s'),
-                'end' => $booking->booking_date->format('Y-m-d') . 'T' . $booking->end_time->format('H:i:s'),
+                'start' => $booking->booking_date->format('Y-m-d').'T'.$booking->start_time->format('H:i:s'),
+                'end' => $booking->booking_date->format('Y-m-d').'T'.$booking->end_time->format('H:i:s'),
                 'backgroundColor' => $colors['background'],
                 'borderColor' => $colors['border'],
                 'textColor' => $colors['text'],

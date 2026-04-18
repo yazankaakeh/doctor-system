@@ -2,7 +2,6 @@
 
 namespace Modules\Booking\Tests\Feature;
 
-use Carbon\Carbon;
 use Modules\Booking\Enums\BookingStatusEnum;
 use Modules\Booking\Tests\BookingTestCase;
 

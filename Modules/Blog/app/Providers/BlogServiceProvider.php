@@ -4,6 +4,12 @@ namespace Modules\Blog\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Modules\Blog\Repository\Category\CategoryInterface;
+use Modules\Blog\Repository\Category\CategoryRepository;
+use Modules\Blog\Repository\Post\PostInterface;
+use Modules\Blog\Repository\Post\PostRepository;
+use Modules\Blog\Repository\Tag\TagInterface;
+use Modules\Blog\Repository\Tag\TagRepository;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -37,9 +43,9 @@ class BlogServiceProvider extends ServiceProvider
         $this->app->register(EventServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
         // Bind repositories
-        $this->app->bind(\Modules\Blog\Repository\Category\CategoryInterface::class, \Modules\Blog\Repository\Category\CategoryRepository::class);
-        $this->app->bind(\Modules\Blog\Repository\Post\PostInterface::class, \Modules\Blog\Repository\Post\PostRepository::class);
-        $this->app->bind(\Modules\Blog\Repository\Tag\TagInterface::class, \Modules\Blog\Repository\Tag\TagRepository::class);
+        $this->app->bind(CategoryInterface::class, CategoryRepository::class);
+        $this->app->bind(PostInterface::class, PostRepository::class);
+        $this->app->bind(TagInterface::class, TagRepository::class);
     }
 
     /**

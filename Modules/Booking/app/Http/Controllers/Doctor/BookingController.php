@@ -41,7 +41,7 @@ class BookingController extends Controller
             abort(403);
         }
 
-        if (!$booking->isConfirmed()) {
+        if (! $booking->isConfirmed()) {
             return redirect()
                 ->back()
                 ->with('error', __('booking::booking.cannot_complete'));
@@ -60,7 +60,7 @@ class BookingController extends Controller
             abort(403);
         }
 
-        if (!$booking->isConfirmed()) {
+        if (! $booking->isConfirmed()) {
             return redirect()
                 ->back()
                 ->with('error', __('booking::booking.cannot_mark_no_show'));

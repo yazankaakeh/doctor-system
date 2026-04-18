@@ -31,6 +31,7 @@ class CreateMissingConversations extends Command
 
         if ($bookings->isEmpty()) {
             $this->info('No bookings without conversations found.');
+
             return self::SUCCESS;
         }
 
@@ -51,7 +52,7 @@ class CreateMissingConversations extends Command
         }
 
         $this->newLine();
-        $this->info("Summary:");
+        $this->info('Summary:');
         $this->info("  Created: {$created}");
         if ($failed > 0) {
             $this->warn("  Failed: {$failed}");

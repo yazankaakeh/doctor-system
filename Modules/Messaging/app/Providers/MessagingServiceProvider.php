@@ -4,6 +4,7 @@ namespace Modules\Messaging\Providers;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
 use Modules\Messaging\Console\Commands\MigrateYeastarDataCommand;
 use Modules\Messaging\Console\Commands\SyncWhatsAppTemplatesCommand;
@@ -53,7 +54,6 @@ use Modules\Messaging\Services\WhatsAppMediaService;
 use Modules\Messaging\Services\WhatsAppReadReceiptService;
 use Modules\Messaging\Services\WhatsAppTemplateSyncService;
 use Modules\Messaging\Services\WhatsAppWindowService;
-use Illuminate\Support\ServiceProvider;
 use Nwidart\Modules\Traits\PathNamespace;
 
 class MessagingServiceProvider extends ServiceProvider
@@ -86,7 +86,7 @@ class MessagingServiceProvider extends ServiceProvider
     protected function registerConfig(): void
     {
         $this->publishes([
-            module_path($this->name, 'config/config.php') => config_path($this->nameLower . '.php'),
+            module_path($this->name, 'config/config.php') => config_path($this->nameLower.'.php'),
         ], 'config');
         $this->mergeConfigFrom(
             module_path($this->name, 'config/config.php'),
@@ -99,12 +99,12 @@ class MessagingServiceProvider extends ServiceProvider
      */
     protected function registerViews(): void
     {
-        $viewPath = resource_path('views/modules/' . $this->nameLower);
+        $viewPath = resource_path('views/modules/'.$this->nameLower);
         $sourcePath = module_path($this->name, 'resources/views');
 
         $this->publishes([
-            $sourcePath => $viewPath
-        ], ['views', $this->nameLower . '-module-views']);
+            $sourcePath => $viewPath,
+        ], ['views', $this->nameLower.'-module-views']);
 
         $this->loadViewsFrom(array_merge($this->getPublishableViewPaths(), [$sourcePath]), $this->nameLower);
     }
@@ -114,7 +114,7 @@ class MessagingServiceProvider extends ServiceProvider
      */
     protected function registerTranslations(): void
     {
-        $langPath = resource_path('lang/modules/' . $this->nameLower);
+        $langPath = resource_path('lang/modules/'.$this->nameLower);
 
         if (is_dir($langPath)) {
             $this->loadTranslationsFrom($langPath, $this->nameLower);
@@ -137,8 +137,8 @@ class MessagingServiceProvider extends ServiceProvider
     {
         $paths = [];
         foreach ($this->app['config']->get('view.paths') as $path) {
-            if (is_dir($path . '/modules/' . $this->nameLower)) {
-                $paths[] = $path . '/modules/' . $this->nameLower;
+            if (is_dir($path.'/modules/'.$this->nameLower)) {
+                $paths[] = $path.'/modules/'.$this->nameLower;
             }
         }
 

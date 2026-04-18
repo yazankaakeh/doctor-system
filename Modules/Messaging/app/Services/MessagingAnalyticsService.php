@@ -6,7 +6,6 @@ use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use Modules\Messaging\Enums\ChannelTypeEnum;
 use Modules\Messaging\Enums\ConversationStatusEnum;
 use Modules\Messaging\Enums\MessageDirectionEnum;
 use Modules\Messaging\Enums\MessageStatusEnum;
@@ -217,11 +216,11 @@ class MessagingAnalyticsService
     protected function formatDuration(float $seconds): string
     {
         if ($seconds < 60) {
-            return round($seconds) . 's';
+            return round($seconds).'s';
         }
 
         if ($seconds < 3600) {
-            return round($seconds / 60) . 'm';
+            return round($seconds / 60).'m';
         }
 
         $hours = floor($seconds / 3600);

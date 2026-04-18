@@ -52,23 +52,23 @@ class DoctorAppointmentReminderNotification extends Notification implements Shou
 
         $mail = (new MailMessage)
             ->subject(__($subjectKey))
-            ->greeting(__('booking::booking.email.greeting', ['name' => 'Dr. ' . $notifiable->name]))
+            ->greeting(__('booking::booking.email.greeting', ['name' => 'Dr. '.$notifiable->name]))
             ->line(__($line1Key))
             ->line('')
             ->line('---')
             ->line('');
 
         // Patient Details
-        $mail->line('**' . __('booking::booking.email.patient_details') . '**')
+        $mail->line('**'.__('booking::booking.email.patient_details').'**')
             ->line('')
-            ->line(__('booking::booking.email.patient_name_label') . ': **' . $this->booking->patient->name . '**');
+            ->line(__('booking::booking.email.patient_name_label').': **'.$this->booking->patient->name.'**');
 
         if ($this->booking->patient->phone) {
-            $mail->line(__('booking::booking.email.phone_label') . ': ' . $this->booking->patient->phone);
+            $mail->line(__('booking::booking.email.phone_label').': '.$this->booking->patient->phone);
         }
 
         if ($this->booking->patient->email) {
-            $mail->line(__('booking::booking.email.email_label') . ': ' . $this->booking->patient->email);
+            $mail->line(__('booking::booking.email.email_label').': '.$this->booking->patient->email);
         }
 
         $mail->line('')
@@ -76,18 +76,18 @@ class DoctorAppointmentReminderNotification extends Notification implements Shou
             ->line('');
 
         // Appointment Details
-        $mail->line('**' . __('booking::booking.email.appointment_details') . '**')
+        $mail->line('**'.__('booking::booking.email.appointment_details').'**')
             ->line('')
-            ->line(__('booking::booking.email.date_label') . ': **' . $this->booking->booking_date->format('l, F j, Y') . '**')
-            ->line(__('booking::booking.email.time_label') . ': **' . $this->booking->start_time->format('H:i') . ' - ' . $this->booking->end_time->format('H:i') . '**')
-            ->line(__('booking::booking.email.duration_label') . ': ' . $this->booking->duration . ' ' . __('booking::booking.minutes'));
+            ->line(__('booking::booking.email.date_label').': **'.$this->booking->booking_date->format('l, F j, Y').'**')
+            ->line(__('booking::booking.email.time_label').': **'.$this->booking->start_time->format('H:i').' - '.$this->booking->end_time->format('H:i').'**')
+            ->line(__('booking::booking.email.duration_label').': '.$this->booking->duration.' '.__('booking::booking.minutes'));
 
         // Patient Notes if any
         if ($this->booking->notes) {
             $mail->line('')
                 ->line('---')
                 ->line('')
-                ->line('**' . __('booking::booking.email.patient_notes') . ':**')
+                ->line('**'.__('booking::booking.email.patient_notes').':**')
                 ->line($this->booking->notes);
         }
 
@@ -97,7 +97,7 @@ class DoctorAppointmentReminderNotification extends Notification implements Shou
 
         // Video Consultation Link
         if ($this->booking->meeting_link) {
-            $mail->line('**' . __('booking::booking.email.video_consultation') . '**')
+            $mail->line('**'.__('booking::booking.email.video_consultation').'**')
                 ->action(
                     __('booking::booking.email.join_consultation'),
                     $this->booking->hasMeetingRoom()

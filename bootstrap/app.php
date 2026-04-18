@@ -41,7 +41,7 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions) {
         // Custom authentication exception handling for multi-guard system
-        $exceptions->renderable(function (\Illuminate\Auth\AuthenticationException $e, $request) {
+        $exceptions->renderable(function (AuthenticationException $e, $request) {
             if ($request->expectsJson()) {
                 return response()->json(['message' => $e->getMessage()], 401);
             }
