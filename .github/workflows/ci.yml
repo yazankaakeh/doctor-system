@@ -154,4 +154,7 @@ jobs:
           php artisan key:generate
 
       - name: Run tests
-        run: php artisan test --parallel
+        # Run serially: --parallel needs brianium/paratest 7.x, and each
+        # suite already uses its own SQLite :memory: database so there is
+        # no wall-clock win from spreading the suites across workers.
+        run: php artisan test
