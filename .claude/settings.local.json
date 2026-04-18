@@ -32,7 +32,8 @@
       "Bash(if not exist \"storage\\\\app\\\\secure\" mkdir \"storage\\\\app\\\\secure\")",
       "Bash(where:*)",
       "Bash(where \"C:\\\\Program Files\\\\Google\\\\Chrome\\\\Application\\\\chrome.exe\")",
-      "Bash(where \"C:\\\\Program Files \\(x86\\)\\\\Google\\\\Chrome\\\\Application\\\\chrome.exe\")"
+      "Bash(where \"C:\\\\Program Files \\(x86\\)\\\\Google\\\\Chrome\\\\Application\\\\chrome.exe\")",
+      "Bash(composer test:*)"
     ]
   }
 }

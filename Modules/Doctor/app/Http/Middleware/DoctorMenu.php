@@ -89,6 +89,12 @@ class DoctorMenu
                 'url' => 'dashboard',
                 'submenu' => [
                     [
+                        'slug' => route('doctor.medicalExamination.index'),
+                        'url' => route('doctor.medicalExamination.index'),
+                        'name' => trans('doctor::doctor.medicalExaminations.title'),
+                        'icon' => 'menu-icon tf-icons ti tabler-clipboard-heart',
+                    ],
+                    [
                         'slug' => route('doctor.patients.index'),
                         'url' => route('doctor.patients.index'),
                         'name' => trans('customer.sidebar.patients'),

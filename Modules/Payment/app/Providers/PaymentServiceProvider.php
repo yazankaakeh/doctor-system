@@ -3,6 +3,7 @@
 namespace Modules\Payment\Providers;
 
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 use Modules\Payment\Repository\Payment\PaymentInterface;
 use Modules\Payment\Repository\Payment\PaymentRepository;
@@ -30,6 +31,30 @@ class PaymentServiceProvider extends ServiceProvider
         $this->registerConfig();
         $this->registerViews();
         $this->loadMigrationsFrom(module_path($this->name, 'database/migrations'));
+
+        // Custom "luhn" validation rule for credit-card numbers (prototype card gateway).
+        Validator::extend('luhn', function ($attribute, $value): bool {
+            $digits = preg_replace('/\D+/', '', (string) $value);
+            if ($digits === '' || strlen($digits) < 12) {
+                return false;
+            }
+
+            $sum = 0;
+            $alt = false;
+            for ($i = strlen($digits) - 1; $i >= 0; $i--) {
+                $n = (int) $digits[$i];
+                if ($alt) {
+                    $n *= 2;
+                    if ($n > 9) {
+                        $n -= 9;
+                    }
+                }
+                $sum += $n;
+                $alt = ! $alt;
+            }
+
+            return $sum % 10 === 0;
+        });
     }
 
     /**

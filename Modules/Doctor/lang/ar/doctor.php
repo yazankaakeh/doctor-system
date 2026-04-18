@@ -15,6 +15,8 @@ return [
         'MedicalExaminationStatusEnum' => [
             MedicalExaminationStatusEnum::ACTIVE->value => 'نشط',
             MedicalExaminationStatusEnum::DONE->value => 'منجز',
+            MedicalExaminationStatusEnum::PENDING->value => 'قيد الانتظار',
+            MedicalExaminationStatusEnum::ARCHIVED->value => 'مؤرشف',
         ],
         'MedicalTestTypeEnum' => [
             MedicalTestTypeEnum::LABORATORY_TESTS->value => 'تحاليل مختبرية',
@@ -115,6 +117,19 @@ return [
         'updateMedicalSpecialty' => 'تعديل تخصص طبي',
     ],
     'medicalExaminations' => [
+        'title' => 'المعاينات الطبية',
+        'history' => 'المعاينات السابقة',
+        'print' => 'طباعة',
+        'createTitle' => 'إنشاء معاينة طبية',
+        'createAndContinue' => 'إنشاء ومتابعة',
+        'createHint' => 'سيتم إنشاء معاينة طبية جديدة (أو إعادة فتح المعلقة الأخيرة) للمريض المحدد، وسيتم تحويلك إلى المحرر.',
+        'selectPatient' => 'اختر المريض',
+        'filterTitle' => 'تصفية المعاينات الطبية',
+        'activeFilters' => 'المرشحات النشطة',
+        'clearFilters' => 'مسح المرشحات',
+        'from' => 'من',
+        'to' => 'إلى',
+        'empty' => 'لا توجد معاينات طبية.',
         'patientInfo' => 'معلومات المريض',
         'patientDetails' => 'تفاصيل المريض',
         'medicalPreviewInfo' => 'معلومات المعاينة الطبية',

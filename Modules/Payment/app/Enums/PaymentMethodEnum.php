@@ -10,6 +10,7 @@ enum PaymentMethodEnum: string
 
     case PAYPAL = 'paypal';
     case OFFLINE = 'offline';
+    case CREDIT_CARD = 'credit_card';
 
     public function label(): array|string
     {
@@ -20,7 +21,8 @@ enum PaymentMethodEnum: string
     {
         return match ($this) {
             self::PAYPAL => 'paypal',
-            self::OFFLINE => 'credit-card',
+            self::OFFLINE => 'building-bank',
+            self::CREDIT_CARD => 'credit-card',
         };
     }
 

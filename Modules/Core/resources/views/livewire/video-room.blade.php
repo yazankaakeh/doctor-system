@@ -177,9 +177,32 @@
                                         {{ trans('core::video.join_now') }}
                                     </button>
 
-                                    {{-- Medical Examination Button for Patients --}}
-                                    @if($participantRole !== 'moderator' && $patientId)
-                                        <a href="{{ route('doctor.medicalExamination.store', $patientId) }}"
+                                    {{-- Medical Examination Button --}}
+                                    @if($participantRole === 'moderator' && $patientId)
+                                        {{-- Doctor side: open existing exam or start a new one --}}
+                                        @if($medicalExaminationId)
+                                            <a href="{{ route('doctor.medicalExamination.create', $medicalExaminationId) }}"
+                                               target="_blank"
+                                               class="btn btn-outline-success btn-lg w-100 mt-2 py-3 rounded-pill">
+                                                <i class="ti tabler-file-text me-2"></i>
+                                                {{ trans('core::video.view_medical_examination') }}
+                                            </a>
+                                        @else
+                                            <form method="POST"
+                                                  action="{{ route('doctor.medicalExamination.store', $patientId) }}"
+                                                  target="_blank"
+                                                  class="mt-2 mb-0">
+                                                @csrf
+                                                <button type="submit"
+                                                        class="btn btn-outline-success btn-lg w-100 py-3 rounded-pill">
+                                                    <i class="ti tabler-file-text me-2"></i>
+                                                    {{ trans('core::video.view_medical_examination') }}
+                                                </button>
+                                            </form>
+                                        @endif
+                                    @elseif($participantRole !== 'moderator' && $medicalExaminationId)
+                                        {{-- Patient side: view their appointment / examination --}}
+                                        <a href="{{ route('patient.appointments.show', $medicalExaminationId) }}"
                                            target="_blank"
                                            class="btn btn-outline-success btn-lg w-100 mt-2 py-3 rounded-pill">
                                             <i class="ti tabler-file-text me-2"></i>
@@ -264,9 +287,32 @@
                         <div class="d-flex align-items-center gap-2">
                             <span id="meeting-timer" class="badge bg-dark-subtle text-white">00:00</span>
 
-                            {{-- Medical Examination Button for Patients --}}
-                            @if($participantRole !== 'moderator' && $patientId)
-                                <a href="{{ route('doctor.medicalExamination.store', $patientId) }}"
+                            {{-- Medical Examination Button --}}
+                            @if($participantRole === 'moderator' && $patientId)
+                                {{-- Doctor side --}}
+                                @if($medicalExaminationId)
+                                    <a href="{{ route('doctor.medicalExamination.create', $medicalExaminationId) }}"
+                                       target="_blank"
+                                       class="btn btn-sm btn-success rounded-pill"
+                                       title="{{ trans('core::video.view_medical_examination') }}">
+                                        <i class="ti tabler-file-text"></i>
+                                    </a>
+                                @else
+                                    <form method="POST"
+                                          action="{{ route('doctor.medicalExamination.store', $patientId) }}"
+                                          target="_blank"
+                                          class="m-0 d-inline">
+                                        @csrf
+                                        <button type="submit"
+                                                class="btn btn-sm btn-success rounded-pill"
+                                                title="{{ trans('core::video.view_medical_examination') }}">
+                                            <i class="ti tabler-file-text"></i>
+                                        </button>
+                                    </form>
+                                @endif
+                            @elseif($participantRole !== 'moderator' && $medicalExaminationId)
+                                {{-- Patient side --}}
+                                <a href="{{ route('patient.appointments.show', $medicalExaminationId) }}"
                                    target="_blank"
                                    class="btn btn-sm btn-success rounded-pill"
                                    title="{{ trans('core::video.view_medical_examination') }}">

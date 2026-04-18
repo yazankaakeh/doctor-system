@@ -78,11 +78,25 @@ class VideoRoom extends Component
 
         // Load booking details if booking ID provided
         if ($bookingId && class_exists('\Modules\Booking\Models\Booking')) {
-            $booking = \Modules\Booking\Models\Booking::with('patient')->find($bookingId);
+            $booking = \Modules\Booking\Models\Booking::with(['patient', 'doctor'])->find($bookingId);
             if ($booking) {
                 $this->patientId = $booking->patient_id;
 
-                // Check if medical examination exists
+                // Populate names/time from the booking if the caller didn't pass them explicitly.
+                // We don't overwrite values the caller already provided.
+                if (! $this->doctorName && $booking->doctor) {
+                    $this->doctorName = 'Dr. ' . $booking->doctor->name;
+                }
+                if (! $this->patientName && $booking->patient) {
+                    $this->patientName = $booking->patient->name;
+                }
+                if (! $this->appointmentTime) {
+                    $datePart = $booking->booking_date?->format('Y-m-d');
+                    $timePart = $booking->start_time?->format('H:i');
+                    $this->appointmentTime = trim(($datePart ?? '') . ' ' . ($timePart ?? '')) ?: null;
+                }
+
+                // Check if a medical examination already exists for this doctor+patient pair
                 if (class_exists('\Modules\Doctor\Models\MedicalExamination')) {
                     $examination = \Modules\Doctor\Models\MedicalExamination::where([
                         'patient_id' => $booking->patient_id,

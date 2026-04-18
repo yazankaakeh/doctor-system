@@ -2,10 +2,10 @@
 
 // Variables
 return [
-    'creatorName' => 'Base Project',
+    'creatorName' => 'Doctor System',
     'creatorUrl' => 'https://tagiy.com',
-    'templateName' => 'Base Project',
-    'templateSuffix' => 'Base Project',
+    'templateName' => 'Doctor System',
+    'templateSuffix' => 'Doctor System',
     'templateVersion' => '1.0.0',
     'templateFree' => false,
     'templateDescription' => 'Unlimited technology in communication',

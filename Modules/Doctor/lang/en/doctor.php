@@ -15,6 +15,8 @@ return [
         'MedicalExaminationStatusEnum' => [
             MedicalExaminationStatusEnum::ACTIVE->value => 'Active',
             MedicalExaminationStatusEnum::DONE->value => 'Done',
+            MedicalExaminationStatusEnum::PENDING->value => 'Pending',
+            MedicalExaminationStatusEnum::ARCHIVED->value => 'Archived',
         ],
         'MedicalTestTypeEnum' => [
             MedicalTestTypeEnum::LABORATORY_TESTS->value => 'Laboratory Tests',
@@ -116,6 +118,19 @@ return [
         'updateMedicalSpecialty' => 'Update Medical specialty',
     ],
     'medicalExaminations' => [
+        'title' => 'Medical Examinations',
+        'history' => 'Previous examinations',
+        'print' => 'Print',
+        'createTitle' => 'Create Medical Examination',
+        'createAndContinue' => 'Create & Continue',
+        'createHint' => 'A new medical examination will be created (or the latest pending one re-opened) for the selected patient. You will be redirected to the editor.',
+        'selectPatient' => 'Select Patient',
+        'filterTitle' => 'Filter Medical Examinations',
+        'activeFilters' => 'Active filters',
+        'clearFilters' => 'Clear filters',
+        'from' => 'From',
+        'to' => 'To',
+        'empty' => 'No medical examinations found.',
         'patientInfo' => 'Patient Info',
         'patientDetails' => 'Patient Details',
         'medicalPreviewInfo' => 'Medical Preview Info',

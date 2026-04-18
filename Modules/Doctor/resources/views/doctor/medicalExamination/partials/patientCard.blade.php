@@ -1,159 +1,144 @@
 @php
-    use Modules\Core\App\Enums\ActiveEnum;
     use Modules\Core\app\Helpers\FileUploadHelper;
-    use Modules\Doctor\Models\MedicalExamination;
-        $phone   = $patient->phone ?? '';            // رقم المريض
-        $digits  = FileUploadHelper::digits_only($phone);              // للتيليغرام (app)
-        $waUrl   = FileUploadHelper::wa_link($phone, '90');            // غيّر 90 إلى 964 مثلاً للعراق إذا لازم
-        $telUrl  = 'tel:' . $phone;
-        $tgApp   = 'tg://resolve?phone=' . $digits;  // يفتح تطبيق تيليغرام مباشرةً
-       // $tgWeb   = $patient->telegram_username ?? null; // إذا عندك يوزرنيم بالموديل
-
+    $phone  = $patient->phone ?? '';
+    $digits = FileUploadHelper::digits_only($phone);
+    $waUrl  = FileUploadHelper::wa_link($phone, '90');
+    $tgApp  = 'tg://resolve?phone=' . $digits;
 @endphp
-<div class="card mb-6">
-    <div class="card-body pt-12">
-        <div class="user-avatar-section">
-            <div class=" d-flex align-items-center flex-column">
-                <img class="img-fluid rounded mb-4"
-                     src="{{$patient->getFirstMediaUrl('images') != null ? $patient->getFirstMediaUrl('images') : asset('assets/img/avatars/3.png')}}"
-                     height="120" width="120" alt="User avatar">
-                <div class="user-info text-center">
-                    <h5>{{$patient->name}}</h5>
-                    <span class="badge bg-{{$patient->is_active->class()}}">
-                        {{$patient->is_active->label()}}
-                    </span>
-                </div>
-            </div>
-        </div>
-        <div class="d-flex justify-content-around flex-wrap my-6 gap-0 gap-md-3 gap-lg-4">
-            <div class="d-flex align-items-center me-5 gap-4">
-                <div class="avatar">
-                    <div class="avatar-initial bg-label-primary rounded">
-                        <i class="icon-base ti tabler-checkbox icon-lg"></i>
-                    </div>
-                </div>
-                <div>
-                    <h5 class="mb-0">{{$patient->medicalExamination->count()}}</h5>
-                </div>
-            </div>
-            <div class="d-flex align-items-center gap-4">
-                <div class="avatar">
-                    <a target="_blank" href="{{route('doctor.patients.show',['id'=> $patient->id])}}">
-                        <div class="avatar-initial bg-label-primary rounded">
-                            <i class="icon-base ti tabler-eye icon-lg"></i>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </div>
-        <h5 class="pb-4 border-bottom mb-4">{{trans('doctor::doctor.medicalExaminations.patientDetails')}}</h5>
-        <div class="info-container">
-            <ul class="list-unstyled mb-6">
-                <li class="mb-2">
-                    <span class="h6">{{trans('doctor::doctor.id')}}:</span>
-                    <span>{{$patient->id}}</span>
-                </li>
-                <li class="mb-2">
-                    <span class="h6">{{trans('doctor::doctor.patients.name')}}:</span>
-                    <span>{{$patient->name}}</span>
-                </li>
-                <li class="mb-2">
-                    <span
-                        class="h6 text-{{$patient?->gender?->class()}}">{{trans('doctor::doctor.patients.gender')}}:</span>
-                    <span class="text-{{$patient?->gender?->class()}}">{{$patient?->gender?->label()}}</span>
-                </li>
-                <li class="mb-2">
-                    <span class="h6">{{trans('doctor::doctor.patients.age')}}:</span>
-                    <span>{{$patient->age}}</span>
-                </li>
-                <li class="mb-2">
-                    <span class="h6">{{trans('doctor::doctor.patients.nationality_id')}}:</span>
-                    <span>{{$patient->nationality->name}}</span>
-                </li>
-                <li class="mb-2">
-                    <span class="h6">{{trans('doctor::doctor.patients.email')}}:</span>
-                    <a href="mailto:{{$patient->email}}">{{$patient->email}}</a>
-                </li>
-                <li class="mb-2">
-                    <span class="h6">{{trans('doctor::doctor.patients.phone')}}:</span>
-                    <span>
-                                            <div class="btn-group">
-                                                <button type="button"
-                                                        class="btn btn-outline-primary dropdown-toggle waves-effect"
-                                                        data-bs-toggle="dropdown"
-                                                        aria-expanded="false">{{$patient->phone}}</button>
-                                                <ul class="dropdown-menu" style="">
-                                                    <li>
-                                                        <a class="dropdown-item waves-effect"
-                                                           href="{{$waUrl}}">
-                                                            <i class="ti icon-base tabler-brand-whatsapp"></i>
-                                                            WhatsApp
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item waves-effect"
-                                                           href="{{$tgApp}}">
-                                                            <i class="ti icon-base tabler-brand-telegram"></i>
-                                                            Telegram
-                                                        </a>
-                                                    </li>
-                                                     <li>
-                                                        <a class="dropdown-item waves-effect"
-                                                           href="tel:{{$patient->phone}}">
-                                                            <i class="ti icon-base tabler-phone"></i>
-                                                            Phone
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            </span>
-                </li>
-                <li class="mb-2">
-                    <span class="h6">{{trans('doctor::doctor.patients.children')}}:</span>
-                    <span>{{$patient->children}}</span>
-                </li>
-                <li class="mb-2">
-                    <span class="h6">{{trans('doctor::doctor.patients.work')}}:</span>
-                    <span>{{$patient->work}}</span>
-                </li>
-                <li class="mb-2">
-                    <span class="h6 text-{{$patient->blood_type->class()}}">{{trans('doctor::doctor.patients.blood_type')}}:</span>
-                    <span class="text-{{$patient->blood_type->class()}}">{{$patient->blood_type->label()}}</span>
-                </li>
-                <li class="mb-2">
-                    <span class="h6 text-{{$patient->marital_status->class()}}">{{trans('doctor::doctor.patients.marital_status')}}:</span>
-                    <span
-                        class="text-{{$patient->marital_status->class()}}">{{$patient->marital_status->label()}}</span>
-                </li>
 
-                <li class="mb-2">
-                    <span class="h6">{{trans('doctor::doctor.patients.drug_allergies')}}:</span>
-                    <span>{{$patient->drug_allergies}}</span>
-                </li>
-                <li class="mb-2">
-                    <span class="h6">{{trans('doctor::doctor.patients.disabilities')}}:</span>
-                    <span>{{$patient->disabilities}}</span>
-                </li>
-                <li class="mb-2">
-                    <span class="h6">{{trans('doctor::doctor.patients.medical_history')}}:</span>
-                    <span>{{$patient->medical_history}}</span>
-                </li>
-                <li class="mb-2">
-                    <span class="h6">{{trans('doctor::doctor.patients.surgical_history')}}:</span>
-                    <span>{{$patient->surgical_history}}</span>
-                </li>
-                <li class="mb-2">
-                    <span class="h6">{{trans('doctor::doctor.patients.accident_history')}}:</span>
-                    <span>{{$patient->accident_history}}</span>
-                </li>
-            </ul>
-            <div class="d-flex justify-content-center">
-                <a href="javascript:" class="btn btn-primary me-4 waves-effect waves-light"
-                   data-bs-target="#editUser"
-                   data-bs-toggle="modal">{{trans('doctor::doctor.edit')}}</a>
-                <a href="javascript:"
-                   class="btn btn-label-danger suspend-user waves-effect">{{trans('doctor::doctor.deactivate')}}</a>
-            </div>
+<div class="patient-lite">
+    {{-- Identity --}}
+    <div class="text-center">
+        <img class="rounded-circle avatar-lg mb-3"
+             src="{{ $patient->getFirstMediaUrl('images') ?: asset('assets/img/avatars/3.png') }}"
+             alt="{{ $patient->name }}">
+        <h6 class="mb-1">{{ $patient->name }}</h6>
+        @if($patient?->is_active)
+            <span class="badge text-bg-{{ $patient->is_active->class() }}">
+                {{ $patient->is_active->label() }}
+            </span>
+        @endif
+    </div>
+
+    {{-- Quick stats --}}
+    <div class="d-flex justify-content-center gap-4 mt-3">
+        <div class="text-center">
+            <div class="h6 mb-0">{{ $patient->medicalExamination?->count() ?? 0 }}</div>
+            <small class="text-muted">
+                {{ trans('doctor::doctor.medicalExaminations.title') }}
+            </small>
+        </div>
+        <div class="text-center">
+            <a href="{{ route('doctor.patients.show', ['id' => $patient->id]) }}"
+               target="_blank"
+               class="btn btn-outline-secondary btn-sm">
+                <i class="ti tabler-external-link me-1"></i>
+                {{ trans('doctor::doctor.show') }}
+            </a>
         </div>
     </div>
+
+    {{-- Contact actions --}}
+    @if($phone)
+        <div class="section-title">
+            {{ trans('doctor::doctor.patients.phone') }}
+        </div>
+        <div class="btn-group w-100" role="group">
+            <a href="tel:{{ $phone }}" class="btn btn-sm btn-outline-secondary">
+                <i class="ti tabler-phone"></i>
+            </a>
+            <a href="{{ $waUrl }}" target="_blank" class="btn btn-sm btn-outline-secondary">
+                <i class="ti tabler-brand-whatsapp"></i>
+            </a>
+            <a href="{{ $tgApp }}" target="_blank" class="btn btn-sm btn-outline-secondary">
+                <i class="ti tabler-brand-telegram"></i>
+            </a>
+            <span class="btn btn-sm btn-outline-secondary disabled text-truncate" style="max-width: 120px;">
+                {{ $phone }}
+            </span>
+        </div>
+    @endif
+
+    {{-- Basic details --}}
+    <div class="section-title">
+        {{ trans('doctor::doctor.medicalExaminations.patientDetails') }}
+    </div>
+    <div class="info-row">
+        <span class="label">{{ trans('doctor::doctor.id') }}</span>
+        <span class="value">#{{ $patient->id }}</span>
+    </div>
+    @if($patient->age)
+        <div class="info-row">
+            <span class="label">{{ trans('doctor::doctor.patients.age') }}</span>
+            <span class="value">{{ $patient->age }}</span>
+        </div>
+    @endif
+    @if($patient?->gender?->label())
+        <div class="info-row">
+            <span class="label">{{ trans('doctor::doctor.patients.gender') }}</span>
+            <span class="value">{{ $patient->gender->label() }}</span>
+        </div>
+    @endif
+    @if($patient?->blood_type?->label())
+        <div class="info-row">
+            <span class="label">{{ trans('doctor::doctor.patients.blood_type') }}</span>
+            <span class="value">{{ $patient->blood_type->label() }}</span>
+        </div>
+    @endif
+    @if($patient?->marital_status?->label())
+        <div class="info-row">
+            <span class="label">{{ trans('doctor::doctor.patients.marital_status') }}</span>
+            <span class="value">{{ $patient->marital_status->label() }}</span>
+        </div>
+    @endif
+    @if($patient->children !== null && $patient->children !== '')
+        <div class="info-row">
+            <span class="label">{{ trans('doctor::doctor.patients.children') }}</span>
+            <span class="value">{{ $patient->children }}</span>
+        </div>
+    @endif
+    @if($patient->nationality?->name)
+        <div class="info-row">
+            <span class="label">{{ trans('doctor::doctor.patients.nationality_id') }}</span>
+            <span class="value">{{ $patient->nationality->name }}</span>
+        </div>
+    @endif
+    @if($patient->work)
+        <div class="info-row">
+            <span class="label">{{ trans('doctor::doctor.patients.work') }}</span>
+            <span class="value">{{ $patient->work }}</span>
+        </div>
+    @endif
+    @if($patient->email)
+        <div class="info-row">
+            <span class="label">{{ trans('doctor::doctor.patients.email') }}</span>
+            <span class="value text-truncate" style="max-width: 160px;">
+                <a href="mailto:{{ $patient->email }}" class="text-body">{{ $patient->email }}</a>
+            </span>
+        </div>
+    @endif
+
+    {{-- Medical history (only renders if something is present) --}}
+    @php
+        $historyItems = array_filter([
+            trans('doctor::doctor.patients.drug_allergies')  => $patient->drug_allergies,
+            trans('doctor::doctor.patients.disabilities')    => $patient->disabilities,
+            trans('doctor::doctor.patients.medical_history') => $patient->medical_history,
+            trans('doctor::doctor.patients.surgical_history')=> $patient->surgical_history,
+            trans('doctor::doctor.patients.accident_history')=> $patient->accident_history,
+        ], fn ($v) => !empty($v));
+    @endphp
+    @if(!empty($historyItems))
+        <div class="section-title">
+            {{ trans('doctor::doctor.patients.medical_history') }}
+        </div>
+        @foreach($historyItems as $label => $value)
+            <div class="info-row flex-column align-items-start">
+                <span class="label small mb-1">{{ $label }}</span>
+                <span class="value text-start w-100" style="white-space: normal; font-weight: 400;">
+                    {{ $value }}
+                </span>
+            </div>
+        @endforeach
+    @endif
 </div>

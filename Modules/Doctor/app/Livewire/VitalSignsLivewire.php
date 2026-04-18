@@ -33,12 +33,24 @@ class VitalSignsLivewire extends Component
 
     public function saveOne(int $vitalSignId): void
     {
-        // validate only this one if you need stricter rules per sign
-        // $this->validate([
-        //     "values.$vitalSignId" => ['nullable','string','max:255'], // or numeric
-        // ]);
-
         $value = $this->values[$vitalSignId] ?? null;
+
+        // Block save when the value is numeric AND outside the configured range
+        if ($this->isOutOfRange($vitalSignId, $value)) {
+            $this->addError(
+                "values.{$vitalSignId}",
+                trans('doctor::doctor.vitalSign.out_of_range')
+            );
+            $this->dispatch(
+                'toast',
+                type: 'error',
+                message: __('Value is out of normal range. Not saved.')
+            );
+            return;
+        }
+
+        // Clear any stale validation error for this field before saving
+        $this->resetErrorBag("values.{$vitalSignId}");
 
         // store/update pivot without removing other links
         $this->medicalExamination
@@ -50,13 +62,33 @@ class VitalSignsLivewire extends Component
 
     public function saveAll(): void
     {
-        // Optional validation for all:
-        // $this->validate(['values.*' => ['nullable','string','max:255']]);
-
-        // Build payload: [id => ['value' => '...'], ...]
         $payload = [];
+        $invalid = [];
+
         foreach ($this->values as $id => $val) {
-            $payload[(int) $id] = ['value' => $val];
+            $intId = (int) $id;
+
+            if ($this->isOutOfRange($intId, $val)) {
+                $invalid[] = $intId;
+                $this->addError(
+                    "values.{$intId}",
+                    trans('doctor::doctor.vitalSign.out_of_range')
+                );
+                continue;
+            }
+
+            $payload[$intId] = ['value' => $val];
+        }
+
+        if (! empty($invalid)) {
+            $this->dispatch(
+                'toast',
+                type: 'error',
+                message: __('Some vital signs are out of normal range and were not saved.')
+            );
+            // Don't persist the rest either — keep the bulk save atomic so the
+            // doctor explicitly fixes invalid values before re-saving.
+            return;
         }
 
         if (! empty($payload)) {
@@ -64,6 +96,25 @@ class VitalSignsLivewire extends Component
         }
 
         $this->dispatch('toast', type: 'success', message: __('All vital signs saved.'));
+    }
+
+    /**
+     * Numeric range guard: returns true ONLY for numeric values that fall
+     * outside the vital sign's min/max. Non-numeric or empty values are
+     * allowed (e.g. blood-pressure "120/80", blood-type "A+", or cleared input).
+     */
+    protected function isOutOfRange(int $vitalSignId, mixed $value): bool
+    {
+        if ($value === null || $value === '' || ! is_numeric($value)) {
+            return false;
+        }
+
+        $vitalSign = VitalSign::find($vitalSignId);
+        if (! $vitalSign) {
+            return false;
+        }
+
+        return $vitalSign->isValueInRange((float) $value) === false;
     }
 
     public function mount(MedicalExamination $medicalExamination): void

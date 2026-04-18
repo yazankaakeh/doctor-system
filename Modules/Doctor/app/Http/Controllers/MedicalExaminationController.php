@@ -4,8 +4,10 @@ namespace Modules\Doctor\Http\Controllers;
 
 use App\Enum\Pagination;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Modules\Doctor\Enums\MedicalExaminationStatusEnum;
 use Modules\Doctor\Http\Requests\MedicalExaminationRequest;
+use Modules\Doctor\Models\Clinic;
 use Modules\Doctor\Models\MedicalExamination;
 use Modules\Doctor\Models\Patient;
 
@@ -24,11 +26,51 @@ class MedicalExaminationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data = MedicalExamination::query()->with('patient')->paginate(Pagination::PAG->value);
+        $filters = $request->only([
+            'patient_id',
+            'status',
+            'clinic_id',
+            'from',
+            'to',
+        ]);
 
-        return view('doctor::doctor.medicalExamination.index', compact('data'));
+        $data = MedicalExamination::query()
+            ->with(['patient', 'clinic'])
+            ->where('doctor_id', auth()->id())
+            ->when(
+                $filters['patient_id'] ?? null,
+                fn ($q, $v) => $q->where('patient_id', $v),
+            )
+            ->when(
+                $filters['status'] ?? null,
+                fn ($q, $v) => $q->where('status', $v),
+            )
+            ->when(
+                $filters['clinic_id'] ?? null,
+                fn ($q, $v) => $q->where('clinic_id', $v),
+            )
+            ->when(
+                $filters['from'] ?? null,
+                fn ($q, $v) => $q->whereDate('created_at', '>=', $v),
+            )
+            ->when(
+                $filters['to'] ?? null,
+                fn ($q, $v) => $q->whereDate('created_at', '<=', $v),
+            )
+            ->latest()
+            ->paginate(Pagination::PAG->value)
+            ->withQueryString();
+
+        $patients = Patient::query()->orderBy('name')->pluck('name', 'id');
+        $clinics = Clinic::getClinicSelect2();
+        $statuses = MedicalExaminationStatusEnum::getAllEnumValuesKeysLabel();
+
+        return view(
+            'doctor::doctor.medicalExamination.index',
+            compact('data', 'patients', 'clinics', 'statuses', 'filters'),
+        );
     }
 
     /**
