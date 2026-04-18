@@ -6,17 +6,13 @@
 >
     <testsuites>
         <!--
-            The previous config also declared per-module suites
-            (AdminManagement, Auth, Doctor, Booking) that pointed at the
-            same Modules/*/tests directories already covered by the globs
-            in Unit and Feature. PHPUnit treats each duplicate file as a
-            `Cannot add file ... as it was already added to test suite`
-            warning, and modern Collision/PHPUnit exits non-zero on
-            warnings — so the CI job failed even with 86/86 passing tests.
-
-            To scope a run to a single module use `--filter`, e.g.
-            `php artisan test --filter='Modules\\AdminManagement'` — see
-            the `test:admin` composer script.
+            Per-module suites (AdminManagement, Auth, Doctor, Booking)
+            were removed. They pointed at the same Modules tests already
+            covered by the Unit and Feature globs, so every file was
+            registered twice. PHPUnit warned on each duplicate and
+            modern Collision exits non-zero on warnings, failing CI even
+            when all tests passed. To scope a run to one module use the
+            composer `test:admin` script (filter by namespace).
         -->
         <testsuite name="Unit">
             <directory>tests/Unit</directory>
