@@ -84,7 +84,7 @@
         ],
         "test:unit": "@php artisan test --testsuite=Unit",
         "test:feature": "@php artisan test --testsuite=Feature",
-        "test:admin": "@php artisan test --testsuite=AdminManagement",
+        "test:admin": "@php artisan test --filter=Modules\\\\AdminManagement",
         "test:coverage": "@php artisan test --coverage",
         "lint": "vendor/bin/pint",
         "lint:check": "vendor/bin/pint --test",

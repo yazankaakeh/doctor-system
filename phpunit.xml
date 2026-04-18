@@ -5,6 +5,19 @@
          colors="true"
 >
     <testsuites>
+        <!--
+            The previous config also declared per-module suites
+            (AdminManagement, Auth, Doctor, Booking) that pointed at the
+            same Modules/*/tests directories already covered by the globs
+            in Unit and Feature. PHPUnit treats each duplicate file as a
+            `Cannot add file ... as it was already added to test suite`
+            warning, and modern Collision/PHPUnit exits non-zero on
+            warnings — so the CI job failed even with 86/86 passing tests.
+
+            To scope a run to a single module use `--filter`, e.g.
+            `php artisan test --filter='Modules\\AdminManagement'` — see
+            the `test:admin` composer script.
+        -->
         <testsuite name="Unit">
             <directory>tests/Unit</directory>
             <directory>Modules/*/tests/Unit</directory>
@@ -12,18 +25,6 @@
         <testsuite name="Feature">
             <directory>tests/Feature</directory>
             <directory>Modules/*/tests/Feature</directory>
-        </testsuite>
-        <testsuite name="AdminManagement">
-            <directory>Modules/AdminManagement/tests</directory>
-        </testsuite>
-        <testsuite name="Auth">
-            <directory>Modules/Auth/tests</directory>
-        </testsuite>
-        <testsuite name="Doctor">
-            <directory>Modules/Doctor/tests</directory>
-        </testsuite>
-        <testsuite name="Booking">
-            <directory>Modules/Booking/tests</directory>
         </testsuite>
     </testsuites>
     <source>
