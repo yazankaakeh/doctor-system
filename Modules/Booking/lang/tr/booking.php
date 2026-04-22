@@ -84,6 +84,9 @@ return [
     'auth_phone_placeholder' => 'Telefon numaranızı girin',
     'auth_confirm_password' => 'Şifre Onayı',
     'auth_confirm_password_placeholder' => 'Şifrenizi onaylayın',
+    'auth_password_hint' => 'En az 8 karakter kullanın; büyük harf, küçük harf, rakam ve sembol içermeli.',
+    'auth_password_show' => 'Şifreyi göster',
+    'auth_password_hide' => 'Şifreyi gizle',
     'login_and_book' => 'Giriş Yap ve Rezerve Et',
     'register_and_book' => 'Kayıt Ol ve Rezerve Et',
 

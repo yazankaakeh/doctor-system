@@ -84,6 +84,9 @@ return [
     'auth_phone_placeholder' => 'أدخل رقم هاتفك',
     'auth_confirm_password' => 'تأكيد كلمة المرور',
     'auth_confirm_password_placeholder' => 'أكد كلمة المرور',
+    'auth_password_hint' => 'استخدم 8 أحرف على الأقل مع مزيج من الأحرف الكبيرة والصغيرة والأرقام والرموز.',
+    'auth_password_show' => 'إظهار كلمة المرور',
+    'auth_password_hide' => 'إخفاء كلمة المرور',
     'login_and_book' => 'تسجيل الدخول والحجز',
     'register_and_book' => 'إنشاء حساب والحجز',
 

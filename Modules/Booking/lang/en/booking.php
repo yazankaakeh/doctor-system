@@ -84,6 +84,9 @@ return [
     'auth_phone_placeholder' => 'Enter your phone number',
     'auth_confirm_password' => 'Confirm Password',
     'auth_confirm_password_placeholder' => 'Confirm your password',
+    'auth_password_hint' => 'Use at least 8 characters with a mix of uppercase, lowercase, numbers, and symbols.',
+    'auth_password_show' => 'Show password',
+    'auth_password_hide' => 'Hide password',
     'login_and_book' => 'Login & Book',
     'register_and_book' => 'Register & Book',
 

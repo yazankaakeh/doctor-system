@@ -1359,28 +1359,57 @@
 
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <div class="bw-form-group">
+                                            <div class="bw-form-group" x-data="{ show: false }">
                                                 <label class="bw-form-label">
                                                     <i class="ti tabler-lock"></i>
                                                     {{ __('booking::booking.auth_password') }} <span class="text-danger">*</span>
                                                 </label>
-                                                <input type="password"
-                                                       wire:model="registerPassword"
-                                                       class="bw-form-input @error('registerPassword') is-invalid @enderror"
-                                                       placeholder="{{ __('booking::booking.auth_password_placeholder') }}">
+                                                <div class="position-relative">
+                                                    <input :type="show ? 'text' : 'password'"
+                                                           wire:model.live.debounce.400ms="registerPassword"
+                                                           class="bw-form-input @error('registerPassword') is-invalid @enderror"
+                                                           style="padding-inline-end: 2.75rem;"
+                                                           autocomplete="new-password"
+                                                           placeholder="{{ __('booking::booking.auth_password_placeholder') }}">
+                                                    <button type="button"
+                                                            class="btn btn-link position-absolute top-50 translate-middle-y text-muted p-0"
+                                                            style="inset-inline-end: 0.75rem;"
+                                                            @click="show = !show"
+                                                            :aria-label="show
+                                                                ? '{{ __('booking::booking.auth_password_hide') }}'
+                                                                : '{{ __('booking::booking.auth_password_show') }}'">
+                                                        <i class="ti" :class="show ? 'tabler-eye-off' : 'tabler-eye'"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="form-text small text-muted mt-1">
+                                                    <i class="ti tabler-info-circle me-1"></i>{{ __('booking::booking.auth_password_hint') }}
+                                                </div>
                                                 @error('registerPassword') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <div class="bw-form-group">
+                                            <div class="bw-form-group" x-data="{ show: false }">
                                                 <label class="bw-form-label">
                                                     <i class="ti tabler-lock-check"></i>
                                                     {{ __('booking::booking.auth_confirm_password') }} <span class="text-danger">*</span>
                                                 </label>
-                                                <input type="password"
-                                                       wire:model="registerPassword_confirmation"
-                                                       class="bw-form-input"
-                                                       placeholder="{{ __('booking::booking.auth_confirm_password_placeholder') }}">
+                                                <div class="position-relative">
+                                                    <input :type="show ? 'text' : 'password'"
+                                                           wire:model.live.debounce.400ms="registerPassword_confirmation"
+                                                           class="bw-form-input"
+                                                           style="padding-inline-end: 2.75rem;"
+                                                           autocomplete="new-password"
+                                                           placeholder="{{ __('booking::booking.auth_confirm_password_placeholder') }}">
+                                                    <button type="button"
+                                                            class="btn btn-link position-absolute top-50 translate-middle-y text-muted p-0"
+                                                            style="inset-inline-end: 0.75rem;"
+                                                            @click="show = !show"
+                                                            :aria-label="show
+                                                                ? '{{ __('booking::booking.auth_password_hide') }}'
+                                                                : '{{ __('booking::booking.auth_password_show') }}'">
+                                                        <i class="ti" :class="show ? 'tabler-eye-off' : 'tabler-eye'"></i>
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

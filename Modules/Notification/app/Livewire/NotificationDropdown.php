@@ -4,6 +4,7 @@ namespace Modules\Notification\Livewire;
 
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
+use Modules\Notification\Events\NotificationCreated;
 use Modules\Notification\Models\Notification;
 
 class NotificationDropdown extends Component
@@ -15,6 +16,23 @@ class NotificationDropdown extends Component
     public function mount(): void
     {
         $this->loadNotifications();
+    }
+
+    /**
+     * Private Echo channel name for the current user. Returns null
+     * when unauthenticated so the view can skip subscription.
+     */
+    public function getEchoChannelProperty(): ?string
+    {
+        $user = Auth::user();
+
+        if (! $user) {
+            return null;
+        }
+
+        $hash = NotificationCreated::hashForType(get_class($user));
+
+        return "notifications.{$hash}.{$user->id}";
     }
 
     public function loadNotifications(): void

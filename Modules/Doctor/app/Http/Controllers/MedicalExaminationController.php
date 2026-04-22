@@ -5,6 +5,7 @@ namespace Modules\Doctor\Http\Controllers;
 use App\Enum\Pagination;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Modules\Booking\Enums\BookingStatusEnum;
 use Modules\Booking\Models\Booking;
 use Modules\Core\App\Enums\ActiveEnum;
@@ -13,6 +14,7 @@ use Modules\Doctor\Http\Requests\MedicalExaminationRequest;
 use Modules\Doctor\Models\Clinic;
 use Modules\Doctor\Models\MedicalExamination;
 use Modules\Doctor\Models\Patient;
+use Modules\Doctor\Notifications\ExaminationCompletedNotification;
 
 class MedicalExaminationController extends Controller
 {
@@ -20,8 +22,38 @@ class MedicalExaminationController extends Controller
     {
         $data = $request->validated();
         $data['status'] = MedicalExaminationStatusEnum::DONE->value;
-        MedicalExamination::query()->where('id', $request->id)
-            ->update($data);
+
+        /** @var MedicalExamination|null $examination */
+        $examination = MedicalExamination::query()
+            ->with('patient', 'doctor')
+            ->find($request->id);
+
+        if (! $examination) {
+            return redirect()->back()->with('error', 'Medical Examination not found');
+        }
+
+        $wasAlreadyDone = $examination->status instanceof MedicalExaminationStatusEnum
+            ? $examination->status === MedicalExaminationStatusEnum::DONE
+            : (int) $examination->status === MedicalExaminationStatusEnum::DONE->value;
+
+        $examination->update($data);
+
+        // Notify the patient only on the DONE transition so re-submitting
+        // an already-finalized examination doesn't spam the patient.
+        if (! $wasAlreadyDone && $examination->patient) {
+            try {
+                $examination->patient->notify(
+                    new ExaminationCompletedNotification($examination->fresh(['doctor', 'patient']))
+                );
+            } catch (\Throwable $e) {
+                // Notification failure must not block the doctor's workflow.
+                Log::warning('Failed to dispatch ExaminationCompletedNotification', [
+                    'examination_id' => $examination->id,
+                    'patient_id' => $examination->patient_id,
+                    'error' => $e->getMessage(),
+                ]);
+            }
+        }
 
         return redirect()->back()->with('success', 'Medical Examination updated successfully');
     }

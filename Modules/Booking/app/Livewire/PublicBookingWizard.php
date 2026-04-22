@@ -308,7 +308,23 @@ class PublicBookingWizard extends Component
             'registerName' => ['required', 'string', 'max:255'],
             'registerEmail' => ['required', 'string', 'email', 'max:255', 'unique:patients,email'],
             'registerPhone' => ['required', 'string', 'max:20', 'unique:patients,phone'],
-            'registerPassword' => ['required', 'string', 'confirmed', Password::defaults()],
+            // Strong password: inherits the central policy from
+            // AppServiceProvider::configurePasswordPolicy() AND
+            // enforces the full chain explicitly in case the
+            // default is ever relaxed (e.g. in tests) — the wizard
+            // is user-facing registration, so we want the hard
+            // policy regardless of environment.
+            'registerPassword' => [
+                'required',
+                'string',
+                'confirmed',
+                Password::defaults(),
+                Password::min(8)
+                    ->letters()
+                    ->mixedCase()
+                    ->numbers()
+                    ->symbols(),
+            ],
         ], [], [
             'registerName' => __('validation.attributes.name'),
             'registerEmail' => __('validation.attributes.email'),

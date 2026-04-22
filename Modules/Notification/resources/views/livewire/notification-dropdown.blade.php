@@ -1,5 +1,8 @@
 <div>
-    <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-2 me-xl-1" wire:poll.30s="loadNotifications">
+    {{-- Echo push (via Reverb) is the primary path; poll is a safety net
+         in case broadcasting is down. 2min instead of 30s since real-time
+         subscription takes over the happy path. --}}
+    <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-2 me-xl-1" wire:poll.120s="loadNotifications">
         <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown"
            data-bs-auto-close="outside" aria-expanded="false">
             <i class="icon-base ti tabler-bell icon-lg"></i>
@@ -93,4 +96,26 @@
             justify-content: center;
         }
     </style>
+
+    @if($this->echoChannel)
+        @script
+        <script>
+            // Subscribe to the authenticated user's private notification
+            // channel. Echo isn't defined when Reverb vars aren't baked
+            // into the compiled bundle — in that case we silently fall
+            // back to the wire:poll interval above.
+            if (window.Echo) {
+                try {
+                    const channel = @js($this->echoChannel);
+                    window.Echo.private(channel)
+                        .listen('.notification.created', () => {
+                            $wire.loadNotifications();
+                        });
+                } catch (e) {
+                    console.warn('[notifications] realtime subscription failed:', e);
+                }
+            }
+        </script>
+        @endscript
+    @endif
 </div>
