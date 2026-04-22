@@ -5,6 +5,7 @@ namespace Modules\AdminManagement\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
+use Illuminate\Validation\Rules\Password;
 use Modules\Core\App\Enums\Gender;
 
 /**
@@ -27,7 +28,9 @@ class UpdateDoctorRequest extends FormRequest
             'role' => 'required|integer|exists:roles,id',
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', Rule::unique('doctors')->ignore($this->id), 'string', 'email', 'max:255'],
-            'password' => ['nullable', 'string', 'min:8', 'confirmed'],
+            // Strong password policy shared with the registration flow.
+            // Configured centrally in App\Providers\AppServiceProvider.
+            'password' => ['nullable', 'string', 'confirmed', Password::defaults()],
             'img' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
             // Form checkbox posts "on" / nothing; mirror DoctorRequest so the
             // create and update flows accept the same is_active shape.

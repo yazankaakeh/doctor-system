@@ -5,6 +5,7 @@ namespace Modules\Doctor\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
+use Illuminate\Validation\Rules\Password;
 use Modules\Core\App\Enums\ActiveEnum;
 use Modules\Core\App\Enums\Gender;
 use Modules\Doctor\Enums\BloodType;
@@ -45,7 +46,9 @@ class PatientRequest extends FormRequest
             'medical_history' => ['nullable', 'string', 'max:255', 'min:3'],
             'surgical_history' => ['nullable', 'string', 'max:255', 'min:3'],
             'accident_history' => ['nullable', 'string', 'max:255', 'min:3'],
-            'password' => ['nullable', 'min:8', 'max:255'],
+            // Strong password policy shared with the registration flow.
+            // Configured centrally in App\Providers\AppServiceProvider.
+            'password' => ['nullable', 'max:255', Password::defaults()],
             'email' => [
                 'nullable',
                 'email',

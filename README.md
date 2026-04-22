@@ -21,6 +21,8 @@ A comprehensive modular application built with **Laravel 12** and **PHP 8.4**. T
   - [Step 10: Run the Application](#step-10-run-the-application)
 - [Project Structure](#project-structure)
 - [Available Commands](#available-commands)
+- [Password Policy & Default Credentials](#password-policy--default-credentials)
+- [Real-Time / WebSockets (Laravel Reverb)](#real-time--websockets-laravel-reverb)
 - [Troubleshooting](#troubleshooting)
 - [Contributing](#contributing)
 - [License](#license)
@@ -705,18 +707,21 @@ The application includes a **Demo Mode** feature that displays demo credentials 
 # Enable Demo Mode
 DEMO_MODE=true
 
-# Demo Credentials for Doctor Login
+# Demo Credentials for Doctor Login (must satisfy the password policy)
 DEMO_DOCTOR_EMAIL=doctor@demo.com
-DEMO_DOCTOR_PASSWORD=password
+DEMO_DOCTOR_PASSWORD=Doctor@2026!
+DEMO_DOCTOR2_PASSWORD=Doctor2@2026!
 
 # Demo Credentials for Patient Login
 DEMO_PATIENT_EMAIL=patient@demo.com
-DEMO_PATIENT_PASSWORD=password
+DEMO_PATIENT_PASSWORD=Patient@2026!
 
 # Demo Credentials for Admin Login
 DEMO_ADMIN_EMAIL=admin@demo.com
-DEMO_ADMIN_PASSWORD=password
+DEMO_ADMIN_PASSWORD=Admin@2026!
 ```
+
+> **Heads up**: The seeders (`Modules/AdminManagement/database/seeders/DoctorSeeder.php`) now hash these strong defaults instead of the old literal `"password"`. If you had already run the seeder with the old weak password, re-seed the database after pulling these changes (`php artisan migrate:fresh --seed`) so the hashes match the documented values.
 
 3. Make sure the demo accounts exist in your database (run seeders if needed)
 4. Clear config cache:
@@ -743,6 +748,154 @@ DEMO_MODE=false
 ```
 
 > **Security Note**: Never enable demo mode in production unless you specifically want to showcase the application. Always use secure, unique passwords for demo accounts.
+
+---
+
+## Password Policy & Default Credentials
+
+The project enforces a strong-password policy in every flow that accepts a password - patient/doctor registration, the admin "create doctor" form, the admin "update doctor" form, the patient profile update, the doctor profile update, password reset, and the public booking wizard.
+
+### Policy Rules
+
+All newly created / changed passwords must contain:
+
+- **Minimum 8 characters**
+- **At least one lower-case letter** and **at least one upper-case letter**
+- **At least one number**
+- **At least one symbol** (e.g. `!@#$%^&*`)
+- In **production** only: the password is also checked against the [haveibeenpwned](https://haveibeenpwned.com/Passwords) breach corpus (`uncompromised()`).
+
+The rule is defined once in `app/Providers/AppServiceProvider.php` via `Illuminate\Validation\Rules\Password::defaults(...)` and every FormRequest that writes `Password::defaults()` automatically inherits it.
+
+### Registration Flow
+
+Both register requests already reference `Password::defaults()`, so they immediately pick up the rule above:
+
+```
+Modules/Auth/app/Http/Requests/Patient/RegisterRequest.php
+Modules/Auth/app/Http/Requests/Doctor/RegisterRequest.php
+```
+
+Invalid examples (rejected by the validator): `password`, `12345678`, `abcdefgh`.
+Valid example: `Patient@2026!`.
+
+### Seeded Demo Credentials
+
+The demo accounts created by `php artisan db:seed` now ship with strong defaults (they can be overridden by `.env`):
+
+| Role     | Email                | Default Password  | Env Override            |
+|----------|----------------------|-------------------|-------------------------|
+| Doctor 1 | `doctor@demo.com`    | `Doctor@2026!`    | `DEMO_DOCTOR_PASSWORD`  |
+| Doctor 2 | `doctor2@demo.com`   | `Doctor2@2026!`   | `DEMO_DOCTOR2_PASSWORD` |
+| Patient  | `patient@demo.com`   | `Patient@2026!`   | `DEMO_PATIENT_PASSWORD` |
+| Admin    | `admin@demo.com`     | `Admin@2026!`     | `DEMO_ADMIN_PASSWORD`   |
+
+> **Never** use the defaults above in a public-facing environment. Override every `DEMO_*_PASSWORD` entry in your `.env` before deploying, and keep `DEMO_MODE=false` in production.
+
+### Testing Environment
+
+The `testing` environment reverts to a permissive default (`Password::min(6)`) so the existing PHPUnit suite - which uses short fixtures such as `"password"` or `"password123"` - keeps passing. Every other environment (`local`, `staging`, `production`) applies the full policy.
+
+### Changing the Policy
+
+Edit `configurePasswordPolicy()` inside `app/Providers/AppServiceProvider.php`. Because the rule is centralized, a single edit propagates to every registration, reset, profile-update, and admin-panel form across the project.
+
+---
+
+## Real-Time / WebSockets (Laravel Reverb)
+
+The Messaging module (doctor ↔ patient chat, agent inbox, typing indicators, unread counters) broadcasts over **Laravel Reverb**, Laravel's first-party WebSocket server. Every `ShouldBroadcast` event in `Modules/Messaging/app/Events/` (`NewMessageEvent`, `ConversationUpdatedEvent`, `AgentTyping`, `MessageStatusUpdated`, `ConversationAssigned`) is pushed through Reverb to private channels defined in `Modules/Messaging/routes/channels.php`.
+
+### 1. `.env` Variables
+
+The following block must be present in `.env` (already wired by default):
+
+```env
+# Tell Laravel to broadcast through Reverb (NOT "log" / "null")
+BROADCAST_CONNECTION=reverb
+
+# Queue is used to dispatch ShouldBroadcast events - keep it on database or redis
+QUEUE_CONNECTION=database
+
+# Client-side credentials (shared with the browser)
+REVERB_APP_ID=761660
+REVERB_APP_KEY=sigqltj4txwb7ywvgf1t
+REVERB_APP_SECRET=yvsqwat6vicczgrfvufu
+REVERB_HOST=localhost
+REVERB_PORT=8080
+REVERB_SCHEME=http
+
+# Server bind settings (what `reverb:start` actually listens on)
+REVERB_SERVER_HOST=0.0.0.0
+REVERB_SERVER_PORT=8080
+REVERB_HOSTNAME=localhost
+
+# Exposed to the Vite bundle so laravel-echo can connect from the browser
+VITE_REVERB_APP_KEY="${REVERB_APP_KEY}"
+VITE_REVERB_HOST="${REVERB_HOST}"
+VITE_REVERB_PORT="${REVERB_PORT}"
+VITE_REVERB_SCHEME="${REVERB_SCHEME}"
+```
+
+> **Important**: Every time you change any `VITE_REVERB_*` value you MUST rebuild the front-end bundle (`npm run dev` or `npm run build`), otherwise the browser will keep using the old values baked in at compile time.
+
+### 2. Running Reverb
+
+For day-to-day development just run `composer dev` - it already boots Reverb alongside the web server, queue listener, logs and Vite:
+
+```bash
+composer dev
+# → server, queue, logs, vite, reverb
+```
+
+To run Reverb by itself:
+
+```bash
+# Defaults to 0.0.0.0:8080
+php artisan reverb:start
+
+# With verbose output (shows every WebSocket connection, event and channel)
+php artisan reverb:start --debug
+
+# Custom host / port (remember to keep REVERB_PORT and VITE_REVERB_PORT in sync)
+php artisan reverb:start --host=0.0.0.0 --port=8081
+```
+
+You typically need **four processes running in parallel** for broadcasting to work end-to-end:
+
+| Process                          | Purpose                                                      |
+|----------------------------------|--------------------------------------------------------------|
+| `php artisan serve`              | Serves the Laravel app (HTTP)                                |
+| `php artisan reverb:start`       | WebSocket server that fans out broadcast events              |
+| `php artisan queue:listen`       | Processes `ShouldBroadcast` jobs (they are queued by default)|
+| `npm run dev` (or `yarn dev`)    | Compiles `laravel-echo` + `pusher-js` into the front-end     |
+
+### 3. How the Messaging module uses Reverb
+
+`Modules/Theme/resources/js/bootstrap.js` boots `laravel-echo` against Reverb using the `VITE_REVERB_*` env vars. The Messaging Livewire components then subscribe to private channels such as:
+
+- `conversation.{id}` - real-time messages inside one conversation
+- `doctor.{doctorId}` and `patient.{patientId}` - per-user inbox updates
+- `agent.{userId}` and `messaging.unassigned` / `messaging.admins` - agent inbox / admin dashboards
+
+Channel authorization lives in `Modules/Messaging/routes/channels.php`. A user can only subscribe if they match the doctor/patient/admin/assigned-agent relationship that guard defines.
+
+### 4. Production Notes
+
+- Put Reverb behind Nginx with a `wss://` virtual host and a valid TLS cert - set `REVERB_SCHEME=https`, `REVERB_PORT=443` on the client side, and keep `REVERB_SERVER_PORT=8080` internal.
+- Run `php artisan reverb:start` under Supervisor / systemd so it auto-restarts on crash.
+- Keep `QUEUE_CONNECTION=redis` in production for throughput; `database` is fine for local dev.
+- Use `php artisan config:cache` after editing `.env` on production - the broadcasting config is cached, so uncached env vars will silently fail.
+
+### 5. Troubleshooting
+
+| Symptom                                                                 | Likely cause / Fix                                                                                  |
+|-------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------|
+| Messages appear only after refresh, never in real time                  | `BROADCAST_CONNECTION=log` or `null` - change it to `reverb` and run `php artisan config:clear`.    |
+| Browser console: "Reverb is not configured. Real-time features disabled"| `VITE_REVERB_APP_KEY` is empty or Vite wasn't rebuilt after editing `.env`. Rebuild with `npm run dev`. |
+| WebSocket connects but events never arrive                              | `php artisan queue:listen` is not running. `ShouldBroadcast` events are queued before fan-out.      |
+| "Unable to connect to ws://localhost:8080"                              | Reverb isn't running. Start it with `composer dev` or `php artisan reverb:start`.                   |
+| 403 on subscribing to a private channel                                 | Channel auth in `Modules/Messaging/routes/channels.php` rejected the user - confirm the guard matches (Doctor/Patient/Admin). |
 
 ---
 

@@ -15,10 +15,12 @@ class DoctorDatabaseSeeder extends Seeder
             MedicineSeeder::class,
             MedicalTestsSeeder::class,
             VitalSignsSeeder::class,
-            // PatientSeeder ::class,
             ClinicSeeder::class,
             FinalDiagnosisSeeder::class,
             DosageFormSeeder::class,
+            // Keep PatientSeeder LAST — it depends on at least one Clinic
+            // existing (attaches each patient to 1–3 clinics).
+            PatientSeeder::class,
         ]);
     }
 }

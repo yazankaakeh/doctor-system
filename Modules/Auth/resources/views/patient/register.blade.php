@@ -206,7 +206,7 @@
                                 </div>
 
                                 <div class="row">
-                                    <div class="col-md-6 mb-3">
+                                    <div class="col-md-6 mb-3 form-password-toggle">
                                         <label class="form-label" for="password">{{ trans('auth::auth.password') }} <span class="text-danger">*</span></label>
                                         <div class="input-group input-group-merge">
                                             <span class="input-group-text"><i class="ti tabler-lock"></i></span>
@@ -223,7 +223,7 @@
                                         @enderror
                                     </div>
 
-                                    <div class="col-md-6 mb-3">
+                                    <div class="col-md-6 mb-3 form-password-toggle">
                                         <label class="form-label" for="password-confirm">{{ trans('auth::auth.confirm_password') }} <span class="text-danger">*</span></label>
                                         <div class="input-group input-group-merge">
                                             <span class="input-group-text"><i class="ti tabler-lock-check"></i></span>
@@ -235,6 +235,11 @@
                                                    required />
                                             <span class="input-group-text cursor-pointer"><i class="ti tabler-eye-off"></i></span>
                                         </div>
+                                    </div>
+
+                                    {{-- Live strong-password feedback (requirements + strength bar). --}}
+                                    <div class="col-12">
+                                        <x-auth::password-strength target="password" match="password-confirm" />
                                     </div>
                                 </div>
                             </div>
@@ -413,3 +418,7 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <x-auth::password-toggle-script />
+@endpush

@@ -67,6 +67,9 @@ return [
     'account_pending_approval' => 'حسابك في انتظار الموافقة. يرجى انتظار موافقة المسؤول على تسجيلك.',
     'account_inactive' => 'حسابك غير نشط. يرجى التواصل مع المسؤول.',
 
+    // Login rate limiting
+    'throttle' => 'عدد محاولات تسجيل الدخول كبير جدًا. يرجى المحاولة مرة أخرى خلال :seconds ثانية.',
+
     // Password Reset
     'forgot_password_title' => 'نسيت كلمة المرور؟',
     'forgot_password_subtitle' => 'أدخل بريدك الإلكتروني وسنرسل لك تعليمات لإعادة تعيين كلمة المرور.',
@@ -94,6 +97,20 @@ return [
     'verify_email_action' => 'تحقق من البريد الإلكتروني',
     'verify_email_line2' => 'إذا لم تقم بإنشاء حساب، فلا يلزم اتخاذ أي إجراء آخر.',
     'verify_email_line3' => 'سينتهي رابط التحقق هذا خلال 60 دقيقة.',
+
+    // Password strength UX
+    'password_requirements' => 'يجب أن تحتوي كلمة المرور على:',
+    'password_rule_min' => '8 أحرف على الأقل',
+    'password_rule_mixedcase' => 'أحرف كبيرة وصغيرة (A-z)',
+    'password_rule_number' => 'رقم واحد على الأقل (0-9)',
+    'password_rule_symbol' => 'رمز واحد على الأقل (مثل ! @ # $)',
+    'password_rule_match' => 'تطابق كلمتي المرور',
+    'password_strength_label' => 'قوة كلمة المرور:',
+    'password_strength_very_weak' => 'ضعيفة جداً',
+    'password_strength_weak' => 'ضعيفة',
+    'password_strength_fair' => 'متوسطة',
+    'password_strength_strong' => 'قوية',
+    'password_strength_very_strong' => 'قوية جداً',
 
     // Demo Mode
     'demo_mode_title' => 'وضع العرض التوضيحي نشط',

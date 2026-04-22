@@ -153,6 +153,11 @@
                                 </div>
                             </div>
 
+                            {{-- Live strong-password feedback (requirements + strength bar). --}}
+                            <div class="mb-3">
+                                <x-auth::password-strength target="password" match="password-confirm" />
+                            </div>
+
                             <div class="mb-3">
                                 <div class="alert alert-info mb-0">
                                     <i class="ti tabler-info-circle me-1"></i>
@@ -190,3 +195,7 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <x-auth::password-toggle-script />
+@endpush

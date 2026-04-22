@@ -129,3 +129,7 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <x-auth::password-toggle-script />
+@endpush

@@ -67,6 +67,9 @@ return [
     'account_pending_approval' => 'Your account is pending approval. Please wait for an administrator to approve your registration.',
     'account_inactive' => 'Your account is not active. Please contact the administrator.',
 
+    // Login rate limiting
+    'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+
     // Password Reset
     'forgot_password_title' => 'Forgot Password?',
     'forgot_password_subtitle' => 'Enter your email and we\'ll send you instructions to reset your password.',
@@ -94,6 +97,20 @@ return [
     'verify_email_action' => 'Verify Email Address',
     'verify_email_line2' => 'If you did not create an account, no further action is required.',
     'verify_email_line3' => 'This verification link will expire in 60 minutes.',
+
+    // Password strength UX
+    'password_requirements' => 'Your password must contain:',
+    'password_rule_min' => 'At least 8 characters',
+    'password_rule_mixedcase' => 'Upper and lower case letters (A-z)',
+    'password_rule_number' => 'At least one number (0-9)',
+    'password_rule_symbol' => 'At least one symbol (e.g. ! @ # $)',
+    'password_rule_match' => 'Both passwords match',
+    'password_strength_label' => 'Password strength:',
+    'password_strength_very_weak' => 'Very weak',
+    'password_strength_weak' => 'Weak',
+    'password_strength_fair' => 'Fair',
+    'password_strength_strong' => 'Strong',
+    'password_strength_very_strong' => 'Very strong',
 
     // Demo Mode
     'demo_mode_title' => 'Demo Mode Active',

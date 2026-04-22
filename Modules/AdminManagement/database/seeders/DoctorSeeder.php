@@ -14,6 +14,19 @@ use Spatie\Permission\Models\Role;
 class DoctorSeeder extends Seeder
 {
     /**
+     * Strong default passwords for seeded demo accounts.
+     *
+     * They can be overridden per-environment via .env so the repository
+     * never ships a weak / guessable credential.
+     *
+     *   DEMO_DOCTOR_PASSWORD=YourStrongPassword@2026
+     *   DEMO_DOCTOR2_PASSWORD=YourStrongPassword@2026
+     */
+    private const DEFAULT_DOCTOR_PASSWORD = 'Doctor@2026!';
+
+    private const DEFAULT_DOCTOR2_PASSWORD = 'Doctor2@2026!';
+
+    /**
      * Run the database seeds.
      */
     public function run(): void
@@ -55,7 +68,9 @@ class DoctorSeeder extends Seeder
                 'age' => 35,
                 'is_active' => 1,
                 'phone' => '1234567890',
-                'password' => Hash::make('password'),
+                'password' => Hash::make(
+                    env('DEMO_DOCTOR_PASSWORD', self::DEFAULT_DOCTOR_PASSWORD)
+                ),
             ]
         );
 
@@ -72,7 +87,9 @@ class DoctorSeeder extends Seeder
                 'age' => 32,
                 'is_active' => 1,
                 'phone' => '0987654321',
-                'password' => Hash::make('password'),
+                'password' => Hash::make(
+                    env('DEMO_DOCTOR2_PASSWORD', self::DEFAULT_DOCTOR2_PASSWORD)
+                ),
             ]
         );
 

@@ -67,6 +67,9 @@ return [
     'account_pending_approval' => 'Hesabınız onay bekliyor. Lütfen kaydınızın bir yönetici tarafından onaylanmasını bekleyin.',
     'account_inactive' => 'Hesabınız aktif değil. Lütfen yöneticiyle iletişime geçin.',
 
+    // Login rate limiting
+    'throttle' => 'Çok fazla giriş denemesi. Lütfen :seconds saniye sonra tekrar deneyin.',
+
     // Password Reset
     'forgot_password_title' => 'Şifrenizi mi Unuttunuz?',
     'forgot_password_subtitle' => 'E-postanızı girin, size şifrenizi sıfırlamak için talimatlar göndereceğiz.',
@@ -94,6 +97,20 @@ return [
     'verify_email_action' => 'E-posta Adresini Doğrula',
     'verify_email_line2' => 'Bir hesap oluşturmadıysanız, başka bir işlem yapmanız gerekmez.',
     'verify_email_line3' => 'Bu doğrulama bağlantısı 60 dakika içinde sona erecektir.',
+
+    // Password strength UX
+    'password_requirements' => 'Şifreniz şunları içermelidir:',
+    'password_rule_min' => 'En az 8 karakter',
+    'password_rule_mixedcase' => 'Büyük ve küçük harfler (A-z)',
+    'password_rule_number' => 'En az bir rakam (0-9)',
+    'password_rule_symbol' => 'En az bir sembol (örn. ! @ # $)',
+    'password_rule_match' => 'Her iki şifre de eşleşiyor',
+    'password_strength_label' => 'Şifre gücü:',
+    'password_strength_very_weak' => 'Çok zayıf',
+    'password_strength_weak' => 'Zayıf',
+    'password_strength_fair' => 'Orta',
+    'password_strength_strong' => 'Güçlü',
+    'password_strength_very_strong' => 'Çok güçlü',
 
     // Demo Mode
     'demo_mode_title' => 'Demo Modu Aktif',

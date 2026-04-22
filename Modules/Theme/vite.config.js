@@ -246,7 +246,15 @@ import iconsPlugin from './vite.icons.plugin.js'
 const pick = (p) => globSync(p, {nodir: true})
 
 // نفس الفكرة التي تريدها
+// NOTE: moment.min.js is excluded because its minified source contains
+// `require("./locale/" + e)` which esbuild cannot statically resolve
+// (breaks every Vite build). The file is a self-contained vendor script
+// and is never imported as a module, so dropping it from the input list
+// has no runtime impact; blades that need moment already load it via
+// <script> or through fullcalendar / other bundled libs.
+const EXCLUDED_PAGE_JS = new Set(['moment.min.js'])
 const pageJsFiles = pick('resources/assets/js/*.js')
+    .filter((f) => !EXCLUDED_PAGE_JS.has(f.split(/[\\/]/).pop()))
 const vendorJsFiles = pick('resources/assets/vendor/js/*.js')
 const libsJsFiles = pick('resources/assets/vendor/libs/**/*.js')
 

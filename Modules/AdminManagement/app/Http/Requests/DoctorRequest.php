@@ -4,6 +4,7 @@ namespace Modules\AdminManagement\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;
+use Illuminate\Validation\Rules\Password;
 use Modules\Core\App\Enums\Gender;
 
 /**
@@ -25,7 +26,9 @@ class DoctorRequest extends FormRequest
             'role' => 'required|integer|exists:roles,id',
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'unique:doctors,email', 'string', 'email', 'max:255'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            // Strong password policy shared with the registration flow.
+            // Configured centrally in App\Providers\AppServiceProvider.
+            'password' => ['required', 'string', 'confirmed', Password::defaults()],
             'phone' => ['required', 'numeric'],
             'img' => ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
             'is_active' => ['nullable', 'in:on,off'],
