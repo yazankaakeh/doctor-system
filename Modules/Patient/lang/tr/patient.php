@@ -49,6 +49,7 @@ return [
     'pending' => 'Beklemede',
     'prescribed_medicines' => 'Reçete Edilen İlaçlar',
     'medicine' => 'İlaç',
+    'medicines' => 'İlaçlar',
     'dosage' => 'Doz',
     'dosage_form' => 'Doz Formu',
     'dose' => 'Doz',

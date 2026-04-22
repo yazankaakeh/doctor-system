@@ -1,6 +1,10 @@
-# Base Project
+# Doctor System
 
-A comprehensive modular application built with **Laravel 12** and **PHP 8.4**. This modular application provides a solid foundation with user management, authentication, blog/CMS functionality, and extensible module architecture.
+A comprehensive, multi-tenant medical practice management platform built with **Laravel 12** and **PHP 8.4**. Doctors run their clinics, patients book and attend appointments (in-person or via self-hosted Jitsi video consultation), and admins oversee the whole operation from a single dashboard.
+
+The platform covers the full patient journey — online booking, medical examination with vital signs, prescription generation (PDF via Browsershot), test results, follow-up messaging, and billing through Turkish bank gateways (Ziraat, Vakıf, Garanti, Yapı Kredi).
+
+**Repository:** <https://github.com/yazankaakeh/doctor-system.git>
 
 ---
 
@@ -31,16 +35,32 @@ A comprehensive modular application built with **Laravel 12** and **PHP 8.4**. T
 
 ## Features
 
-- **User Management**: Manage users, roles, and permissions
-- **Authentication**: Multi-guard authentication with social login support
-- **Blog/CMS**: Content management with categories, tags, and SEO
-- **Multi-language Support**: English, Arabic, and Turkish translations
-- **Role-Based Access Control**: Flexible permission system with Spatie Permission
-- **Notifications**: Email, SMS, and push notifications
-- **Payment Integration**: Iyzico payment gateway support
-- **Modular Architecture**: Easily extend with custom modules
-- **AI Chatbot**: MCP integration for intelligent assistance
-- **Media Management**: File uploads with Spatie Media Library
+### Medical Workflow
+
+- **Multi-guard Authentication** for three distinct roles — Doctor, Patient, Admin — each with its own login, registration, dashboard, and permission set
+- **Doctor Profiles** with medical specialties, bio, clinic assignments, and availability
+- **Patient Records** with demographics, blood type, allergies, medical/surgical/accident history, disabilities, nationality, and secure attachment storage
+- **Online Booking** for appointments — patients pick specialty, doctor, clinic, and time slot
+- **Medical Examinations** — vital signs (with min/max thresholds), medical tests, prescribed medicines with dosage forms, final diagnoses, and custom doctor notes
+- **Prescription PDFs** generated on demand via Spatie Browsershot (headless Chrome)
+- **Video Consultations** powered by self-hosted Jitsi (`meet.yupcrm.com`) with optional lobby, password protection, and recording
+- **Test Result Upload** — patients can upload imaging/lab reports to their secure file store
+- **Real-time Messaging** between patient and doctor over Laravel Reverb WebSockets, with typing indicators, read receipts, and an agent inbox for support staff
+
+### Platform Features
+
+- **Role-Based Access Control** via Spatie Permission (admin, messaging_agent, support, and custom roles)
+- **Multi-language Support** — English, Arabic (RTL), Turkish — with Spatie Translatable
+- **Notifications** — email (SMTP), SMS (1telekom.com.tr), push, and in-app
+- **Turkish Payment Gateways** — Ziraat, Vakıf, Garanti, Yapı Kredi provision + 3DS init
+- **Social Login** — Google, Facebook, X (Twitter) via Laravel Socialite
+- **Blog / CMS / SEO** modules for the public marketing site
+- **Modular Architecture** (nwidart/laravel-modules) — each feature is a self-contained module under `Modules/`
+- **AI Chatbot** — MCP integration for intelligent patient triage and FAQ answers
+- **Secure Media Library** — patient uploads land on a private `secure` disk, served through authenticated download routes
+- **Password Policy** enforced in every write path (registration, admin forms, reset) with breach-corpus check in production
+- **Login Rate Limiting** — 5 failed attempts per email + IP + guard, then 60-second lockout
+- **KVKK Consent Tracking** (Turkish data-protection compliance)
 
 ---
 
@@ -282,19 +302,18 @@ Clone the repository:
    ```
 3. Clone the project:
    ```bash
-   git clone <repository-url> base-project
+   git clone https://github.com/yazankaakeh/doctor-system.git
    ```
-   Replace `<repository-url>` with the actual Git repository URL.
 
 4. Navigate into the project:
    ```bash
-   cd base-project
+   cd doctor-system
    ```
 
 #### Without Git (Manual Download)
 
-1. Download the project as a ZIP file
-2. Extract it to `C:\laragon\www\base-project`
+1. Download the project ZIP from <https://github.com/yazankaakeh/doctor-system>
+2. Extract it to `C:\laragon\www\doctor-system`
 
 ### Step 7: Install Dependencies
 
@@ -305,7 +324,7 @@ Now we need to install all the PHP and JavaScript packages the project needs.
 1. Open Laragon Terminal
 2. Navigate to the project folder:
    ```bash
-   cd C:\laragon\www\base-project
+   cd C:\laragon\www\doctor-system
    ```
 3. Install Composer dependencies:
    ```bash
@@ -380,16 +399,16 @@ The `.env` file contains all the configuration for your application (database, m
 
 ```env
 # Application Settings
-APP_NAME="Base Project"
+APP_NAME="Doctor System"
 APP_ENV=local
 APP_DEBUG=true
-APP_URL=http://base-project.test
+APP_URL=http://doctor-systems.dev
 
 # Database Settings (Laragon uses MySQL with root user and no password by default)
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=base_project
+DB_DATABASE=doctor-system
 DB_USERNAME=root
 DB_PASSWORD=
 
@@ -418,7 +437,7 @@ This allows uploaded files to be accessible from the web.
 
 1. Open Laragon
 2. Right-click > **MySQL** > **Create database**
-3. Enter: `base_project`
+3. Enter: `doctor-system`
 4. Click **OK**
 
 **Option B: Using HeidiSQL (Comes with Laragon)**
@@ -427,7 +446,7 @@ This allows uploaded files to be accessible from the web.
 2. Right-click > **MySQL** > **HeidiSQL**
 3. Click **Open** (no password needed)
 4. Right-click on the left panel > **Create new** > **Database**
-5. Name it: `base_project`
+5. Name it: `doctor-system`
 6. Click **OK**
 
 **Option C: Using Command Line**
@@ -439,7 +458,7 @@ This allows uploaded files to be accessible from the web.
    ```
 3. Create the database:
    ```sql
-   CREATE DATABASE base_project CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+   CREATE DATABASE doctor-system CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
    ```
 4. Exit:
    ```sql
@@ -452,7 +471,7 @@ Migrations create all the necessary database tables.
 
 1. In Laragon Terminal, navigate to the project:
    ```bash
-   cd C:\laragon\www\base-project
+   cd C:\laragon\www\doctor-system
    ```
 2. Run migrations:
    ```bash
@@ -549,7 +568,7 @@ Or use `composer dev` in Terminal 1 and Theme Vite in Terminal 2.
 2. Go to: **http://127.0.0.1:8000** or **http://localhost:8000**
 
 If using Laragon's Pretty URLs:
-- Go to: **http://base-project.test**
+- Go to: **http://doctor-systems.dev**
 
 > **Note**: To enable Pretty URLs in Laragon, right-click > **Preferences** > check **"Enable pretty URLs"**, then restart Laragon.
 
@@ -560,24 +579,24 @@ If using Laragon's Pretty URLs:
 The application uses a modular architecture with the following structure:
 
 ```
-base-project/
+doctor-system/
 |-- app/                    # Core Laravel application code
 |-- bootstrap/              # Framework bootstrap files
 |-- config/                 # Configuration files
 |-- database/               # Migrations, seeders, factories
 |-- lang/                   # Language files (en, ar, tr)
 |-- Modules/                # Application modules
-|   |-- AdminManagement/    # User & role management
-|   |-- Auth/               # Multi-guard authentication
+|   |-- AdminManagement/    # Admin users, roles & permissions
+|   |-- Auth/               # Multi-guard auth (Doctor/Patient/Admin)
 |   |-- Blog/               # Blog posts, categories, tags
-|   |-- Booking/            # Booking system
-|   |-- CMS/                # Content management
-|   |-- Core/               # Shared components & helpers
-|   |-- Doctor/             # Medical module (optional)
-|   |-- MCP/                # AI chatbot integration
-|   |-- Messaging/          # Multi-channel messaging
+|   |-- Booking/            # Appointment booking system
+|   |-- CMS/                # Content management / page builder
+|   |-- Core/               # Shared components, enums, helpers
+|   |-- Doctor/             # Doctors, patients, clinics, medical exams, prescriptions
+|   |-- MCP/                # AI chatbot for triage / FAQ
+|   |-- Messaging/          # Real-time chat (doctor <-> patient, agent inbox)
 |   |-- Notification/       # Email, SMS, push notifications
-|   |-- Patient/            # Patient module (optional)
+|   |-- Patient/            # Patient dashboard, profile, medical history
 |   |-- Payment/            # Payment processing
 |   |-- Seo/                # SEO management
 |   |-- Theme/              # UI themes (Vuexy Bootstrap 5 Admin)
@@ -923,7 +942,7 @@ Channel authorization lives in `Modules/Messaging/routes/channels.php`. A user c
 
 **Solution**: The database doesn't exist. Create it:
 ```bash
-mysql -u root -e "CREATE DATABASE base_project"
+mysql -u root -e "CREATE DATABASE doctor-system"
 ```
 
 #### "npm: command not found"
@@ -1044,11 +1063,11 @@ Key environment variables you may need to configure:
 
 | Variable | Description | Example |
 |----------|-------------|---------|
-| `APP_NAME` | Application name | `"Base Project"` |
+| `APP_NAME` | Application name | `"Doctor System"` |
 | `APP_ENV` | Environment | `local`, `production` |
 | `APP_DEBUG` | Debug mode | `true`, `false` |
 | `APP_URL` | Application URL | `http://localhost:8000` |
-| `DB_DATABASE` | Database name | `base_project` |
+| `DB_DATABASE` | Database name | `doctor-system` |
 | `DB_USERNAME` | Database user | `root` |
 | `DB_PASSWORD` | Database password | `` (empty for Laragon) |
 | `MAIL_MAILER` | Mail driver | `smtp`, `log` |
@@ -1071,7 +1090,7 @@ Use this checklist to verify your setup:
 - [ ] Composer installed (`composer -V` works)
 
 ### Project Setup
-- [ ] Project cloned to `C:\laragon\www\base-project`
+- [ ] Project cloned to `C:\laragon\www\doctor-system`
 - [ ] `composer install` completed successfully
 - [ ] `npm install` completed successfully (root project)
 - [ ] `cd Modules/Theme && yarn install` completed successfully
@@ -1080,7 +1099,7 @@ Use this checklist to verify your setup:
 - [ ] `php artisan storage:link` executed
 
 ### Database
-- [ ] Database `base_project` created
+- [ ] Database `doctor-system` created
 - [ ] `php artisan migrate` completed
 
 ### Running the Application
@@ -1156,7 +1175,8 @@ If you encounter any issues or have questions:
 
 1. Check the [Troubleshooting](#troubleshooting) section
 2. Review the documentation in `CLAUDE.md`
-3. Contact the development team
+3. Open an issue on the repository: <https://github.com/yazankaakeh/doctor-system/issues>
+4. Contact the development team
 
 ---
 

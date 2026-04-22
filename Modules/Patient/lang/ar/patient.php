@@ -49,6 +49,7 @@ return [
     'pending' => 'قيد الانتظار',
     'prescribed_medicines' => 'الأدوية الموصوفة',
     'medicine' => 'الدواء',
+    'medicines' => 'الأدوية',
     'dosage' => 'الجرعة',
     'dosage_form' => 'شكل الجرعة',
     'dose' => 'الجرعة',

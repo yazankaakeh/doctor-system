@@ -49,6 +49,7 @@ return [
     'pending' => 'Pending',
     'prescribed_medicines' => 'Prescribed Medicines',
     'medicine' => 'Medicine',
+    'medicines' => 'Medicines',
     'dosage' => 'Dosage',
     'dosage_form' => 'Dosage Form',
     'dose' => 'Dose',
