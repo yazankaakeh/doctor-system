@@ -21,6 +21,11 @@ class DoctorDatabaseSeeder extends Seeder
             // Keep PatientSeeder LAST — it depends on at least one Clinic
             // existing (attaches each patient to 1–3 clinics).
             PatientSeeder::class,
+            // Single deterministic demo patient so config/demo.php's
+            // "patient@demo.com" auto-fill resolves to a real account.
+            // Runs after ClinicSeeder so the demo account can be attached
+            // to a clinic.
+            DemoPatientSeeder::class,
         ]);
     }
 }

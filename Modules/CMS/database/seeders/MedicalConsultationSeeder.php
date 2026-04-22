@@ -10,6 +10,8 @@ use Modules\CMS\Enums\PanelTypeEnum;
 use Modules\CMS\Models\Page;
 use Modules\CMS\Models\Panel;
 use Modules\CMS\Models\PanelItem;
+use Modules\Core\App\Enums\ActiveEnum;
+use Modules\Doctor\Models\Doctor;
 
 class MedicalConsultationSeeder extends Seeder
 {
@@ -186,28 +188,11 @@ class MedicalConsultationSeeder extends Seeder
             ],
         ]);
 
-        $doctors = [
-            [
-                'name' => 'Dr. Ahmed Hassan',
-                'role' => ['en' => 'Cardiologist', 'ar' => 'طبيب قلب', 'tr' => 'Kardiyolog'],
-                'bio' => ['en' => '15+ years of experience in cardiovascular medicine', 'ar' => 'أكثر من 15 عامًا من الخبرة في طب القلب والأوعية الدموية', 'tr' => 'Kardiyovasküler tıpta 15+ yıl deneyim'],
-            ],
-            [
-                'name' => 'Dr. Sarah Miller',
-                'role' => ['en' => 'Neurologist', 'ar' => 'طبيبة أعصاب', 'tr' => 'Nörolog'],
-                'bio' => ['en' => 'Specialized in brain and nervous system disorders', 'ar' => 'متخصصة في اضطرابات الدماغ والجهاز العصبي', 'tr' => 'Beyin ve sinir sistemi bozukluklarında uzman'],
-            ],
-            [
-                'name' => 'Dr. Omar Yilmaz',
-                'role' => ['en' => 'Pediatrician', 'ar' => 'طبيب أطفال', 'tr' => 'Pediatrist'],
-                'bio' => ['en' => 'Dedicated to providing compassionate care for children', 'ar' => 'مكرس لتقديم رعاية رحيمة للأطفال', 'tr' => 'Çocuklara şefkatli bakım sağlamaya adanmış'],
-            ],
-            [
-                'name' => 'Dr. Fatima Al-Rashid',
-                'role' => ['en' => 'Dermatologist', 'ar' => 'طبيبة جلدية', 'tr' => 'Dermatolog'],
-                'bio' => ['en' => 'Expert in skin conditions and cosmetic treatments', 'ar' => 'خبيرة في الأمراض الجلدية والعلاجات التجميلية', 'tr' => 'Cilt hastalıkları ve kozmetik tedavilerde uzman'],
-            ],
-        ];
+        // Build the team list from real, active doctors in the database.
+        // We pull up to 4 active doctors with their specialty. If fewer are
+        // available we fall back to the hardcoded placeholders so a fresh
+        // install still has a usable landing page.
+        $doctors = $this->buildTeamDoctors();
 
         foreach ($doctors as $index => $doctor) {
             $teamItem = PanelItem::create([
@@ -221,13 +206,19 @@ class MedicalConsultationSeeder extends Seeder
                     'name' => $doctor['name'],
                     'role' => $doctor['role'],
                     'social_links' => [],
+                    'doctor_id' => $doctor['doctor_id'] ?? null,
                 ],
             ]);
 
-            // Add avatar image for team member
-            $avatarNumber = ($index % 15) + 1;
-            $avatarPath = public_path("assets/img/avatars/{$avatarNumber}.png");
-            if (file_exists($avatarPath)) {
+            // Prefer the doctor's own uploaded avatar when available,
+            // otherwise fall back to one of the bundled placeholder avatars
+            // so every card still has an image on the landing page.
+            $avatarPath = $doctor['avatar_path'] ?? null;
+            if (! $avatarPath || ! file_exists($avatarPath)) {
+                $avatarNumber = ($index % 15) + 1;
+                $avatarPath = public_path("assets/img/avatars/{$avatarNumber}.png");
+            }
+            if ($avatarPath && file_exists($avatarPath)) {
                 $teamItem->addMedia($avatarPath)
                     ->preservingOriginal()
                     ->toMediaCollection('item_image');
@@ -451,6 +442,8 @@ class MedicalConsultationSeeder extends Seeder
             ],
         ]);
 
+        // (helpers defined below)
+
         // Create Contact Panel
         Panel::create([
             'page_id' => $homePage->id,
@@ -482,5 +475,128 @@ class MedicalConsultationSeeder extends Seeder
                 ],
             ],
         ]);
+    }
+
+    /**
+     * Build the list of up-to-4 doctors shown on the landing "Meet Our Doctors"
+     * section. Prefers real, active doctors from the database with their
+     * medical specialty as the role. If fewer than 4 exist, remaining slots
+     * are filled with hardcoded placeholders so the section never looks empty.
+     *
+     * Returned items have the shape:
+     *   [
+     *     'name'         => string,
+     *     'role'         => ['en' => ..., 'ar' => ..., 'tr' => ...],
+     *     'bio'          => ['en' => ..., 'ar' => ..., 'tr' => ...],
+     *     'doctor_id'    => int|null,   // set when real doctor, null for placeholders
+     *     'avatar_path'  => string|null // absolute path, null falls back to /assets/img/avatars
+     *   ]
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    private function buildTeamDoctors(): array
+    {
+        $result = [];
+
+        // Defensive: table may not exist yet on the very first migrate in some flows.
+        try {
+            $doctors = Doctor::query()
+                ->with('medicalSpecialty')
+                ->where('is_active', ActiveEnum::ACTIVE->value)
+                ->orderBy('id')
+                ->limit(4)
+                ->get();
+        } catch (\Throwable $e) {
+            $doctors = collect();
+        }
+
+        foreach ($doctors as $doctor) {
+            $specialty = $doctor->medicalSpecialty;
+            $roleEn = $specialty ? (string) ($specialty->getTranslation('name', 'en', false) ?: $specialty->name) : 'Doctor';
+            $roleAr = $specialty ? (string) ($specialty->getTranslation('name', 'ar', false) ?: $roleEn) : 'طبيب';
+            $roleTr = $specialty ? (string) ($specialty->getTranslation('name', 'tr', false) ?: $roleEn) : 'Doktor';
+
+            // Prefer the public profile "img" collection, fall back to
+            // "default" (used by DoctorFactory), then to the first media file.
+            $avatarUrl = $doctor->getFirstMediaUrl('img') ?: $doctor->getFirstMediaUrl('default');
+            $avatarPath = null;
+            if ($avatarUrl) {
+                $media = $doctor->getFirstMedia('img') ?: $doctor->getFirstMedia('default');
+                if ($media && file_exists($media->getPath())) {
+                    $avatarPath = $media->getPath();
+                }
+            }
+
+            $bioSource = trim((string) ($doctor->bio ?? ''));
+            if ($bioSource === '') {
+                $bioSource = $roleEn.' at our clinic';
+            }
+
+            $result[] = [
+                'name' => $this->prefixDoctorName((string) $doctor->name),
+                'role' => ['en' => $roleEn, 'ar' => $roleAr, 'tr' => $roleTr],
+                'bio' => [
+                    'en' => $bioSource,
+                    'ar' => $bioSource,
+                    'tr' => $bioSource,
+                ],
+                'doctor_id' => (int) $doctor->id,
+                'avatar_path' => $avatarPath,
+            ];
+        }
+
+        // Top up with placeholders so there are always exactly 4 cards.
+        $placeholders = [
+            [
+                'name' => 'Dr. Ahmed Hassan',
+                'role' => ['en' => 'Cardiologist', 'ar' => 'طبيب قلب', 'tr' => 'Kardiyolog'],
+                'bio' => ['en' => '15+ years of experience in cardiovascular medicine', 'ar' => 'أكثر من 15 عامًا من الخبرة في طب القلب والأوعية الدموية', 'tr' => 'Kardiyovasküler tıpta 15+ yıl deneyim'],
+            ],
+            [
+                'name' => 'Dr. Sarah Miller',
+                'role' => ['en' => 'Neurologist', 'ar' => 'طبيبة أعصاب', 'tr' => 'Nörolog'],
+                'bio' => ['en' => 'Specialized in brain and nervous system disorders', 'ar' => 'متخصصة في اضطرابات الدماغ والجهاز العصبي', 'tr' => 'Beyin ve sinir sistemi bozukluklarında uzman'],
+            ],
+            [
+                'name' => 'Dr. Omar Yilmaz',
+                'role' => ['en' => 'Pediatrician', 'ar' => 'طبيب أطفال', 'tr' => 'Pediatrist'],
+                'bio' => ['en' => 'Dedicated to providing compassionate care for children', 'ar' => 'مكرس لتقديم رعاية رحيمة للأطفال', 'tr' => 'Çocuklara şefkatli bakım sağlamaya adanmış'],
+            ],
+            [
+                'name' => 'Dr. Fatima Al-Rashid',
+                'role' => ['en' => 'Dermatologist', 'ar' => 'طبيبة جلدية', 'tr' => 'Dermatolog'],
+                'bio' => ['en' => 'Expert in skin conditions and cosmetic treatments', 'ar' => 'خبيرة في الأمراض الجلدية والعلاجات التجميلية', 'tr' => 'Cilt hastalıkları ve kozmetik tedavilerde uzman'],
+            ],
+        ];
+
+        for ($i = count($result); $i < 4; $i++) {
+            $ph = $placeholders[$i];
+            $result[] = [
+                'name' => $ph['name'],
+                'role' => $ph['role'],
+                'bio' => $ph['bio'],
+                'doctor_id' => null,
+                'avatar_path' => null,
+            ];
+        }
+
+        return $result;
+    }
+
+    /**
+     * Ensure a doctor name is shown with a "Dr." prefix on the landing page
+     * without doubling it up when the stored name already starts with it.
+     */
+    private function prefixDoctorName(string $name): string
+    {
+        $trimmed = trim($name);
+        if ($trimmed === '') {
+            return 'Dr.';
+        }
+        if (preg_match('/^(dr\.?|doctor|د\.|د)\s+/ui', $trimmed)) {
+            return $trimmed;
+        }
+
+        return 'Dr. '.$trimmed;
     }
 }

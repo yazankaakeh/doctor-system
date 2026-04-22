@@ -102,6 +102,81 @@ class DoctorSeeder extends Seeder
             $demoDoctor2->assignRole(Roles::SUPER_ADMIN->value);
         }
 
+        // Seed two additional demo doctors with different specialties so the
+        // public landing page's "Meet Our Doctors" section has 4 real doctors
+        // (with their specialty as the role) instead of placeholder cards.
+        $this->seedAdditionalDemoDoctors();
+
         $this->command->info('Doctor seeder completed successfully!');
+    }
+
+    /**
+     * Create/refresh two extra demo doctors so the landing page can render
+     * 4 real doctors out of the box. Kept separate from the main doctors so
+     * their existing credentials are never touched.
+     */
+    private function seedAdditionalDemoDoctors(): void
+    {
+        $extras = [
+            [
+                'email' => 'doctor.cardio@demo.com',
+                'name' => 'Dr. Omar Khan',
+                'gender' => Gender::MALE->value,
+                'age' => 42,
+                'phone' => '1122334455',
+                'specialty_code' => 'CARDIOLOGY',
+                'specialty_name' => [
+                    'en' => 'Cardiology',
+                    'ar' => 'أمراض القلب',
+                ],
+                'password_env' => 'DEMO_DOCTOR3_PASSWORD',
+                'password_default' => 'Doctor3@2026!',
+                'bio' => '15+ years of experience in cardiovascular medicine.',
+            ],
+            [
+                'email' => 'doctor.pediatrics@demo.com',
+                'name' => 'Dr. Layla Al-Mansour',
+                'gender' => Gender::FEMALE->value,
+                'age' => 38,
+                'phone' => '2233445566',
+                'specialty_code' => 'PEDIATRICS',
+                'specialty_name' => [
+                    'en' => 'Pediatrics',
+                    'ar' => 'طب الأطفال',
+                ],
+                'password_env' => 'DEMO_DOCTOR4_PASSWORD',
+                'password_default' => 'Doctor4@2026!',
+                'bio' => 'Dedicated to providing compassionate care for children.',
+            ],
+        ];
+
+        foreach ($extras as $extra) {
+            /** @var MedicalSpecialty $specialty */
+            $specialty = MedicalSpecialty::query()->firstOrCreate(
+                ['code' => $extra['specialty_code']],
+                ['name' => $extra['specialty_name'], 'is_active' => 1]
+            );
+
+            /** @var Doctor $doctor */
+            $doctor = Doctor::query()->updateOrCreate(
+                ['email' => $extra['email']],
+                [
+                    'name' => $extra['name'],
+                    'gender' => $extra['gender'],
+                    'medical_specialty_id' => $specialty->id,
+                    'age' => $extra['age'],
+                    'is_active' => 1,
+                    'phone' => $extra['phone'],
+                    'bio' => $extra['bio'],
+                    'password' => Hash::make(
+                        env($extra['password_env'], $extra['password_default'])
+                    ),
+                ]
+            );
+
+            if (! $doctor->hasRole(Roles::SUPER_ADMIN->value)) {
+                $doctor->assignRole(Roles::SUPER_ADMIN->value);
+            }
+        }
     }
 }
