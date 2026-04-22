@@ -7,17 +7,26 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rules\Password;
 use Livewire\Component;
 use Modules\Auth\Actions\Patient\RegisterAction;
 use Modules\Booking\Actions\Booking\CreateBookingAction;
+use Modules\Booking\Actions\RecurringSchedule\GenerateAvailabilitiesFromScheduleAction;
 use Modules\Booking\Models\DoctorAvailability;
+use Modules\Booking\Models\DoctorRecurringSchedule;
 use Modules\Doctor\Models\Doctor;
 use Modules\Doctor\Models\MedicalSpecialty;
 use Modules\Doctor\Models\Patient;
 
 class PublicBookingWizard extends Component
 {
+    /**
+     * Rolling forward window (days) of availability rows we materialize
+     * from each doctor's active recurring schedules on demand.
+     */
+    private const GENERATE_WINDOW_DAYS = 30;
+
     // Wizard state
     public int $step = 1;
 
@@ -146,6 +155,12 @@ class PublicBookingWizard extends Component
 
     public function loadAvailableDates(): void
     {
+        // Make sure any active recurring schedules for this doctor
+        // have their slots materialized in doctor_availabilities
+        // before we query. Keeps the wizard self-healing even if the
+        // scheduled generator hasn't run yet.
+        $this->ensureAvailabilitiesMaterialized();
+
         $this->availableDates = DoctorAvailability::query()
             ->forDoctor($this->selectedDoctorId)
             ->active()
@@ -158,6 +173,10 @@ class PublicBookingWizard extends Component
 
     public function loadAvailableSlots(): void
     {
+        // Top up materialized slots if needed so a date driven by a
+        // recurring schedule still returns slots when clicked.
+        $this->ensureAvailabilitiesMaterialized();
+
         $availability = DoctorAvailability::query()
             ->forDoctor($this->selectedDoctorId)
             ->active()
@@ -169,6 +188,59 @@ class PublicBookingWizard extends Component
             $this->availableSlots = $availability->getAvailableSlots();
         } else {
             $this->availableSlots = [];
+        }
+    }
+
+    /**
+     * Ensure the selected doctor's active recurring schedules have been
+     * expanded into concrete doctor_availabilities rows for the rolling
+     * window. Idempotent — the generator uses updateOrCreate.
+     *
+     * Only runs generation if the doctor has active schedules AND the
+     * existing materialized coverage falls short of the window end,
+     * so the happy path (already generated) is a single cheap query.
+     */
+    protected function ensureAvailabilitiesMaterialized(): void
+    {
+        if (! $this->selectedDoctorId) {
+            return;
+        }
+
+        $doctorId = (int) $this->selectedDoctorId;
+
+        $hasActiveSchedules = DoctorRecurringSchedule::query()
+            ->forDoctor($doctorId)
+            ->active()
+            ->exists();
+
+        if (! $hasActiveSchedules) {
+            return;
+        }
+
+        $windowEnd = Carbon::today()->addDays(self::GENERATE_WINDOW_DAYS);
+
+        $latestMaterialized = DoctorAvailability::query()
+            ->forDoctor($doctorId)
+            ->whereNotNull('recurring_schedule_id')
+            ->max('date');
+
+        if ($latestMaterialized && Carbon::parse($latestMaterialized)->gte($windowEnd)) {
+            return;
+        }
+
+        try {
+            app(GenerateAvailabilitiesFromScheduleAction::class)->handle(
+                $doctorId,
+                Carbon::today(),
+                $windowEnd,
+            );
+        } catch (\Throwable $e) {
+            // Don't break the UI if generation fails — existing rows
+            // (if any) will still render. Log for diagnosis.
+            Log::warning('PublicBookingWizard failed to materialize availabilities', [
+                'doctor_id' => $doctorId,
+                'error' => $e->getMessage(),
+            ]);
         }
     }
 
