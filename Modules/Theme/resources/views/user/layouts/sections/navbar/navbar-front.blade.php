@@ -80,10 +80,36 @@
                                 class="icon-base ti tabler-calendar scaleX-n1-rtl me-md-1"></span><span
                                 class="d-none d-md-block">Book Appointment</span></a>
                 </li>
+                {{--
+                    Login / Dashboard CTA.
+                    Behaviour:
+                      - Doctor already logged in  → "Dashboard" button → doctor.dashboard
+                      - Patient already logged in → "Dashboard" button → patient.dashboard
+                      - Guest                     → "Login / Register" button → patient.login
+                    The doctor guard is checked first so a doctor viewing the
+                    public site is always sent to their own dashboard even if
+                    they also have a patient session cookie.
+                --}}
                 <li>
-                    <a href="#" class="btn btn-outline-primary" target="_blank"><span
-                                class="icon-base ti tabler-login scaleX-n1-rtl me-md-1"></span><span
-                                class="d-none d-md-block">{{trans('newLandingPage.navbar.loginRegister')}}</span></a>
+                    @auth('doctor')
+                        {{-- Logged-in doctor → doctor dashboard. --}}
+                        <a href="{{ route('doctor.dashboard') }}" class="btn btn-outline-primary">
+                            <span class="icon-base ti tabler-layout-dashboard scaleX-n1-rtl me-md-1"></span>
+                            <span class="d-none d-md-block">{{ trans('customer.sidebar.dashboard') ?? 'Dashboard' }}</span>
+                        </a>
+                    @elseauth('web')
+                        {{-- Logged-in patient (default web guard) → patient dashboard. --}}
+                        <a href="{{ route('patient.dashboard') }}" class="btn btn-outline-primary">
+                            <span class="icon-base ti tabler-layout-dashboard scaleX-n1-rtl me-md-1"></span>
+                            <span class="d-none d-md-block">{{ trans('customer.sidebar.dashboard') ?? 'Dashboard' }}</span>
+                        </a>
+                    @else
+                        {{-- Guest → patient login page (default public login entry point). --}}
+                        <a href="{{ route('patient.login') }}" class="btn btn-outline-primary">
+                            <span class="icon-base ti tabler-login scaleX-n1-rtl me-md-1"></span>
+                            <span class="d-none d-md-block">{{ trans('newLandingPage.navbar.loginRegister') }}</span>
+                        </a>
+                    @endauth
                 </li>
                 <!-- navbar button: End -->
             </ul>
