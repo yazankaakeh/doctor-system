@@ -27,23 +27,17 @@ class SecureFileController extends Controller
         // Verify user has access to this file
         $this->authorizeFileAccess($media);
 
-        // Get file path
-        $disk = $media->disk;
-        $path = $media->getPath();
+        // Absolute path on disk (works regardless of which disk the media uses)
+        $fullPath = $media->getPath();
 
-        // Check if file exists
-        if (! Storage::disk($disk)->exists($path)) {
+        if (! file_exists($fullPath)) {
             abort(404, 'File not found.');
         }
 
-        // Get file content
-        $file = Storage::disk($disk)->get($path);
-        $mimeType = Storage::disk($disk)->mimeType($path);
-
-        // Return file as response
-        return response($file, 200)
-            ->header('Content-Type', $mimeType)
-            ->header('Content-Disposition', 'inline; filename="'.$media->file_name.'"');
+        return response()->file($fullPath, [
+            'Content-Type' => $media->mime_type ?: mime_content_type($fullPath),
+            'Content-Disposition' => 'inline; filename="'.$media->file_name.'"',
+        ]);
     }
 
     /**
