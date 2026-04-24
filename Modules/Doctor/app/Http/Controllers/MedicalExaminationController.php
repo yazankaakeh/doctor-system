@@ -14,6 +14,7 @@ use Modules\Doctor\Http\Requests\MedicalExaminationRequest;
 use Modules\Doctor\Models\Clinic;
 use Modules\Doctor\Models\MedicalExamination;
 use Modules\Doctor\Models\Patient;
+use Modules\Doctor\Models\VitalSign;
 use Modules\Doctor\Notifications\ExaminationCompletedNotification;
 
 class MedicalExaminationController extends Controller
@@ -177,9 +178,28 @@ class MedicalExaminationController extends Controller
 
     /**
      * Show the specified resource.
+     *
+     * The blade view (`doctor::doctor.medicalExamination.show`) iterates a
+     * paginated `$data` collection of VitalSign records (it also includes
+     * the vitalSign create/edit modals), so we must provide that variable
+     * or the view errors with "Undefined variable $data".
+     *
+     * We also look up the MedicalExamination by id for context so future
+     * changes to the view can filter by the specific examination if needed.
      */
     public function show($id)
     {
-        return view('doctor::doctor.medicalExamination.show');
+        // Ensure the examination exists – 404 if the id is invalid.
+        $medicalExamination = MedicalExamination::query()->findOrFail($id);
+
+        // Paginated list of vital signs rendered in the table.
+        // Mirrors VitalSignController::index() so the view (which reuses
+        // the same modals) receives data in the expected shape.
+        $data = VitalSign::query()->paginate(Pagination::PAG->value);
+
+        return view(
+            'doctor::doctor.medicalExamination.show',
+            compact('data', 'medicalExamination'),
+        );
     }
 }
