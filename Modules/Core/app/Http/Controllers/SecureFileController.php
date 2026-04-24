@@ -3,11 +3,10 @@
 namespace Modules\Core\App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Storage;
 use Modules\Doctor\Models\MedicalExamination;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class SecureFileController extends Controller
 {
@@ -15,7 +14,7 @@ class SecureFileController extends Controller
      * Download a secure media file.
      * Requires authentication and validates ownership.
      */
-    public function download(Request $request, int $mediaId): Response
+    public function download(Request $request, int $mediaId): BinaryFileResponse
     {
         $media = Media::findOrFail($mediaId);
 
