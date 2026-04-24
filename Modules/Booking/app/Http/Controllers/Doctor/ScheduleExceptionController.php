@@ -45,9 +45,9 @@ class ScheduleExceptionController extends Controller
      */
     public function index(): View
     {
-        $doctorId   = auth('doctor')->id();
+        $doctorId = auth('doctor')->id();
         $exceptions = $this->repository->getByDoctor($doctorId);
-        $schedules  = $this->scheduleRepository->getActiveByDoctor($doctorId);
+        $schedules = $this->scheduleRepository->getActiveByDoctor($doctorId);
 
         return view('booking::doctor.schedule-exceptions.index', compact('exceptions', 'schedules'));
     }

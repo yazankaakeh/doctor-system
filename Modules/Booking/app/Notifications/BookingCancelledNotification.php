@@ -53,8 +53,8 @@ class BookingCancelledNotification extends Notification
             // Summary of the cancelled appointment.
             ->line(__('booking::booking.email.cancelled_details', [
                 'patient' => $this->booking->patient->name,
-                'date'    => $this->booking->booking_date->format('F j, Y'),
-                'time'    => $this->booking->start_time->format('H:i'),
+                'date' => $this->booking->booking_date->format('F j, Y'),
+                'time' => $this->booking->start_time->format('H:i'),
             ]))
             // Only include the reason line if the patient actually provided one.
             ->when($this->booking->cancellation_reason, function ($mail) {
@@ -72,12 +72,12 @@ class BookingCancelledNotification extends Notification
     public function toArray($notifiable): array
     {
         return [
-            'booking_id'          => $this->booking->id,
-            'patient_name'        => $this->booking->patient->name,
-            'booking_date'        => $this->booking->booking_date->toDateString(),
-            'start_time'          => $this->booking->start_time->format('H:i'),
+            'booking_id' => $this->booking->id,
+            'patient_name' => $this->booking->patient->name,
+            'booking_date' => $this->booking->booking_date->toDateString(),
+            'start_time' => $this->booking->start_time->format('H:i'),
             'cancellation_reason' => $this->booking->cancellation_reason,
-            'message'             => __('booking::booking.notification.booking_cancelled'),
+            'message' => __('booking::booking.notification.booking_cancelled'),
         ];
     }
 }

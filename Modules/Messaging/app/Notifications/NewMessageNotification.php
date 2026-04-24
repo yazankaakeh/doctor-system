@@ -67,7 +67,7 @@ class NewMessageNotification extends Notification implements ShouldQueue
                 'name' => $conversation->participant_name,
             ]))
             ->line(__('messaging::notifications.new_message_line', [
-                'name'    => $conversation->participant_name,
+                'name' => $conversation->participant_name,
                 'channel' => $conversation->channel->name,
             ]))
             // Keep the preview short so email clients don't truncate awkwardly.
@@ -85,13 +85,13 @@ class NewMessageNotification extends Notification implements ShouldQueue
         $conversation = $this->message->conversation;
 
         return [
-            'type'             => 'new_message',
-            'message_id'       => $this->message->id,
-            'conversation_id'  => $conversation->id,
+            'type' => 'new_message',
+            'message_id' => $this->message->id,
+            'conversation_id' => $conversation->id,
             'participant_name' => $conversation->participant_name,
-            'channel_type'     => $conversation->channel->type->value,
-            'content_preview'  => $this->truncateContent($this->message->content, 50),
-            'created_at'       => $this->message->created_at->toIso8601String(),
+            'channel_type' => $conversation->channel->type->value,
+            'content_preview' => $this->truncateContent($this->message->content, 50),
+            'created_at' => $this->message->created_at->toIso8601String(),
         ];
     }
 

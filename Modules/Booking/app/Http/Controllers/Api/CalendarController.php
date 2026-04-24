@@ -47,12 +47,12 @@ class CalendarController extends Controller
         // FullCalendar always sends a start/end window; both must be valid dates.
         $request->validate([
             'start' => ['required', 'date'],
-            'end'   => ['required', 'date'],
+            'end' => ['required', 'date'],
         ]);
 
-        $doctorId  = auth('doctor')->id();
+        $doctorId = auth('doctor')->id();
         $startDate = Carbon::parse($request->start);
-        $endDate   = Carbon::parse($request->end);
+        $endDate = Carbon::parse($request->end);
 
         // Action is responsible for querying and formatting the events.
         $events = $this->calendarAction->getAvailabilityEvents($doctorId, $startDate, $endDate);
@@ -68,16 +68,16 @@ class CalendarController extends Controller
     public function bookings(Request $request): JsonResponse
     {
         $request->validate([
-            'start'  => ['required', 'date'],
-            'end'    => ['required', 'date'],
+            'start' => ['required', 'date'],
+            'end' => ['required', 'date'],
             // Status range 1..5 matches the underlying BookingStatusEnum values.
             'status' => ['nullable', 'integer', 'between:1,5'],
         ]);
 
-        $doctorId  = auth('doctor')->id();
+        $doctorId = auth('doctor')->id();
         $startDate = Carbon::parse($request->start);
-        $endDate   = Carbon::parse($request->end);
-        $status    = $request->status ? (int) $request->status : null;
+        $endDate = Carbon::parse($request->end);
+        $status = $request->status ? (int) $request->status : null;
 
         $events = $this->calendarAction->getBookingEvents($doctorId, $startDate, $endDate, $status);
 

@@ -57,7 +57,7 @@ class WebChatController extends Controller
         ]);
 
         // Re-use the visitor id the widget remembers; fall back to a fresh UUID.
-        $visitorId   = $request->input('visitor_id') ?: 'webchat_'.Str::uuid();
+        $visitorId = $request->input('visitor_id') ?: 'webchat_'.Str::uuid();
         $visitorName = $request->input('visitor_name', 'Website Visitor');
 
         // WebChat is served from a single channel row per install.
@@ -68,7 +68,7 @@ class WebChatController extends Controller
             // can retry later or hide itself.
             return response()->json([
                 'success' => false,
-                'error'   => 'WebChat is not available',
+                'error' => 'WebChat is not available',
             ], 503);
         }
 
@@ -122,7 +122,7 @@ class WebChatController extends Controller
         if ($conversation->channel->type !== ChannelTypeEnum::WEBCHAT) {
             return response()->json([
                 'success' => false,
-                'error'   => 'Invalid conversation type',
+                'error' => 'Invalid conversation type',
             ], 400);
         }
 

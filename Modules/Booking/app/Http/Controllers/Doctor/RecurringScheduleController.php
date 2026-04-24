@@ -52,7 +52,7 @@ class RecurringScheduleController extends Controller
      */
     public function index(): View
     {
-        $doctorId  = auth('doctor')->id();
+        $doctorId = auth('doctor')->id();
         $schedules = $this->repository->getByDoctor($doctorId);
 
         return view('booking::doctor.recurring-schedules.index', compact('schedules'));
@@ -153,9 +153,9 @@ class RecurringScheduleController extends Controller
         GenerateAvailabilitiesRequest $request,
         GenerateAvailabilitiesFromScheduleAction $action
     ): RedirectResponse {
-        $doctorId  = auth('doctor')->id();
+        $doctorId = auth('doctor')->id();
         $startDate = Carbon::parse($request->validated('start_date'));
-        $endDate   = Carbon::parse($request->validated('end_date'));
+        $endDate = Carbon::parse($request->validated('end_date'));
 
         // The action returns counts of `created` vs `skipped` rows so we can
         // show the doctor a meaningful success message.

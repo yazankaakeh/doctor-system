@@ -78,7 +78,7 @@ class Booking extends Model
         'notes',                      // Patient-supplied notes for the doctor
         'reminder_24h_sent_at',       // Patient 24h reminder sent at (or null)
         'reminder_1h_sent_at',        // Patient 1h  reminder sent at (or null)
-        'doctor_reminder_24h_sent_at',// Doctor  24h reminder sent at (or null)
+        'doctor_reminder_24h_sent_at', // Doctor  24h reminder sent at (or null)
         'doctor_reminder_1h_sent_at', // Doctor  1h  reminder sent at (or null)
     ];
 
@@ -93,17 +93,17 @@ class Booking extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'booking_date'                 => 'date',
-        'start_time'                   => 'datetime:H:i',
-        'end_time'                     => 'datetime:H:i',
-        'duration'                     => 'integer',
-        'consultation_fee'             => 'decimal:2',
-        'status'                       => BookingStatusEnum::class,
-        'cancelled_at'                 => 'datetime',
-        'reminder_24h_sent_at'         => 'datetime',
-        'reminder_1h_sent_at'          => 'datetime',
-        'doctor_reminder_24h_sent_at'  => 'datetime',
-        'doctor_reminder_1h_sent_at'   => 'datetime',
+        'booking_date' => 'date',
+        'start_time' => 'datetime:H:i',
+        'end_time' => 'datetime:H:i',
+        'duration' => 'integer',
+        'consultation_fee' => 'decimal:2',
+        'status' => BookingStatusEnum::class,
+        'cancelled_at' => 'datetime',
+        'reminder_24h_sent_at' => 'datetime',
+        'reminder_1h_sent_at' => 'datetime',
+        'doctor_reminder_24h_sent_at' => 'datetime',
+        'doctor_reminder_1h_sent_at' => 'datetime',
     ];
 
     /* -------------------------------------------------------------------------

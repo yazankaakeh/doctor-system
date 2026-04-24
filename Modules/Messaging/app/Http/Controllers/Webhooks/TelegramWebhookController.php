@@ -68,9 +68,9 @@ class TelegramWebhookController extends Controller
         $webhookLog = WebhookLog::create([
             'channel_id' => $channel->id,
             'event_type' => $eventType,
-            'payload'    => $request->all(),
-            'headers'    => $request->headers->all(),
-            'processed'  => false,
+            'payload' => $request->all(),
+            'headers' => $request->headers->all(),
+            'processed' => false,
         ]);
 
         // Offload the real work to the queue so we can ack Telegram quickly.
@@ -78,7 +78,7 @@ class TelegramWebhookController extends Controller
 
         Log::channel('messaging')->info('Telegram webhook received', [
             'webhook_log_id' => $webhookLog->id,
-            'event_type'     => $eventType,
+            'event_type' => $eventType,
         ]);
 
         // Telegram only cares about HTTP 200 — the body is ignored.

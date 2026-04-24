@@ -51,13 +51,13 @@ class FileUploadController extends Controller
 
         try {
             // Snapshot meta BEFORE move() — UploadedFile is invalidated afterwards.
-            $originalName      = $file->getClientOriginalName();
+            $originalName = $file->getClientOriginalName();
             $originalExtension = $file->getClientOriginalExtension();
-            $mimeType          = $file->getMimeType();
-            $size              = $file->getSize();
+            $mimeType = $file->getMimeType();
+            $size = $file->getSize();
 
             // Randomised filename prevents guessable URLs and collisions.
-            $filename     = Str::uuid().'.'.$originalExtension;
+            $filename = Str::uuid().'.'.$originalExtension;
             $relativePath = 'messaging-temp/'.$filename;
 
             // Resolve target directory under storage/app/public.

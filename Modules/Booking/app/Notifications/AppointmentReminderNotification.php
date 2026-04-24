@@ -36,8 +36,8 @@ class AppointmentReminderNotification extends Notification implements ShouldQueu
     use Queueable;
 
     /**
-     * @param  Booking  $booking       The booking the reminder is about.
-     * @param  string   $reminderType  Either '24h' (day-before) or '1h' (final nudge).
+     * @param  Booking  $booking  The booking the reminder is about.
+     * @param  string  $reminderType  Either '24h' (day-before) or '1h' (final nudge).
      */
     public function __construct(
         private readonly Booking $booking,
@@ -79,11 +79,11 @@ class AppointmentReminderNotification extends Notification implements ShouldQueu
     public function toMail($notifiable): MailMessage
     {
         // Decide wording based on the reminder window.
-        $isOneHour  = $this->reminderType === '1h';
+        $isOneHour = $this->reminderType === '1h';
         $subjectKey = $isOneHour
             ? 'booking::booking.email.reminder_1h_subject'
             : 'booking::booking.email.reminder_24h_subject';
-        $line1Key   = $isOneHour
+        $line1Key = $isOneHour
             ? 'booking::booking.email.reminder_1h_line1'
             : 'booking::booking.email.reminder_24h_line1';
 

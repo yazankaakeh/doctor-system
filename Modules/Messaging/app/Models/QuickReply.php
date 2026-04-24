@@ -40,8 +40,8 @@ class QuickReply extends Model
     ];
 
     protected $casts = [
-        'is_active'   => 'boolean',
-        'is_global'   => 'boolean',
+        'is_active' => 'boolean',
+        'is_global' => 'boolean',
         'usage_count' => 'integer',
     ];
 

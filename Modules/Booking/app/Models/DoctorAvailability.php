@@ -60,12 +60,12 @@ class DoctorAvailability extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'date'                   => 'date',
-        'start_time'             => 'datetime:H:i',
-        'end_time'               => 'datetime:H:i',
-        'slot_duration'          => 'integer',
-        'consultation_fee'       => 'decimal:2',
-        'is_active'              => 'boolean',
+        'date' => 'date',
+        'start_time' => 'datetime:H:i',
+        'end_time' => 'datetime:H:i',
+        'slot_duration' => 'integer',
+        'consultation_fee' => 'decimal:2',
+        'is_active' => 'boolean',
         'is_recurring_generated' => 'boolean',
     ];
 
@@ -112,7 +112,7 @@ class DoctorAvailability extends Model
         // Combine the date with start/end times to build absolute timestamps
         // so we can step through the window.
         $start = Carbon::parse($this->date->format('Y-m-d').' '.$this->start_time->format('H:i'));
-        $end   = Carbon::parse($this->date->format('Y-m-d').' '.$this->end_time->format('H:i'));
+        $end = Carbon::parse($this->date->format('Y-m-d').' '.$this->end_time->format('H:i'));
 
         // Advance by slot_duration until the next slot would spill past $end.
         while ($start->copy()->addMinutes($this->slot_duration)->lte($end)) {
@@ -120,7 +120,7 @@ class DoctorAvailability extends Model
 
             $slots[] = [
                 'start' => $start->format('H:i'),
-                'end'   => $slotEnd->format('H:i'),
+                'end' => $slotEnd->format('H:i'),
             ];
 
             $start = $slotEnd;

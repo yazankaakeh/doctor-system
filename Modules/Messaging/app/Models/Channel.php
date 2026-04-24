@@ -50,11 +50,11 @@ class Channel extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'type'          => ChannelTypeEnum::class,
-        'is_active'     => 'boolean',
+        'type' => ChannelTypeEnum::class,
+        'is_active' => 'boolean',
         'is_admin_only' => 'boolean',
-        'config'        => 'array',
-        'metadata'      => 'array',
+        'config' => 'array',
+        'metadata' => 'array',
     ];
 
     // =========================================================================
@@ -140,8 +140,8 @@ class Channel extends Model
         return match ($this->type) {
             ChannelTypeEnum::WHATSAPP => ! empty($this->getConfigValue('access_token')) && ! empty($this->getConfigValue('phone_number_id')),
             ChannelTypeEnum::TELEGRAM => ! empty($this->getConfigValue('bot_token')),
-            ChannelTypeEnum::WEBCHAT  => true, // WebChat doesn't require external config
-            default                   => false,
+            ChannelTypeEnum::WEBCHAT => true, // WebChat doesn't require external config
+            default => false,
         };
     }
 

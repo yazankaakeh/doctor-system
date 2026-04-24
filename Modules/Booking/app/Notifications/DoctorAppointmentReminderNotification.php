@@ -32,8 +32,8 @@ class DoctorAppointmentReminderNotification extends Notification implements Shou
     use Queueable;
 
     /**
-     * @param  Booking  $booking       Upcoming appointment.
-     * @param  string   $reminderType  '24h' or '1h' – which wave we're in.
+     * @param  Booking  $booking  Upcoming appointment.
+     * @param  string  $reminderType  '24h' or '1h' – which wave we're in.
      */
     public function __construct(
         private readonly Booking $booking,
@@ -66,11 +66,11 @@ class DoctorAppointmentReminderNotification extends Notification implements Shou
     public function toMail($notifiable): MailMessage
     {
         // Choose subject/intro based on which reminder wave we're in.
-        $isOneHour  = $this->reminderType === '1h';
+        $isOneHour = $this->reminderType === '1h';
         $subjectKey = $isOneHour
             ? 'booking::booking.email.doctor_reminder_1h_subject'
             : 'booking::booking.email.doctor_reminder_24h_subject';
-        $line1Key   = $isOneHour
+        $line1Key = $isOneHour
             ? 'booking::booking.email.doctor_reminder_1h_line1'
             : 'booking::booking.email.doctor_reminder_24h_line1';
 

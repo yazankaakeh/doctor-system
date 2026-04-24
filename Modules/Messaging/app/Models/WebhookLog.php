@@ -40,9 +40,9 @@ class WebhookLog extends Model
     ];
 
     protected $casts = [
-        'payload'      => 'array',
-        'headers'      => 'array',
-        'processed'    => 'boolean',
+        'payload' => 'array',
+        'headers' => 'array',
+        'processed' => 'boolean',
         'processed_at' => 'datetime',
     ];
 
@@ -100,7 +100,7 @@ class WebhookLog extends Model
     public function markAsProcessed(): self
     {
         $this->update([
-            'processed'    => true,
+            'processed' => true,
             'processed_at' => now(),
         ]);
 
@@ -111,9 +111,9 @@ class WebhookLog extends Model
     public function markAsFailed(string $error): self
     {
         $this->update([
-            'processed'    => true,
+            'processed' => true,
             'processed_at' => now(),
-            'error'        => $error,
+            'error' => $error,
         ]);
 
         return $this;

@@ -51,12 +51,12 @@ class ConversationAssignedNotification extends Notification implements ShouldQue
     public function toDatabase(object $notifiable): array
     {
         return [
-            'type'             => 'conversation_assigned',
-            'conversation_id'  => $this->conversation->id,
+            'type' => 'conversation_assigned',
+            'conversation_id' => $this->conversation->id,
             'participant_name' => $this->conversation->participant_name,
-            'channel_type'     => $this->conversation->channel->type->value,
-            'unread_count'     => $this->conversation->unread_count,
-            'assigned_at'      => now()->toIso8601String(),
+            'channel_type' => $this->conversation->channel->type->value,
+            'unread_count' => $this->conversation->unread_count,
+            'assigned_at' => now()->toIso8601String(),
         ];
     }
 

@@ -49,9 +49,9 @@ class DoctorScheduleException extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'exception_date'       => 'date',
+        'exception_date' => 'date',
         'alternate_start_time' => 'datetime:H:i',
-        'alternate_end_time'   => 'datetime:H:i',
+        'alternate_end_time' => 'datetime:H:i',
     ];
 
     /** Exception type: cancel availability entirely on this date. */

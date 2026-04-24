@@ -62,14 +62,14 @@ class DoctorRecurringSchedule extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'day_of_week'      => 'integer',
-        'start_time'       => 'datetime:H:i',
-        'end_time'         => 'datetime:H:i',
-        'slot_duration'    => 'integer',
+        'day_of_week' => 'integer',
+        'start_time' => 'datetime:H:i',
+        'end_time' => 'datetime:H:i',
+        'slot_duration' => 'integer',
         'consultation_fee' => 'decimal:2',
-        'effective_from'   => 'date',
-        'effective_until'  => 'date',
-        'is_active'        => 'boolean',
+        'effective_from' => 'date',
+        'effective_until' => 'date',
+        'is_active' => 'boolean',
     ];
 
     /**
@@ -203,19 +203,19 @@ class DoctorRecurringSchedule extends Model
     public function generateSlotsForDate($date): array
     {
         $slots = [];
-        $date  = is_string($date) ? Carbon::parse($date) : $date;
+        $date = is_string($date) ? Carbon::parse($date) : $date;
 
         // Start by anchoring the template's start/end times to the given date.
         $currentTime = $date->copy()->setTimeFromTimeString($this->start_time->format('H:i:s'));
-        $endTime     = $date->copy()->setTimeFromTimeString($this->end_time->format('H:i:s'));
+        $endTime = $date->copy()->setTimeFromTimeString($this->end_time->format('H:i:s'));
 
         // Walk forward in slot_duration steps until adding another slot would
         // spill past the window's end time.
         while ($currentTime->copy()->addMinutes($this->slot_duration)->lte($endTime)) {
             $slots[] = [
-                'start_time'       => $currentTime->format('H:i'),
-                'end_time'         => $currentTime->copy()->addMinutes($this->slot_duration)->format('H:i'),
-                'duration'         => $this->slot_duration,
+                'start_time' => $currentTime->format('H:i'),
+                'end_time' => $currentTime->copy()->addMinutes($this->slot_duration)->format('H:i'),
+                'duration' => $this->slot_duration,
                 'consultation_fee' => $this->consultation_fee,
             ];
             $currentTime->addMinutes($this->slot_duration);

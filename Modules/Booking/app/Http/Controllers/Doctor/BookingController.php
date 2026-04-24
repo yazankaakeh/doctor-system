@@ -44,7 +44,7 @@ class BookingController extends Controller
         $doctorId = auth('doctor')->id();
 
         // "upcoming" – future appointments, sorted chronologically.
-        $bookings    = $this->repository->getUpcomingForDoctor($doctorId);
+        $bookings = $this->repository->getUpcomingForDoctor($doctorId);
         // "all" – full history used by the secondary tab / archive view.
         $allBookings = $this->repository->getAllForDoctor($doctorId);
 
