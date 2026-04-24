@@ -1,3 +1,12 @@
+{{--
+    Livewire view: message-composer.
+    Bottom-of-thread input area for agents. Features:
+      - Rich text input with emoji picker
+      - Drag-and-drop file upload (via Alpine x-data="messageComposerUpload")
+      - Quick replies dropdown (scoped by user + channel)
+      - Template picker (approved WhatsApp templates)
+      - Voice recording (pulse animation while recording)
+--}}
 <div class="border-top p-3 bg-white" x-data="messageComposerUpload(@js($conversationId))" x-init="init()">
     <style>
         [x-cloak] { display: none !important; }

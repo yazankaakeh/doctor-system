@@ -1,3 +1,12 @@
+{{--
+    Patient → Booking detail page (Patient\BookingController@show).
+
+    Shows the full appointment information from the patient's side, plus:
+      - Payment status
+      - Video consultation join button (when confirmed)
+      - In-booking chat with the doctor (Livewire)
+      - Cancel action (when the booking can still be cancelled)
+--}}
 @extends('theme::user.layouts.horizontalLayout')
 
 @section('title', trans('booking::booking.booking_details'))

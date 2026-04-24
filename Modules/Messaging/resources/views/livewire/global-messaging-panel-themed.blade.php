@@ -1,6 +1,11 @@
-{{-- Themed Messaging Panel for Dashboard --}}
+{{--
+    Livewire view: global-messaging-panel-themed.
+    Themed variant of the global messaging panel for the admin dashboard.
+    Same layout and behaviour (slide-out with conversation list + thread)
+    with the admin theme styling applied.
+--}}
 <div wire:key="messaging-panel-root" @if($isOpen) wire:poll.10s="loadConversations" @endif>
-    {{-- Overlay --}}
+    {{-- Dark backdrop overlay — click to close. --}}
     <div
         id="messaging-overlay"
         wire:click="close"

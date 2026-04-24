@@ -1,7 +1,15 @@
+{{--
+    Doctor → Availability list page.
+    Rendered by Doctor\AvailabilityController@index. Displays the doctor's
+    manually-created availability windows in a paginated table with:
+      - "Add Availability" modal (POST doctor.availability.store)
+      - Per-row edit/delete actions (PUT doctor.availability.update / DELETE destroy)
+--}}
 @extends('theme::user.layouts.horizontalLayout')
 
 @section('title', trans('booking::booking.availability'))
 
+{{-- Livewire styles/scripts (loaded in case the page hosts Livewire widgets). --}}
 @section('vendor-style')
     @livewireStyles
 @endsection
@@ -16,6 +24,7 @@
             <div class="row mb-5">
                 <div class="col-12">
                     <div class="card">
+                        {{-- Card header: title + "Add availability" trigger button. --}}
                         <div class="card-header d-flex justify-content-between pb-2 mb-1">
                             <h5>{{ trans('booking::booking.availability') }}</h5>
                             <button type="button" data-bs-toggle="modal" data-bs-target="#addAvailabilityModal"
@@ -27,6 +36,7 @@
                         <div class="card-body">
                             <div class="table-responsive text-nowrap">
                                 <table class="table datanew">
+                                    {{-- Column headings (all localized). --}}
                                     <thead>
                                     <tr>
                                         <th>{{ trans('booking::booking.date') }}</th>
@@ -39,6 +49,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
+                                    {{-- Loop over paginated availabilities supplied by the controller. --}}
                                     @foreach($availabilities as $availability)
                                         <tr>
                                             <td>{{ $availability->date->format('Y-m-d') }}</td>
@@ -47,17 +58,23 @@
                                             <td>{{ $availability->slot_duration }} min</td>
                                             <td>${{ number_format($availability->consultation_fee, 2) }}</td>
                                             <td>
+                                                {{-- Status badge: green when active, grey when disabled. --}}
                                                 <span class="badge text-bg-{{ $availability->is_active ? 'success' : 'secondary' }}">
                                                     {{ $availability->is_active ? 'Active' : 'Inactive' }}
                                                 </span>
                                             </td>
                                             <td>
+                                                {{-- Row action menu (edit / delete). --}}
                                                 <div class="dropdown">
                                                     <button class="btn btn-text-secondary btn-icon rounded-pill"
                                                             type="button" data-bs-toggle="dropdown">
                                                         <i class="ti tabler-dots-vertical"></i>
                                                     </button>
                                                     <div class="dropdown-menu dropdown-menu-end">
+                                                        {{--
+                                                            Edit button — stashes row data into data-* attributes
+                                                            so the edit modal script at the bottom can hydrate the form.
+                                                        --}}
                                                         <button type="button" class="dropdown-item editAvailabilityBtn"
                                                                 data-bs-toggle="modal"
                                                                 data-bs-target="#editAvailabilityModal"
@@ -71,6 +88,7 @@
                                                             <i class="ti tabler-edit me-1"></i>
                                                             {{ trans('doctor::doctor.edit') }}
                                                         </button>
+                                                        {{-- Delete form — uses DELETE verb spoofed via @method. --}}
                                                         <form action="{{ route('doctor.availability.destroy', $availability) }}"
                                                               method="POST" class="d-inline">
                                                             @csrf
@@ -88,6 +106,7 @@
                                     @endforeach
                                     </tbody>
                                 </table>
+                                {{-- Pagination links. --}}
                                 {{ $availabilities->links() }}
                             </div>
                         </div>
@@ -97,7 +116,13 @@
         </div>
     </div>
 
-    <!-- Add Availability Modal -->
+    {{--
+        ------------------------------------------------------------------
+        Add Availability modal
+        ------------------------------------------------------------------
+        Standard Bootstrap modal that posts to doctor.availability.store.
+        Validation is handled server-side in StoreAvailabilityRequest.
+    --}}
     <div class="modal fade" id="addAvailabilityModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -148,7 +173,14 @@
         </div>
     </div>
 
-    <!-- Edit Availability Modal -->
+    {{--
+        ------------------------------------------------------------------
+        Edit Availability modal
+        ------------------------------------------------------------------
+        Hydrated dynamically by the script below: form action + fields are
+        populated from the clicked row's data-* attributes before the modal
+        opens. Uses PUT method to hit doctor.availability.update.
+    --}}
     <div class="modal fade" id="editAvailabilityModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -209,13 +241,16 @@
 @endsection
 
 @section('page-script')
+    {{-- Hydrate the edit modal when an edit button is clicked. --}}
     <script>
         document.querySelectorAll('.editAvailabilityBtn').forEach(btn => {
             btn.addEventListener('click', function () {
                 const form = document.getElementById('editAvailabilityForm');
                 const baseUrl = '{{ url("doctor/availability") }}';
+                // Target the correct resource URL: /doctor/availability/{id}
                 form.action = baseUrl + '/' + this.dataset.id;
 
+                // Copy row data-* attributes into the modal form inputs.
                 document.getElementById('edit_date').value = this.dataset.date;
                 document.getElementById('edit_start_time').value = this.dataset.startTime;
                 document.getElementById('edit_end_time').value = this.dataset.endTime;

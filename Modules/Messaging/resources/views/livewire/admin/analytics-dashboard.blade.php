@@ -1,5 +1,12 @@
+{{--
+    Livewire view: admin/analytics-dashboard.
+    Messaging KPIs for a configurable date range (today / 7d / 30d / 90d).
+    Displays conversation counts, response-time stats, channel breakdown,
+    and agent performance rankings. Data is fetched server-side via the
+    Livewire component; charts are drawn with Chart.js/ApexCharts.
+--}}
 <div>
-    {{-- Period Selector --}}
+    {{-- Top bar: page title + period dropdown (live-bound to $period). --}}
     <div class="d-flex justify-content-between align-items-center mb-5">
         <h1 class="fs-2x fw-bold">{{ __('messaging::messages.messaging_analytics') }}</h1>
         <select wire:model.live="period" class="form-select w-auto">

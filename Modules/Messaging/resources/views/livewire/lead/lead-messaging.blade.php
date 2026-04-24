@@ -1,3 +1,9 @@
+{{--
+    Livewire view: lead/lead-messaging.
+    Parent widget that plugs messaging into the Lead/CRM detail page.
+    Composes the channel tabs, the per-channel thread view and a compact
+    composer so agents can chat with a lead without leaving the lead page.
+--}}
 <div class="card card-flush">
     <div class="card-header border-0 pt-5">
         <h3 class="card-title align-items-start flex-column">

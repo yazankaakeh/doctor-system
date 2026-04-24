@@ -1,3 +1,8 @@
+{{--
+    Livewire view: conversation-search.
+    Stand-alone search input (used by the global messaging panel). The
+    300ms debounce avoids a DB round-trip on every keystroke.
+--}}
 <div class="position-relative">
     <input
         wire:model.live.debounce.300ms="query"

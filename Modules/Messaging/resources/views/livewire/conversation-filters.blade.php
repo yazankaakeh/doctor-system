@@ -1,4 +1,10 @@
+{{--
+    Livewire view: conversation-filters.
+    Thin filter bar for the agent inbox — exposes channel + status +
+    priority selects that live-update the conversation list via wire:model.live.
+--}}
 <div class="d-flex gap-2">
+    {{-- Channel filter dropdown — wire:model.live so changes are instant. --}}
     <select wire:model.live="channelFilter" class="form-select form-select-sm">
         <option value="">{{ __('messaging::messages.all_channels') }}</option>
         @foreach($channelOptions as $value => $label)

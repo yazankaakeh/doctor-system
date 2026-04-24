@@ -1,4 +1,10 @@
+{{--
+    Booking created email template (Markdown-mail).
+    Sent to the patient immediately after submitting the booking.
+    Variables expected: $patient, $doctor, $booking, $viewUrl.
+--}}
 <x-mail::message>
+{{-- Heading / subject-equivalent. --}}
 # {{ trans('booking::booking.email.booking_created_subject') }}
 
 {{ trans('booking::booking.email.greeting', ['name' => $patient->name]) }}
@@ -7,6 +13,7 @@
 
 ---
 
+{{-- Appointment summary + current status. --}}
 ## {{ trans('booking::booking.email.appointment_details') }}
 
 <x-mail::table>
@@ -22,6 +29,7 @@
 | {{ trans('booking::booking.email.status_label') }} | {{ $booking->status->label() }} |
 </x-mail::table>
 
+{{-- Optional patient notes, echoed back for confirmation. --}}
 @if($booking->notes)
 ---
 
@@ -32,6 +40,7 @@
 
 ---
 
+{{-- CTA — deep-links the patient back to their booking detail page. --}}
 <x-mail::button :url="$viewUrl" color="primary">
 {{ trans('booking::booking.email.view_booking') }}
 </x-mail::button>

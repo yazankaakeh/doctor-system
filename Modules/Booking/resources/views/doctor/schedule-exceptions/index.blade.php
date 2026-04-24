@@ -1,7 +1,16 @@
+{{--
+    Doctor → Schedule exceptions page (ScheduleExceptionController@index).
+
+    Lets the doctor register date-specific overrides to their recurring
+    schedule: "skip this day" or "use these alternate hours instead".
+    Displays existing exceptions in a table and provides a modal form to add
+    new ones.
+--}}
 @extends('theme::user.layouts.horizontalLayout')
 
 @section('title', trans('booking::recurring.exceptions_title'))
 
+{{-- Livewire assets — harmless even though this page itself uses plain forms. --}}
 @section('vendor-style')
     @livewireStyles
 @endsection
@@ -16,6 +25,7 @@
             <div class="row mb-5">
                 <div class="col-12">
                     <div class="card">
+                        {{-- Header: page title + "Add exception" button (opens modal below). --}}
                         <div class="card-header d-flex justify-content-between pb-2 mb-1">
                             <h5>{{ trans('booking::recurring.exceptions_title') }}</h5>
                             <button type="button" data-bs-toggle="modal" data-bs-target="#addExceptionModal"
@@ -44,10 +54,12 @@
                                     </tr>
                                     </thead>
                                     <tbody>
+                                    {{-- Loop over all exceptions passed from ScheduleExceptionController::index --}}
                                     @foreach($exceptions as $exception)
                                         <tr>
                                             <td>{{ $exception->exception_date->format('Y-m-d') }}</td>
                                             <td>
+                                                {{-- Badge: red for "skip" (day cancelled), amber for "modified". --}}
                                                 <span class="badge text-bg-{{ $exception->isSkip() ? 'danger' : 'warning' }}">
                                                     {{ trans('booking::recurring.exception_types.' . $exception->type) }}
                                                 </span>
@@ -77,7 +89,14 @@
         </div>
     </div>
 
-    <!-- Add Exception Modal -->
+    {{--
+        ------------------------------------------------------------------
+        Add Exception modal
+        ------------------------------------------------------------------
+        Posts to ScheduleExceptionController@store. The "alternate times"
+        fields are hidden by default and only revealed when the user picks
+        the "modified" exception type (see JS at bottom).
+    --}}
     <div class="modal fade" id="addExceptionModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -144,9 +163,11 @@
 @endsection
 
 @section('page-script')
+    {{-- Toggle alternate-times inputs depending on the selected exception type. --}}
     <script>
         document.getElementById('exceptionType').addEventListener('change', function() {
             const section = document.getElementById('alternateTimesSection');
+            // 'modified' → show alt start/end inputs; 'skip' → hide them.
             if (this.value === 'modified') {
                 section.classList.remove('d-none');
             } else {

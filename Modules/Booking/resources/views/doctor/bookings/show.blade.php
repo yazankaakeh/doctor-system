@@ -1,3 +1,14 @@
+{{--
+    Doctor → Booking detail page (Doctor\BookingController@show).
+    Displays:
+      - Patient summary + contact
+      - Appointment date/time/duration
+      - Fee + payment status
+      - Patient notes (if any)
+      - Video consultation CTA (join / copy link) when confirmed
+      - Real-time chat (Livewire) between doctor and patient
+      - Status-transition actions: complete / no-show
+--}}
 @extends('theme::user.layouts.horizontalLayout')
 
 @section('title', trans('booking::booking.booking_details'))
@@ -7,6 +18,7 @@
         <div class="content">
             <div class="row justify-content-center">
                 <div class="col-lg-8">
+                    {{-- Flash alerts from action controllers. --}}
                     @if(session('success'))
                         <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
                             <i class="ti tabler-check me-2"></i>
@@ -23,7 +35,9 @@
                         </div>
                     @endif
 
+                    {{-- Main content card. --}}
                     <div class="card">
+                        {{-- Header: title + colored status badge from BookingStatusEnum. --}}
                         <div class="card-header d-flex justify-content-between">
                             <h5>{{ trans('booking::booking.booking_details') }}</h5>
                             <span class="badge text-bg-{{ $booking->status->class() }} fs-6">
@@ -90,6 +104,12 @@
                                 </div>
                             @endif
 
+                            {{--
+                                Video consultation block.
+                                Shown only for CONFIRMED bookings. Two variants:
+                                  1. Jitsi room name known → route via internal /video/join
+                                  2. Only a raw meeting_link → open in new tab
+                            --}}
                             @if($booking->isConfirmed() && $booking->hasMeetingRoom())
                                 <div class="alert alert-success">
                                     <div class="d-flex align-items-center mb-3">
@@ -126,19 +146,27 @@
                                 </div>
                             @endif
 
-                            {{-- Chat with Patient - Always visible for confirmed bookings --}}
+                            {{--
+                                Chat with patient.
+                                The booking-conversation Livewire component resolves the
+                                morph-linked Conversation (see Booking::conversation()) and
+                                renders the in-chat thread between doctor and patient.
+                                Guard: only render when the Messaging module is installed.
+                            --}}
                             @if($booking->isConfirmed() && class_exists('\Modules\Messaging\Services\ConversationService'))
                                 <div class="mt-4">
                                     @livewire('booking::booking-conversation', ['booking' => $booking, 'userType' => 'doctor'])
                                 </div>
                             @endif
 
+                            {{-- Action bar: back + status transition forms. --}}
                             <div class="d-flex justify-content-between mt-4">
                                 <a href="{{ route('doctor.bookings.index') }}" class="btn btn-outline-secondary">
                                     <i class="ti tabler-arrow-left me-1"></i>
                                     {{ trans('booking::booking.back') }}
                                 </a>
                                 <div class="d-flex gap-2">
+                                    {{-- Complete / No-show: only meaningful for CONFIRMED bookings. --}}
                                     @if($booking->isConfirmed())
                                         <form action="{{ route('doctor.bookings.complete', $booking) }}" method="POST" class="d-inline">
                                             @csrf
@@ -169,6 +197,10 @@
 
 @section('page-script')
 <script>
+    /**
+     * Copy the meeting URL to the clipboard and flash a toast confirmation.
+     * Falls back to a plain alert when the theme's toast helper isn't loaded.
+     */
     function copyToClipboard(text) {
         navigator.clipboard.writeText(text).then(() => {
             if (typeof Toastify !== 'undefined') {

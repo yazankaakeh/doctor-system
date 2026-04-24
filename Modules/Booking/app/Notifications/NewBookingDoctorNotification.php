@@ -1,5 +1,23 @@
 <?php
 
+/**
+ * -----------------------------------------------------------------------------
+ * NewBookingDoctorNotification
+ * -----------------------------------------------------------------------------
+ *
+ * Notifies the DOCTOR as soon as a patient creates a booking on one of their
+ * availability slots. Used to prompt the doctor to confirm, reschedule, or
+ * decline.
+ *
+ * Delivered through:
+ *   - mail       → full appointment + patient details
+ *   - database   → bell-icon entry in the doctor portal
+ *   - push       → Firebase notification when tokens are available
+ *
+ * Queued so the patient-facing request isn't blocked.
+ * -----------------------------------------------------------------------------
+ */
+
 namespace Modules\Booking\Notifications;
 
 use Illuminate\Bus\Queueable;
@@ -13,31 +31,34 @@ class NewBookingDoctorNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
+    /**
+     * @param  Booking  $booking  The new booking that needs the doctor's attention.
+     */
     public function __construct(
         private readonly Booking $booking
     ) {}
 
     /**
-     * Get the notification's delivery channels.
+     * Delivery channels. Push added only when the doctor has Firebase tokens.
      */
     public function via($notifiable): array
     {
         $channels = ['mail', 'database'];
 
-        // Add push notification if user has tokens
         try {
             if (method_exists($notifiable, 'pushTokens') && $notifiable->pushTokens()->exists()) {
                 $channels[] = SendPushNotificationChannel::class;
             }
         } catch (\Exception $e) {
-            // Push tokens table may not exist, skip push notifications
+            // push_tokens table missing — silently skip push.
         }
 
         return $channels;
     }
 
     /**
-     * Get the mail representation of the notification.
+     * Build the new-booking email to the doctor. Layout:
+     *   greeting → intro → patient details → appointment → notes → CTA.
      */
     public function toMail($notifiable): MailMessage
     {
@@ -49,11 +70,12 @@ class NewBookingDoctorNotification extends Notification implements ShouldQueue
             ->line('---')
             ->line('');
 
-        // Patient Details
+        // -- Patient contact info ------------------------------------------
         $mail->line('**'.__('booking::booking.email.patient_details').'**')
             ->line('')
             ->line(__('booking::booking.email.patient_name_label').': **'.$this->booking->patient->name.'**');
 
+        // Phone / email optional — only render when available.
         if ($this->booking->patient->phone) {
             $mail->line(__('booking::booking.email.phone_label').': '.$this->booking->patient->phone);
         }
@@ -66,7 +88,7 @@ class NewBookingDoctorNotification extends Notification implements ShouldQueue
             ->line('---')
             ->line('');
 
-        // Appointment Details
+        // -- Appointment summary -------------------------------------------
         $mail->line('**'.__('booking::booking.email.appointment_details').'**')
             ->line('')
             ->line(__('booking::booking.email.date_label').': **'.$this->booking->booking_date->format('l, F j, Y').'**')
@@ -74,7 +96,7 @@ class NewBookingDoctorNotification extends Notification implements ShouldQueue
             ->line(__('booking::booking.email.duration_label').': '.$this->booking->duration.' '.__('booking::booking.minutes'))
             ->line(__('booking::booking.email.fee_label').': **$'.number_format($this->booking->consultation_fee, 2).'**');
 
-        // Notes if any
+        // Include any notes the patient provided (symptoms / context).
         if ($this->booking->notes) {
             $mail->line('')
                 ->line('---')
@@ -96,7 +118,7 @@ class NewBookingDoctorNotification extends Notification implements ShouldQueue
     }
 
     /**
-     * Get the array representation of the notification (for database).
+     * Database / in-app bell payload for the doctor dashboard.
      */
     public function toArray($notifiable): array
     {
@@ -118,7 +140,8 @@ class NewBookingDoctorNotification extends Notification implements ShouldQueue
     }
 
     /**
-     * Get the Firebase push notification representation.
+     * Firebase push payload (doctor mobile app). `click_action.url` deep-links
+     * straight to the booking detail page.
      */
     public function toFireBase(): array
     {

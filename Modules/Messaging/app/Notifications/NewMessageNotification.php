@@ -1,5 +1,23 @@
 <?php
 
+/**
+ * -----------------------------------------------------------------------------
+ * NewMessageNotification
+ * -----------------------------------------------------------------------------
+ *
+ * Fired when a customer sends a new message into a conversation that an
+ * internal user should be aware of. Responsible for three fan-outs:
+ *
+ *   - database  → stores the row for the bell dropdown + "unread badges".
+ *   - broadcast → real-time push to the open agent dashboard UI via Pusher.
+ *   - mail      → fallback email ONLY when the notifiable has been offline
+ *                 for more than 5 minutes, so an agent looking away from
+ *                 their screen still gets pinged.
+ *
+ * Queued so message send latency isn't impacted.
+ * -----------------------------------------------------------------------------
+ */
+
 namespace Modules\Messaging\Notifications;
 
 use Illuminate\Bus\Queueable;
@@ -13,18 +31,22 @@ class NewMessageNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
+    /**
+     * @param  Message  $message  The new inbound message.
+     */
     public function __construct(
         protected Message $message
     ) {}
 
     /**
-     * Get the notification's delivery channels.
+     * Compute delivery channels. Always database + broadcast; mail is added
+     * only when the recipient appears to be offline (so online agents don't
+     * get duplicated notifications).
      */
     public function via(object $notifiable): array
     {
         $channels = ['database', 'broadcast'];
 
-        // Add email for high priority or offline agents
         if ($this->shouldSendEmail($notifiable)) {
             $channels[] = 'mail';
         }
@@ -33,7 +55,8 @@ class NewMessageNotification extends Notification implements ShouldQueue
     }
 
     /**
-     * Get the mail representation of the notification.
+     * Fallback email sent to offline agents so they can pick up the thread
+     * when they come back online.
      */
     public function toMail(object $notifiable): MailMessage
     {
@@ -44,34 +67,36 @@ class NewMessageNotification extends Notification implements ShouldQueue
                 'name' => $conversation->participant_name,
             ]))
             ->line(__('messaging::notifications.new_message_line', [
-                'name' => $conversation->participant_name,
+                'name'    => $conversation->participant_name,
                 'channel' => $conversation->channel->name,
             ]))
+            // Keep the preview short so email clients don't truncate awkwardly.
             ->line($this->truncateContent($this->message->content, 100))
             ->action(__('messaging::notifications.view_conversation'), url("/messaging/conversations/{$conversation->id}"))
             ->line(__('messaging::notifications.thanks'));
     }
 
     /**
-     * Get the database representation of the notification.
+     * Database payload — also reused by toBroadcast() so consumers only
+     * deal with one shape.
      */
     public function toDatabase(object $notifiable): array
     {
         $conversation = $this->message->conversation;
 
         return [
-            'type' => 'new_message',
-            'message_id' => $this->message->id,
-            'conversation_id' => $conversation->id,
+            'type'             => 'new_message',
+            'message_id'       => $this->message->id,
+            'conversation_id'  => $conversation->id,
             'participant_name' => $conversation->participant_name,
-            'channel_type' => $conversation->channel->type->value,
-            'content_preview' => $this->truncateContent($this->message->content, 50),
-            'created_at' => $this->message->created_at->toIso8601String(),
+            'channel_type'     => $conversation->channel->type->value,
+            'content_preview'  => $this->truncateContent($this->message->content, 50),
+            'created_at'       => $this->message->created_at->toIso8601String(),
         ];
     }
 
     /**
-     * Get the broadcast representation of the notification.
+     * Real-time broadcast payload (identical to database).
      */
     public function toBroadcast(object $notifiable): BroadcastMessage
     {
@@ -79,11 +104,12 @@ class NewMessageNotification extends Notification implements ShouldQueue
     }
 
     /**
-     * Determine if email should be sent.
+     * "Offline" heuristic: the notifiable's last_activity_at is older than
+     * 5 minutes. Models that don't track activity simply never receive email
+     * notifications for new messages.
      */
     protected function shouldSendEmail(object $notifiable): bool
     {
-        // Check if user is offline (hasn't been active in last 5 minutes)
         if (isset($notifiable->last_activity_at)) {
             return $notifiable->last_activity_at < now()->subMinutes(5);
         }
@@ -92,7 +118,9 @@ class NewMessageNotification extends Notification implements ShouldQueue
     }
 
     /**
-     * Truncate content for preview.
+     * Substring-based truncation used for email previews and the in-app
+     * bell dropdown. Cheaper than Str::limit and good enough for ASCII/UTF-8
+     * preview text.
      */
     protected function truncateContent(string $content, int $length): string
     {

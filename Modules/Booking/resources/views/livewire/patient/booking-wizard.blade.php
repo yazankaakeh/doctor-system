@@ -1,4 +1,14 @@
+{{--
+    Livewire view: patient/booking-wizard (authenticated).
+    Multi-step booking flow for logged-in patients:
+      Step 1  — pick a specialty / doctor
+      Step 2  — pick a date & time slot
+      Step 3  — confirm + enter notes
+      Step 4  — payment handoff
+    Each step updates the `$step` property on the Livewire component.
+--}}
 <div>
+    {{-- Progress indicator (highlights completed steps). --}}
     <!-- Progress Steps -->
     <div class="d-flex justify-content-between mb-4">
         <div class="step {{ $step >= 1 ? 'active' : '' }}">

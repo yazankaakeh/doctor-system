@@ -1,3 +1,10 @@
+{{--
+    Livewire view: lead/lead-channel-tabs.
+    Channel selector rendered above the Lead chat widget. Lets an agent
+    flip between the different channels a lead can be reached on
+    (WhatsApp, Email, SMS, …). Each button emits an event that the parent
+    lead-messaging component listens for.
+--}}
 <div class="d-flex gap-2 flex-wrap">
     @foreach($channels as $channelValue => $channelData)
         <button

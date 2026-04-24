@@ -1,5 +1,13 @@
+{{--
+    Livewire view: doctor/availability-calendar.
+    Interactive FullCalendar view for managing availability windows.
+    - Drag/click-to-create opens a "new slot" modal.
+    - Click an event → edit/delete slot modal.
+    - Events are sourced from Api\CalendarController::availabilities.
+--}}
 <div>
     <div class="card">
+        {{-- Card header: title + actions (generate from recurring, add new). --}}
         <div class="card-header d-flex justify-content-between align-items-center pb-2 mb-1">
             <h5>{{ trans('booking::calendar.availability_calendar') }}</h5>
             <div class="d-flex gap-2">

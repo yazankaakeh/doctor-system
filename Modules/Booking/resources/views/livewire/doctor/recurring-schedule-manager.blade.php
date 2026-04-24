@@ -1,5 +1,14 @@
+{{--
+    Livewire view: doctor/recurring-schedule-manager.
+    CRUD UI for DoctorRecurringSchedule records. Exposes:
+      - List of templates with effective dates + status
+      - Create/edit modals backed by Livewire properties
+      - "Generate availabilities" action that spawns DoctorAvailability rows
+        from active templates for a future date range.
+--}}
 <div>
     <div class="card">
+        {{-- Card header: module title + "Add schedule" button. --}}
         <div class="card-header d-flex justify-content-between pb-2 mb-1">
             <h5>{{ trans('booking::recurring.title') }}</h5>
             <button type="button" wire:click="openCreateModal" class="btn btn-primary">

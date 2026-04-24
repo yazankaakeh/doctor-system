@@ -1,4 +1,10 @@
+{{--
+    Public "Book appointment" page.
+    Publicly accessible booking landing page rendered in the marketing
+    layout. Hosts the public-booking-wizard Livewire flow.
+--}}
 @php
+    // Pull theme config so we can respect colors/dir set by the site admin.
     use Modules\Theme\Helpers\Helpers;
     $configData = Helpers::appClasses();
 @endphp

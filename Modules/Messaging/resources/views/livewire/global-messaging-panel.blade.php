@@ -1,5 +1,11 @@
+{{--
+    Livewire view: global-messaging-panel.
+    Slide-out drawer opened from the global-messaging-icon. Provides a
+    mini-inbox reachable from any page: conversation list + selected
+    thread view. Polls every 10s when open so new messages appear live.
+--}}
 <div wire:key="messaging-panel-root" @if($isOpen) wire:poll.10s="loadConversations" @endif>
-    {{-- Overlay --}}
+    {{-- Dark backdrop overlay — click to close. --}}
     <div
             id="messaging-overlay"
             wire:click="close"

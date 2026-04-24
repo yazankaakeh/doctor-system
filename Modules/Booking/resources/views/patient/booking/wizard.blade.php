@@ -1,3 +1,7 @@
+{{--
+    Patient → Book appointment page (Patient\BookingController@index).
+    Thin wrapper that hosts the <public-booking-wizard> Livewire component.
+--}}
 @extends('theme::user.layouts.horizontalLayout')
 
 @section('title', trans('booking::booking.book_appointment'))

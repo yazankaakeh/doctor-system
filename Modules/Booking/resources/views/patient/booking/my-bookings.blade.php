@@ -1,3 +1,9 @@
+{{--
+    Patient → My bookings dashboard (Patient\BookingController@myBookings).
+    Lists every booking belonging to the authenticated patient with status
+    badges and a link to the detail page. Cancel action is exposed for
+    bookings still in a cancellable state.
+--}}
 @extends('theme::user.layouts.horizontalLayout')
 
 @section('title', trans('booking::booking.my_bookings'))

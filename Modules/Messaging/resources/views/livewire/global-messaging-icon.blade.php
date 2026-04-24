@@ -1,3 +1,9 @@
+{{--
+    Livewire view: global-messaging-icon.
+    Top-bar bell icon rendered on every authenticated page. Shows the
+    unread badge (polled every 10s) and toggles the slide-out global
+    messaging panel when clicked.
+--}}
 <div wire:poll.10s="loadUnreadCount">
     <button
             wire:click="togglePanel"

@@ -1,4 +1,9 @@
-{{-- Themed Messaging Icon for Dashboard Header --}}
+{{--
+    Livewire view: global-messaging-icon-themed.
+    Themed variant of global-messaging-icon for the admin dashboard header.
+    Same behaviour — polls for unread count and opens the messaging panel —
+    but uses the dashboard nav-link styling.
+--}}
 <div wire:poll.10s="loadUnreadCount">
     <a class="nav-link hide-arrow" href="javascript:void(0);" wire:click="togglePanel" title="{{ __('messaging::messages.messaging') }}">
         <i class="icon-base ti tabler-message icon-lg"></i>

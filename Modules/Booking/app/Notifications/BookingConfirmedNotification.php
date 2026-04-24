@@ -1,5 +1,23 @@
 <?php
 
+/**
+ * -----------------------------------------------------------------------------
+ * BookingConfirmedNotification (Patient)
+ * -----------------------------------------------------------------------------
+ *
+ * Sent to the PATIENT the moment their booking transitions to CONFIRMED
+ * (typically right after a successful payment or when the doctor approves
+ * the request).
+ *
+ * Contents:
+ *   - Appointment summary (doctor, specialty, date, time, duration, fee)
+ *   - Video consultation CTA (meeting link / Jitsi room)
+ *
+ * Channels: mail, database, and Firebase push (when tokens are available).
+ * Queued so the confirmation HTTP response stays snappy.
+ * -----------------------------------------------------------------------------
+ */
+
 namespace Modules\Booking\Notifications;
 
 use Illuminate\Bus\Queueable;
@@ -13,31 +31,34 @@ class BookingConfirmedNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
+    /**
+     * @param  Booking  $booking  The booking that was just confirmed.
+     */
     public function __construct(
         private readonly Booking $booking
     ) {}
 
     /**
-     * Get the notification's delivery channels.
+     * Delivery channels. Mail + database are always used; push is added
+     * when the notifiable has Firebase tokens registered.
      */
     public function via($notifiable): array
     {
         $channels = ['mail', 'database'];
 
-        // Add push notification if user has tokens
         try {
             if (method_exists($notifiable, 'pushTokens') && $notifiable->pushTokens()->exists()) {
                 $channels[] = SendPushNotificationChannel::class;
             }
         } catch (\Exception $e) {
-            // Push tokens table may not exist, skip push notifications
+            // push_tokens table missing — silently skip push.
         }
 
         return $channels;
     }
 
     /**
-     * Get the mail representation of the notification.
+     * Build the confirmation email (appointment summary + video CTA).
      */
     public function toMail($notifiable): MailMessage
     {
@@ -49,11 +70,12 @@ class BookingConfirmedNotification extends Notification implements ShouldQueue
             ->line('---')
             ->line('');
 
-        // Appointment Details
+        // -- Appointment Details block -------------------------------------
         $mail->line('**'.__('booking::booking.email.appointment_details').'**')
             ->line('')
             ->line(__('booking::booking.email.doctor_label').': **Dr. '.$this->booking->doctor->name.'**');
 
+        // Specialty is optional.
         if ($this->booking->doctor->medicalSpecialty) {
             $mail->line(__('booking::booking.email.specialty_label').': '.$this->booking->doctor->medicalSpecialty->name);
         }
@@ -66,7 +88,9 @@ class BookingConfirmedNotification extends Notification implements ShouldQueue
             ->line('---')
             ->line('');
 
-        // Video Consultation Link
+        // -- Video consultation CTA ---------------------------------------
+        // Show a "Join" button that routes through our in-app wrapper when
+        // the booking has a proper Jitsi room, else fall back to the raw link.
         if ($this->booking->meeting_link) {
             $mail->line('**'.__('booking::booking.email.video_consultation').'**')
                 ->line(__('booking::booking.email.video_consultation_ready'))
@@ -86,7 +110,7 @@ class BookingConfirmedNotification extends Notification implements ShouldQueue
     }
 
     /**
-     * Get the array representation of the notification (for database).
+     * In-app notification payload (notifications table / bell dropdown).
      */
     public function toArray($notifiable): array
     {
@@ -106,7 +130,8 @@ class BookingConfirmedNotification extends Notification implements ShouldQueue
     }
 
     /**
-     * Get the Firebase push notification representation.
+     * Firebase push payload – consumed by SendPushNotificationChannel.
+     * `click_action` tells the mobile app where to deep-link on tap.
      */
     public function toFireBase(): array
     {

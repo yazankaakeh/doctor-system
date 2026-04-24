@@ -1,4 +1,10 @@
-{{-- Themed Conversation Thread for Dashboard --}}
+{{--
+    Livewire view: conversation-thread-themed.
+    Variant of conversation-thread with the "tm-" theme classes — used
+    inside the global messaging panel (dashboard slide-out) so the styling
+    matches that surface. Same behaviour as conversation-thread: polls for
+    new messages and renders the chat history + composer.
+--}}
 <div class="tm-thread-container" wire:poll.5s="loadMessages">
     @if($conversation)
         {{-- Conversation Header --}}

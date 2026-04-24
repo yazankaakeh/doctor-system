@@ -1,9 +1,20 @@
+{{--
+    Doctor → Bookings dashboard (rendered by Doctor\BookingController@index).
+
+    Features:
+      - Toggle between a table view (upcoming bookings, paginated) and a
+        FullCalendar view (all bookings for the month).
+      - Row actions: view, mark as completed, mark no-show, join the video
+        consultation room.
+      - A shared "booking details" modal used from the calendar's eventClick.
+--}}
 @extends('theme::user.layouts.horizontalLayout')
 
 @section('title', trans('booking::booking.bookings'))
 
 @section('vendor-style')
     @vite(['resources/assets/vendor/libs/fullcalendar/fullcalendar.scss'], 'build/modules/theme')
+    {{-- Inline styles overriding FullCalendar theme + status color badges. --}}
     <style>
         .view-toggle .btn {
             padding: 0.5rem 1rem;
@@ -136,6 +147,7 @@
             <div class="row mb-5">
                 <div class="col-12">
                     <div class="card">
+                        {{-- Header: title + table/calendar view switcher (see JS at the bottom). --}}
                         <div class="card-header d-flex justify-content-between align-items-center pb-2 mb-1">
                             <h5 class="mb-0">{{ trans('booking::booking.bookings') }}</h5>
                             <div class="view-toggle btn-group" role="group">
@@ -150,7 +162,7 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <!-- Table View -->
+                            {{-- ------ Table view (default) ------------------------------ --}}
                             <div id="tableView">
                                 <div class="table-responsive text-nowrap">
                                     <table class="table datanew">
@@ -217,6 +229,7 @@
                                                                     </button>
                                                                 </form>
                                                             @endif
+                                                            {{-- Join button: prefers our internal Jitsi wrapper when a room name exists. --}}
                                                             @if($booking->hasMeetingRoom() && $booking->getMeetingRoomName())
                                                                 <a href="{{ route('video.join', ['roomName' => $booking->getMeetingRoomName(), 'booking' => $booking->id]) }}"
                                                                    class="dropdown-item text-primary">
@@ -242,7 +255,7 @@
                                 </div>
                             </div>
 
-                            <!-- Calendar View -->
+                            {{-- ------ FullCalendar view (populated via JS below) ------- --}}
                             <div id="calendarView" style="display: none;">
                                 <div id="bookingsCalendar"></div>
                                 <div class="calendar-legend">
@@ -275,7 +288,14 @@
         </div>
     </div>
 
-    <!-- Booking Details Modal -->
+    {{--
+        ------------------------------------------------------------------
+        Booking details modal
+        ------------------------------------------------------------------
+        Opened programmatically from the calendar's eventClick handler.
+        All fields are populated via DOM manipulation from the event's
+        extendedProps (see JS at the bottom of this file).
+    --}}
     <div class="modal fade" id="bookingDetailsModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -362,8 +382,15 @@
 
 @section('page-script')
     <script>
+        /**
+         * Page bootstrap:
+         *   1. Wires the table/calendar view toggle buttons.
+         *   2. Serialises bookings → FullCalendar events via PHP @json.
+         *   3. Lazily initializes the calendar the first time it becomes visible.
+         *   4. Hooks eventClick to the shared booking-details modal.
+         */
         document.addEventListener('DOMContentLoaded', function() {
-            // View toggle
+            // --- View toggle (table ↔ calendar) ----------------------------
             const viewToggleBtns = document.querySelectorAll('.view-toggle .btn');
             const tableView = document.getElementById('tableView');
             const calendarView = document.getElementById('calendarView');
@@ -390,7 +417,9 @@
                 });
             });
 
-            // Booking events data (using all bookings for calendar)
+            // --- Serialize every booking into a FullCalendar event. --------
+            // Uses $allBookings (complete list) so navigating through the
+            // calendar doesn't require extra HTTP fetches.
             @php
                 $bookingEventsData = $allBookings->map(function($booking) {
                     return [
@@ -411,7 +440,7 @@
             @endphp
             const bookingEvents = @json($bookingEventsData);
 
-            // Status class mapping
+            // Map BookingStatusEnum integer values to CSS classes used for event coloring.
             const statusClasses = {
                 1: 'status-pending',
                 2: 'status-confirmed',

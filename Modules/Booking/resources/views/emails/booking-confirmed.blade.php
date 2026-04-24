@@ -1,4 +1,11 @@
+{{--
+    Booking confirmed email template (Markdown-mail).
+    Rendered by the Mailable that wraps BookingConfirmedNotification@toMail
+    when the template-based variant is preferred over the fluent builder.
+    Variables expected: $patient, $doctor, $booking, $joinUrl.
+--}}
 <x-mail::message>
+{{-- Localized subject / heading. --}}
 # {{ trans('booking::booking.email.booking_confirmed_subject') }}
 
 {{ trans('booking::booking.email.greeting', ['name' => $patient->name]) }}
@@ -7,6 +14,7 @@
 
 ---
 
+{{-- Appointment summary table. --}}
 ## {{ trans('booking::booking.email.appointment_details') }}
 
 <x-mail::table>
@@ -23,6 +31,7 @@
 
 ---
 
+{{-- Video consultation CTA + tips. Only rendered when a meeting link exists. --}}
 @if($booking->meeting_link)
 ## {{ trans('booking::booking.email.video_consultation') }}
 

@@ -1,7 +1,16 @@
+{{--
+    Livewire view: agent-dashboard.
+    Top-level messaging inbox for internal users (admins / agents).
+    Composition:
+      - Stats cards (unread count, open, pending, closed-today)
+      - Conversation list (filters, search, pagination)
+      - Conversation thread (messages + notes + context panel)
+      - Message composer (text, attachments, quick replies, templates)
+--}}
 <div class="d-flex flex-column flex-root">
     <div class="page d-flex flex-row flex-column-fluid">
         <div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
-            {{-- Stats Cards --}}
+            {{-- Stats Cards row: top-of-page KPI summary. --}}
             <div class="row g-5 g-xl-8 mb-5">
                 <div class="col-xl-3">
                     <div class="card card-flush h-100">

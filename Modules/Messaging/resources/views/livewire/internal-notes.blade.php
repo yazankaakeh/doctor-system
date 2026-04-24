@@ -1,3 +1,9 @@
+{{--
+    Livewire view: internal-notes.
+    Agent-only notes panel for a conversation (not visible to the customer).
+    Renders existing notes in reverse-chronological order and exposes a
+    compose form at the top. Each note is a ConversationNote row.
+--}}
 <div class="p-4">
     <div class="d-flex align-items-center justify-content-between mb-4">
         <h6 class="fw-semibold mb-0">{{ __('messaging::messages.internal_notes') }}</h6>

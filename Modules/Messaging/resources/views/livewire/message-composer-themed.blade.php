@@ -1,6 +1,11 @@
-{{-- Themed Message Composer for Dashboard --}}
+{{--
+    Livewire view: message-composer-themed.
+    Dashboard-themed variant of the message composer (classes prefixed
+    "tm-"). Uses a separate Alpine data factory (messageComposerUploadThemed)
+    so the themed and non-themed composers can co-exist on the same page.
+--}}
 <div class="tm-composer" x-data="messageComposerUploadThemed(@js($conversationId))" x-init="init()">
-    {{-- Quick Replies --}}
+    {{-- Quick replies dropdown with user + channel scoped entries. --}}
     @if($showQuickReplies && count($quickReplies) > 0)
         <div class="tm-composer-quick-replies">
             <div class="tm-quick-header">

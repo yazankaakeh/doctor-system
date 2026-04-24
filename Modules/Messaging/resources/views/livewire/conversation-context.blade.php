@@ -1,3 +1,10 @@
+{{--
+    Livewire view: conversation-context.
+    Right-hand side panel of the agent inbox. Renders:
+      - Participant contact info (name, identifier, channel)
+      - Attached resources (e.g. linked Booking/Patient for medical flows)
+      - Quick actions (close / reopen / re-assign thread)
+--}}
 <div class="p-4 border-bottom">
     <h6 class="fw-semibold mb-4">{{ __('messaging::messages.contact_info') }}</h6>
 

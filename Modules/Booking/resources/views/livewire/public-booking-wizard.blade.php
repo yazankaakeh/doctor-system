@@ -1,4 +1,11 @@
+{{--
+    Livewire view: public-booking-wizard.
+    Public (unauthenticated) variant of the booking wizard used by the
+    marketing site. Patients can browse doctors, pick a slot, and start
+    the registration / checkout flow without pre-existing login.
+--}}
 <div class="booking-wizard-container">
+    {{-- Inline component styles keep the wizard self-contained. --}}
     <style>
         /* Booking Wizard - Using Bootstrap CSS Variables */
 

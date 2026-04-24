@@ -1,3 +1,8 @@
+{{--
+    Messaging admin layout.
+    Extends the main admin theme and adds messaging-specific styles (RTL
+    support, message bubble styling). Child pages render into the $slot.
+--}}
 @extends('theme::admin.layouts.app')
 
 @section('content')
@@ -6,7 +11,7 @@
 
 @push('styles')
 <style>
-    /* RTL Support */
+    /* RTL Support — flip the slide-out messaging panel on right-to-left locales. */
     [dir="rtl"] .messaging-panel {
         left: 0;
         right: auto;

@@ -1,5 +1,13 @@
+{{--
+    Livewire view: doctor/appointment-calendar.
+    Full-page FullCalendar widget for doctors showing all their bookings.
+    - Live status filter (wire:model.live) refreshes the calendar events.
+    - Events are fed by Api\CalendarController::bookings.
+    - Emits Alpine/JS events that the calendar JS consumes to re-fetch.
+--}}
 <div>
     <div class="card">
+        {{-- Card header: title + live status filter dropdown. --}}
         <div class="card-header d-flex justify-content-between align-items-center pb-2 mb-1">
             <h5>{{ trans('booking::calendar.appointments_calendar') }}</h5>
             <div class="d-flex gap-2 align-items-center">

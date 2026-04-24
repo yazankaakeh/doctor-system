@@ -1,8 +1,15 @@
+{{--
+    Livewire view: booking-conversation.
+    Collapsible chat widget embedded inside a booking detail page. Polls the
+    backend every 5s while a Conversation exists so new messages appear
+    without a full reload. `$userType` switches the labels between
+    "Chat with patient" and "Chat with doctor" based on who's viewing.
+--}}
 <div class="card" @if($conversation) wire:poll.5s="loadMessages" @endif>
     <div class="card-header d-flex justify-content-between align-items-center cursor-pointer"
          wire:click="toggleExpanded">
         <div class="d-flex align-items-center">
-            <span class="avatar avatar-sm bg-primary-subtle rounded-circle me-2">
+            <span class="avatar avatar-sm bg-primary-subtle rounded-circle me-2 d-inline-flex align-items-center justify-content-center">
                 <i class="ti tabler-message-circle text-primary"></i>
             </span>
             <h6 class="mb-0">
@@ -30,7 +37,7 @@
                 </div>
             @else
                 {{-- Messages Container --}}
-                <div class="chat-messages p-3" style="height: 300px; overflow-y: auto;" id="chat-messages-{{ $conversation->id }}">
+                <div class="chat-messages p-3" id="chat-messages-{{ $conversation->id }}">
                     @if($messages->isEmpty())
                         <div class="text-center py-4 text-muted">
                             <i class="ti tabler-messages fs-2 mb-2 d-block"></i>
@@ -119,12 +126,21 @@
 
 @push('page-style')
 <style>
+    /* Single scrollable area: only .chat-messages scrolls, its parents do not. */
+    .chat-messages {
+        height: 300px;
+        max-height: 300px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        overscroll-behavior: contain; /* stop scroll chaining to the page */
+        scrollbar-gutter: stable;
+    }
+    /* Make the scrollbar slim and unobtrusive (WebKit / Chromium) */
     .chat-messages::-webkit-scrollbar {
         width: 6px;
     }
     .chat-messages::-webkit-scrollbar-track {
-        background: #f1f1f1;
-        border-radius: 3px;
+        background: transparent;
     }
     .chat-messages::-webkit-scrollbar-thumb {
         background: #c1c1c1;
@@ -132,6 +148,27 @@
     }
     .chat-messages::-webkit-scrollbar-thumb:hover {
         background: #a8a8a8;
+    }
+    /* Firefox */
+    .chat-messages {
+        scrollbar-width: thin;
+        scrollbar-color: #c1c1c1 transparent;
+    }
+    /* Kill any accidental scroll on the card/card-body wrappers */
+    .card-body:has(> .chat-messages),
+    .card:has(.chat-messages) > .card-body {
+        overflow: hidden;
+        padding: 0;
+    }
+    /* Center the header avatar icon no matter which theme variant is loaded */
+    .card-header .avatar {
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+    }
+    .card-header .avatar > i {
+        line-height: 1;
     }
     .spin {
         animation: spin 1s linear infinite;

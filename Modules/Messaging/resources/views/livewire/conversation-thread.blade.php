@@ -1,6 +1,13 @@
+{{--
+    Livewire view: conversation-thread.
+    Main message list (center column) of the agent inbox. Polls every 5s
+    to pick up new inbound messages. Renders: thread header (participant
+    info + actions), scrollable messages list (with infinite scroll up),
+    and embeds the composer + internal notes panel.
+--}}
 <div class="flex-grow-1 d-flex flex-column overflow-hidden" wire:poll.5s="loadMessages">
     @if($conversation)
-        {{-- Conversation Header --}}
+        {{-- Header: participant info + per-thread actions (assign, close, …). --}}
         <div class="p-3 border-bottom bg-light">
             <div class="d-flex align-items-center justify-content-between">
                 <div class="d-flex align-items-center gap-3">

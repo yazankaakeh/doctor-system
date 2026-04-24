@@ -1,5 +1,11 @@
+{{--
+    Livewire view: conversation-list.
+    Middle column of the agent inbox. Lists conversations that match the
+    active filters, with search, unread badges, and preview text. Clicking
+    a row emits a Livewire event that loads the thread on the right.
+--}}
 <div class="d-flex flex-column h-100">
-    {{-- Search --}}
+    {{-- Search bar — debounced input that filters the list in place. --}}
     <div class="p-4 border-bottom">
         <div class="position-relative">
             <input

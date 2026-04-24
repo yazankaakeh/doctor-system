@@ -1,5 +1,23 @@
 <?php
 
+/**
+ * -----------------------------------------------------------------------------
+ * BookingCreatedPatientNotification
+ * -----------------------------------------------------------------------------
+ *
+ * Sent to the PATIENT immediately after they successfully submit a booking
+ * request (before it is confirmed by the doctor / payment gateway).
+ *
+ * Purpose:
+ *   - Acknowledge receipt of the request.
+ *   - Surface a nicely formatted summary so they can verify the details.
+ *   - Provide a quick link to review the booking in their portal.
+ *
+ * Delivered via mail + database, plus Firebase push when available. Queued
+ * so the booking flow isn't blocked by email rendering.
+ * -----------------------------------------------------------------------------
+ */
+
 namespace Modules\Booking\Notifications;
 
 use Illuminate\Bus\Queueable;
@@ -13,31 +31,35 @@ class BookingCreatedPatientNotification extends Notification implements ShouldQu
 {
     use Queueable;
 
+    /**
+     * @param  Booking  $booking  The booking that was just created.
+     */
     public function __construct(
         private readonly Booking $booking
     ) {}
 
     /**
-     * Get the notification's delivery channels.
+     * Delivery channels. Falls back gracefully when push tokens are missing.
      */
     public function via($notifiable): array
     {
         $channels = ['mail', 'database'];
 
-        // Add push notification if user has tokens
         try {
             if (method_exists($notifiable, 'pushTokens') && $notifiable->pushTokens()->exists()) {
                 $channels[] = SendPushNotificationChannel::class;
             }
         } catch (\Exception $e) {
-            // Push tokens table may not exist, skip push notifications
+            // push_tokens table missing — silently skip push.
         }
 
         return $channels;
     }
 
     /**
-     * Get the mail representation of the notification.
+     * Build the "booking received" email. Layout:
+     *   greeting → intro line → appointment details → status → your notes
+     *   → view-booking CTA → footer.
      */
     public function toMail($notifiable): MailMessage
     {
@@ -49,12 +71,12 @@ class BookingCreatedPatientNotification extends Notification implements ShouldQu
             ->line('---')
             ->line('');
 
-        // Appointment Details Section
+        // -- Appointment details block -------------------------------------
         $mail->line('**'.__('booking::booking.email.appointment_details').'**')
             ->line('')
             ->line(__('booking::booking.email.doctor_label').': **Dr. '.$this->booking->doctor->name.'**');
 
-        // Add specialty if available
+        // Specialty line is only added when the doctor actually has one.
         if ($this->booking->doctor->medicalSpecialty) {
             $mail->line(__('booking::booking.email.specialty_label').': '.$this->booking->doctor->medicalSpecialty->name);
         }
@@ -67,10 +89,10 @@ class BookingCreatedPatientNotification extends Notification implements ShouldQu
             ->line('---')
             ->line('');
 
-        // Status
+        // Current status (pending/confirmed/…). label() is a human-friendly string.
         $mail->line(__('booking::booking.email.status_label').': '.$this->booking->status->label());
 
-        // Notes if any
+        // Surface the patient's own notes back to them as a confirmation.
         if ($this->booking->notes) {
             $mail->line('')
                 ->line('**'.__('booking::booking.email.your_notes').':**')
@@ -90,7 +112,7 @@ class BookingCreatedPatientNotification extends Notification implements ShouldQu
     }
 
     /**
-     * Get the array representation of the notification (for database).
+     * In-app notification payload (notifications table / bell dropdown).
      */
     public function toArray($notifiable): array
     {
@@ -113,7 +135,7 @@ class BookingCreatedPatientNotification extends Notification implements ShouldQu
     }
 
     /**
-     * Get the Firebase push notification representation.
+     * Firebase push payload consumed by SendPushNotificationChannel.
      */
     public function toFireBase(): array
     {

@@ -1,5 +1,25 @@
 <?php
 
+/**
+ * -----------------------------------------------------------------------------
+ * TelegramWebhookController
+ * -----------------------------------------------------------------------------
+ *
+ * Receives webhook callbacks from the Telegram Bot API.
+ *
+ * Responsibilities:
+ *   1. Authenticate the request (via X-Telegram-Bot-Api-Secret-Token header
+ *      if a secret was configured on the Channel row).
+ *   2. Persist a WebhookLog entry with the raw payload for auditability.
+ *   3. Dispatch ProcessWebhookJob so the heavy lifting happens async — we
+ *      return `OK` quickly so Telegram doesn't retry.
+ *
+ * Telegram expects a 200 within a few seconds or it will re-deliver the
+ * update, so this controller must stay fast and not do actual processing
+ * inline.
+ * -----------------------------------------------------------------------------
+ */
+
 namespace Modules\Messaging\Http\Controllers\Webhooks;
 
 use Illuminate\Http\Request;
@@ -14,10 +34,11 @@ use Modules\Messaging\Models\WebhookLog;
 class TelegramWebhookController extends Controller
 {
     /**
-     * Handle incoming webhook from Telegram.
+     * Entry point hit by Telegram for every "update".
      */
     public function handle(Request $request): Response
     {
+        // Resolve the Telegram channel configuration row.
         $channel = Channel::where('type', ChannelTypeEnum::TELEGRAM)->first();
 
         if (! $channel) {
@@ -26,7 +47,8 @@ class TelegramWebhookController extends Controller
             return response('Channel not found', 404);
         }
 
-        // Verify secret token if configured
+        // Optional secret validation: when configured, reject requests that
+        // don't carry the expected header. Protects against forged webhooks.
         $secretToken = $channel->getConfigValue('webhook_secret');
         if ($secretToken) {
             $headerToken = $request->header('X-Telegram-Bot-Api-Secret-Token');
@@ -38,31 +60,34 @@ class TelegramWebhookController extends Controller
             }
         }
 
-        // Detect event type
+        // Normalize the event category for easier querying later.
         $eventType = $this->detectEventType($request->all());
 
-        // Log the webhook
+        // Persist the full payload BEFORE processing so we always have a
+        // record even if the job fails or the server crashes.
         $webhookLog = WebhookLog::create([
             'channel_id' => $channel->id,
             'event_type' => $eventType,
-            'payload' => $request->all(),
-            'headers' => $request->headers->all(),
-            'processed' => false,
+            'payload'    => $request->all(),
+            'headers'    => $request->headers->all(),
+            'processed'  => false,
         ]);
 
-        // Dispatch job to process webhook
+        // Offload the real work to the queue so we can ack Telegram quickly.
         ProcessWebhookJob::dispatch($webhookLog->id);
 
         Log::channel('messaging')->info('Telegram webhook received', [
             'webhook_log_id' => $webhookLog->id,
-            'event_type' => $eventType,
+            'event_type'     => $eventType,
         ]);
 
+        // Telegram only cares about HTTP 200 — the body is ignored.
         return response('OK', 200);
     }
 
     /**
-     * Detect the type of webhook event.
+     * Map the raw Telegram update shape to a simple string event type.
+     * Unknown shapes are bucketed as 'unknown' so we never throw.
      */
     protected function detectEventType(array $payload): string
     {

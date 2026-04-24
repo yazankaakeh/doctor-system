@@ -1,5 +1,24 @@
 <?php
 
+/**
+ * -----------------------------------------------------------------------------
+ * WebChatController
+ * -----------------------------------------------------------------------------
+ *
+ * Public JSON API consumed by the in-browser chat widget that sits on the
+ * marketing site. Allows an anonymous visitor to:
+ *
+ *   - POST /webchat/init         → create/resume a conversation
+ *   - POST /webchat/send         → push a message from the visitor
+ *   - GET  /webchat/messages     → pull the latest N messages
+ *   - POST /webchat/mark-as-read → clear the unread badge
+ *   - POST /webchat/end          → close the conversation
+ *
+ * All persistence goes through ConversationService + MessageService so the
+ * controller remains a thin HTTP-to-service adapter.
+ * -----------------------------------------------------------------------------
+ */
+
 namespace Modules\Messaging\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
@@ -15,13 +34,19 @@ use Modules\Messaging\Services\MessageService;
 
 class WebChatController extends Controller
 {
+    /**
+     * Inject the two services that do the real work so the controller
+     * is trivially swappable / testable.
+     */
     public function __construct(
         protected ConversationService $conversationService,
         protected MessageService $messageService
     ) {}
 
     /**
-     * Initialize a webchat session.
+     * Initialise (or resume) a webchat session. Returns the public-facing
+     * Conversation UUID that the widget uses for subsequent calls, plus
+     * the server-assigned visitor id so returning visitors can reconnect.
      */
     public function init(Request $request): JsonResponse
     {
@@ -31,21 +56,23 @@ class WebChatController extends Controller
             'visitor_email' => 'nullable|email|max:255',
         ]);
 
-        // Generate or use provided visitor ID
-        $visitorId = $request->input('visitor_id') ?: 'webchat_'.Str::uuid();
+        // Re-use the visitor id the widget remembers; fall back to a fresh UUID.
+        $visitorId   = $request->input('visitor_id') ?: 'webchat_'.Str::uuid();
         $visitorName = $request->input('visitor_name', 'Website Visitor');
 
-        // Get webchat channel
+        // WebChat is served from a single channel row per install.
         $channel = Channel::where('type', ChannelTypeEnum::WEBCHAT)->first();
 
         if (! $channel || ! $channel->is_active) {
+            // 503 signals "feature is temporarily unavailable" — the widget
+            // can retry later or hide itself.
             return response()->json([
                 'success' => false,
-                'error' => 'WebChat is not available',
+                'error'   => 'WebChat is not available',
             ], 503);
         }
 
-        // Find or create conversation
+        // Idempotent lookup/create so reconnecting visitors keep their thread.
         $conversation = $this->conversationService->findOrCreate(
             $visitorId,
             ChannelTypeEnum::WEBCHAT,
@@ -53,7 +80,7 @@ class WebChatController extends Controller
             $visitorName
         );
 
-        // Store visitor info in metadata
+        // Attach optional metadata (email address used for notifications etc.).
         if ($request->has('visitor_email')) {
             $metadata = $conversation->metadata ?? [];
             $metadata['visitor_email'] = $request->input('visitor_email');
@@ -68,7 +95,9 @@ class WebChatController extends Controller
     }
 
     /**
-     * Send a message from the visitor.
+     * Store a message authored by the visitor. Wraps the raw payload in a
+     * DTO via WebChatChannel::receiveMessage() so downstream services see
+     * the same shape they would for any other inbound channel.
      */
     public function sendMessage(Request $request): JsonResponse
     {
@@ -87,17 +116,19 @@ class WebChatController extends Controller
             ], 404);
         }
 
-        // Verify it's a webchat conversation
+        // Sanity check: the UUID must belong to a webchat conversation.
+        // Otherwise the endpoint could be abused to inject messages into
+        // other channels.
         if ($conversation->channel->type !== ChannelTypeEnum::WEBCHAT) {
             return response()->json([
                 'success' => false,
-                'error' => 'Invalid conversation type',
+                'error'   => 'Invalid conversation type',
             ], 400);
         }
 
         $channel = new WebChatChannel($conversation->channel);
 
-        // Create inbound message DTO
+        // Build the inbound DTO the same way the webhook controllers do.
         $inboundDto = $channel->receiveMessage(
             participantIdentifier: $conversation->participant_identifier,
             content: $request->input('content'),
@@ -105,7 +136,8 @@ class WebChatController extends Controller
             participantName: $conversation->participant_name
         );
 
-        // Process the message
+        // processInbound() persists the message, bumps unread count, fires
+        // the NewMessageNotification, etc.
         $message = $this->messageService->processInbound($inboundDto);
 
         return response()->json([
@@ -120,7 +152,8 @@ class WebChatController extends Controller
     }
 
     /**
-     * Get messages for a conversation.
+     * Paginate messages for the widget. Uses `before_id` cursor pagination
+     * so the widget can lazy-load history as the visitor scrolls up.
      */
     public function getMessages(Request $request): JsonResponse
     {
@@ -162,7 +195,8 @@ class WebChatController extends Controller
     }
 
     /**
-     * Mark messages as read.
+     * Clear the unread badge — called when the widget is visible again and
+     * all outbound agent messages have been rendered.
      */
     public function markAsRead(Request $request): JsonResponse
     {
@@ -187,7 +221,8 @@ class WebChatController extends Controller
     }
 
     /**
-     * End the webchat session.
+     * Close the session when the visitor clicks "End chat" — transitions
+     * the conversation to CLOSED so agents know it's done.
      */
     public function endSession(Request $request): JsonResponse
     {

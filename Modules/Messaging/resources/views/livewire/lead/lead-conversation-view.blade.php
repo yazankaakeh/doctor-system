@@ -1,3 +1,9 @@
+{{--
+    Livewire view: lead/lead-conversation-view.
+    Compact message list used inside the Lead CRM widget (limited height
+    scrollable window). Renders the most recent messages from the
+    currently-selected channel.
+--}}
 <div class="flex-grow-1 overflow-auto p-4" style="max-height: 300px;">
     @if($conversation)
         @forelse($messages as $message)
