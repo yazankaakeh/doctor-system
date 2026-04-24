@@ -12,9 +12,9 @@ use Modules\Core\App\Enums\ActiveEnum;
 use Modules\Doctor\Enums\MedicalExaminationStatusEnum;
 use Modules\Doctor\Http\Requests\MedicalExaminationRequest;
 use Modules\Doctor\Models\Clinic;
+use Modules\Doctor\Models\DosageForm;
 use Modules\Doctor\Models\MedicalExamination;
 use Modules\Doctor\Models\Patient;
-use Modules\Doctor\Models\VitalSign;
 use Modules\Doctor\Notifications\ExaminationCompletedNotification;
 
 class MedicalExaminationController extends Controller
@@ -177,29 +177,64 @@ class MedicalExaminationController extends Controller
     }
 
     /**
-     * Show the specified resource.
+     * Show the specified medical examination (read-only detail page).
      *
-     * The blade view (`doctor::doctor.medicalExamination.show`) iterates a
-     * paginated `$data` collection of VitalSign records (it also includes
-     * the vitalSign create/edit modals), so we must provide that variable
-     * or the view errors with "Undefined variable $data".
+     * Loads the examination with every relationship the detail view needs
+     * (patient, doctor, clinic, vital signs with pivot values, prescribed
+     * medicines with pivot dosage/dose/duration, medical tests split into
+     * laboratory + radiology buckets, final diagnoses, and attached media
+     * files).
      *
-     * We also look up the MedicalExamination by id for context so future
-     * changes to the view can filter by the specific examination if needed.
+     * The view iterates `$medicalExamination` directly; a paginated
+     * previous-examinations list is also passed as `$medicalExaminations`
+     * to mirror the `create` page.
      */
     public function show($id)
     {
-        // Ensure the examination exists – 404 if the id is invalid.
-        $medicalExamination = MedicalExamination::query()->findOrFail($id);
+        /** @var MedicalExamination $medicalExamination */
+        $medicalExamination = MedicalExamination::query()
+            ->with([
+                'patient',
+                'doctor',
+                'clinic',
+                'vitalSigns',
+                // Medicine model has no direct `dosageForm` relationship;
+                // dosage_form_id lives on the pivot. We'll look them up below.
+                'medicines',
+                'medicalTests',
+                'finalDiagnosis',
+                'media',
+            ])
+            ->findOrFail($id);
 
-        // Paginated list of vital signs rendered in the table.
-        // Mirrors VitalSignController::index() so the view (which reuses
-        // the same modals) receives data in the expected shape.
-        $data = VitalSign::query()->paginate(Pagination::PAG->value);
+        $patient = $medicalExamination->patient;
+
+        // Previous examinations for the same patient (excluding this one),
+        // displayed at the bottom of the detail page — same helper used by
+        // the create() action above.
+        $medicalExaminations = $patient
+            ? MedicalExamination::patientMedicalExaminationsWithoutId(
+                $patient->id,
+                $medicalExamination->id,
+            )->get()
+            : collect();
+
+        // Build a {dosage_form_id => DosageForm} map so the view can resolve
+        // the pivot's `dosage_form_id` to a human name in a single round-trip,
+        // rather than querying once per medicine row.
+        $dosageFormIds = $medicalExamination
+            ->medicines
+            ->pluck('pivot.dosage_form_id')
+            ->filter()
+            ->unique();
+
+        $dosageForms = $dosageFormIds->isNotEmpty()
+            ? DosageForm::query()->whereIn('id', $dosageFormIds)->get()->keyBy('id')
+            : collect();
 
         return view(
             'doctor::doctor.medicalExamination.show',
-            compact('data', 'medicalExamination'),
+            compact('medicalExamination', 'patient', 'medicalExaminations', 'dosageForms'),
         );
     }
 }
