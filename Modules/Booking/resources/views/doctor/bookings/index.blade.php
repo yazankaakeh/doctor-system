@@ -19,68 +19,83 @@
         .view-toggle .btn {
             padding: 0.5rem 1rem;
         }
+
         .view-toggle .btn.active {
             background-color: var(--bs-primary);
             color: #fff;
             border-color: var(--bs-primary);
         }
+
         .fc {
             --fc-border-color: var(--bs-border-color);
             --fc-page-bg-color: var(--bs-body-bg);
             --fc-neutral-bg-color: var(--bs-tertiary-bg);
             --fc-today-bg-color: rgba(var(--bs-primary-rgb), 0.08);
         }
+
         .fc .fc-toolbar-title {
             font-size: 1.25rem;
             font-weight: 600;
         }
+
         .fc .fc-button {
             padding: 0.4rem 0.8rem;
             font-size: 0.875rem;
         }
+
         .fc .fc-button-primary {
             background-color: var(--bs-primary);
             border-color: var(--bs-primary);
         }
+
         .fc .fc-button-primary:hover {
             background-color: var(--bs-primary);
             border-color: var(--bs-primary);
             opacity: 0.9;
         }
+
         .fc .fc-button-primary:not(:disabled).fc-button-active,
         .fc .fc-button-primary:not(:disabled):active {
             background-color: var(--bs-primary);
             border-color: var(--bs-primary);
         }
+
         .fc-event {
             cursor: pointer;
             padding: 2px 6px;
             border-radius: 4px;
             font-size: 0.8rem;
         }
+
         .fc-event.status-pending {
             background-color: var(--bs-warning);
             border-color: var(--bs-warning);
         }
+
         .fc-event.status-confirmed {
             background-color: var(--bs-success);
             border-color: var(--bs-success);
         }
+
         .fc-event.status-cancelled {
             background-color: var(--bs-danger);
             border-color: var(--bs-danger);
         }
+
         .fc-event.status-completed {
             background-color: var(--bs-info);
             border-color: var(--bs-info);
         }
+
         .fc-event.status-no-show {
             background-color: var(--bs-secondary);
             border-color: var(--bs-secondary);
         }
+
         .fc-daygrid-event-dot {
             display: none;
         }
+
         .calendar-legend {
             display: flex;
             flex-wrap: wrap;
@@ -89,6 +104,7 @@
             border-top: 1px solid var(--bs-border-color);
             margin-top: 1rem;
         }
+
         .calendar-legend-item {
             display: flex;
             align-items: center;
@@ -96,11 +112,13 @@
             font-size: 0.85rem;
             color: var(--bs-body-color);
         }
+
         .calendar-legend-dot {
             width: 12px;
             height: 12px;
             border-radius: 3px;
         }
+
         .booking-tooltip {
             position: absolute;
             z-index: 1000;
@@ -111,6 +129,7 @@
             box-shadow: var(--bs-box-shadow);
             min-width: 250px;
         }
+
         .booking-tooltip-header {
             display: flex;
             align-items: center;
@@ -119,20 +138,24 @@
             padding-bottom: 0.75rem;
             border-bottom: 1px solid var(--bs-border-color);
         }
+
         .booking-tooltip-avatar {
             width: 40px;
             height: 40px;
             border-radius: 50%;
             object-fit: cover;
         }
+
         .booking-tooltip-name {
             font-weight: 600;
             color: var(--bs-body-color);
         }
+
         .booking-tooltip-time {
             font-size: 0.85rem;
             color: var(--bs-secondary-color);
         }
+
         .booking-tooltip-actions {
             display: flex;
             gap: 0.5rem;
@@ -183,8 +206,9 @@
                                                 <td>
                                                     <div class="d-flex align-items-center">
                                                         <div class="avatar avatar-sm me-2">
-                                                            <img src="{{ $booking->patient->getFirstMediaUrl('images') ?: asset('assets/img/avatars/3.png') }}"
-                                                                 alt="Avatar" class="rounded-circle">
+                                                            <img
+                                                                src="{{ $booking->patient->getFirstMediaUrl('images') ?: asset('assets/img/avatars/3.png') }}"
+                                                                alt="Avatar" class="rounded-circle">
                                                         </div>
                                                         {{ $booking->patient->name }}
                                                     </div>
@@ -212,18 +236,22 @@
                                                                 {{ trans('doctor::doctor.show') }}
                                                             </a>
                                                             @if($booking->isConfirmed())
-                                                                <form action="{{ route('doctor.bookings.complete', $booking) }}"
-                                                                      method="POST" class="d-inline">
+                                                                <form
+                                                                    action="{{ route('doctor.bookings.complete', $booking) }}"
+                                                                    method="POST" class="d-inline">
                                                                     @csrf
-                                                                    <button type="submit" class="dropdown-item text-success">
+                                                                    <button type="submit"
+                                                                            class="dropdown-item text-success">
                                                                         <i class="ti tabler-check me-1"></i>
                                                                         {{ trans('booking::booking.complete') }}
                                                                     </button>
                                                                 </form>
-                                                                <form action="{{ route('doctor.bookings.no-show', $booking) }}"
-                                                                      method="POST" class="d-inline">
+                                                                <form
+                                                                    action="{{ route('doctor.bookings.no-show', $booking) }}"
+                                                                    method="POST" class="d-inline">
                                                                     @csrf
-                                                                    <button type="submit" class="dropdown-item text-warning">
+                                                                    <button type="submit"
+                                                                            class="dropdown-item text-warning">
                                                                         <i class="ti tabler-user-x me-1"></i>
                                                                         {{ trans('booking::booking.no_show') }}
                                                                     </button>
@@ -260,23 +288,28 @@
                                 <div id="bookingsCalendar"></div>
                                 <div class="calendar-legend">
                                     <div class="calendar-legend-item">
-                                        <div class="calendar-legend-dot" style="background-color: var(--bs-warning);"></div>
+                                        <div class="calendar-legend-dot"
+                                             style="background-color: var(--bs-warning);"></div>
                                         <span>{{ trans('booking::booking.enum.BookingStatusEnum.1') }}</span>
                                     </div>
                                     <div class="calendar-legend-item">
-                                        <div class="calendar-legend-dot" style="background-color: var(--bs-success);"></div>
+                                        <div class="calendar-legend-dot"
+                                             style="background-color: var(--bs-success);"></div>
                                         <span>{{ trans('booking::booking.enum.BookingStatusEnum.2') }}</span>
                                     </div>
                                     <div class="calendar-legend-item">
-                                        <div class="calendar-legend-dot" style="background-color: var(--bs-danger);"></div>
+                                        <div class="calendar-legend-dot"
+                                             style="background-color: var(--bs-danger);"></div>
                                         <span>{{ trans('booking::booking.enum.BookingStatusEnum.3') }}</span>
                                     </div>
                                     <div class="calendar-legend-item">
-                                        <div class="calendar-legend-dot" style="background-color: var(--bs-info);"></div>
+                                        <div class="calendar-legend-dot"
+                                             style="background-color: var(--bs-info);"></div>
                                         <span>{{ trans('booking::booking.enum.BookingStatusEnum.4') }}</span>
                                     </div>
                                     <div class="calendar-legend-item">
-                                        <div class="calendar-legend-dot" style="background-color: var(--bs-secondary);"></div>
+                                        <div class="calendar-legend-dot"
+                                             style="background-color: var(--bs-secondary);"></div>
                                         <span>{{ trans('booking::booking.enum.BookingStatusEnum.5') }}</span>
                                     </div>
                                 </div>
@@ -305,7 +338,8 @@
                 </div>
                 <div class="modal-body">
                     <div class="d-flex align-items-center mb-3 pb-3 border-bottom">
-                        <img id="modalPatientAvatar" src="" alt="Patient" class="rounded-circle me-3" style="width: 60px; height: 60px; object-fit: cover;">
+                        <img id="modalPatientAvatar" src="" alt="Patient" class="rounded-circle me-3"
+                             style="width: 60px; height: 60px; object-fit: cover;">
                         <div>
                             <h6 id="modalPatientName" class="mb-1"></h6>
                             <span id="modalBookingStatus" class="badge"></span>
@@ -348,7 +382,8 @@
                         <div class="col-6">
                             <div class="d-flex align-items-center">
                                 <div class="avatar avatar-sm bg-label-success me-2">
-                                    <span class="avatar-initial rounded"><i class="ti tabler-currency-dollar"></i></span>
+                                    <span class="avatar-initial rounded"><i
+                                            class="ti tabler-currency-dollar"></i></span>
                                 </div>
                                 <div>
                                     <small class="text-muted d-block">{{ trans('booking::booking.fee') }}</small>
@@ -385,11 +420,11 @@
         /**
          * Page bootstrap:
          *   1. Wires the table/calendar view toggle buttons.
-         *   2. Serialises bookings → FullCalendar events via PHP @json.
+         *   2. Serialises bookings → FullCalendar events via PHP json.
          *   3. Lazily initializes the calendar the first time it becomes visible.
          *   4. Hooks eventClick to the shared booking-details modal.
          */
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // --- View toggle (table ↔ calendar) ----------------------------
             const viewToggleBtns = document.querySelectorAll('.view-toggle .btn');
             const tableView = document.getElementById('tableView');
@@ -397,7 +432,7 @@
             let calendar = null;
 
             viewToggleBtns.forEach(btn => {
-                btn.addEventListener('click', function() {
+                btn.addEventListener('click', function () {
                     viewToggleBtns.forEach(b => b.classList.remove('active'));
                     this.classList.add('active');
 
@@ -486,7 +521,7 @@
                             showUrl: event.showUrl
                         }
                     })),
-                    eventClick: function(info) {
+                    eventClick: function (info) {
                         const event = info.event;
                         const props = event.extendedProps;
 
@@ -497,8 +532,8 @@
                         document.getElementById('modalBookingStatus').className = 'badge text-bg-' + props.statusClass;
                         document.getElementById('modalBookingDate').textContent = event.start.toLocaleDateString();
                         document.getElementById('modalBookingTime').textContent =
-                            event.start.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) + ' - ' +
-                            event.end.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                            event.start.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}) + ' - ' +
+                            event.end.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
                         document.getElementById('modalBookingDuration').textContent = (props.duration || 0) + ' min';
                         document.getElementById('modalBookingFee').textContent = '$' + props.fee;
                         document.getElementById('modalViewLink').href = props.showUrl;
@@ -514,7 +549,7 @@
                         const modal = new bootstrap.Modal(document.getElementById('bookingDetailsModal'));
                         modal.show();
                     },
-                    eventDidMount: function(info) {
+                    eventDidMount: function (info) {
                         // Add tooltip
                         info.el.title = info.event.title + ' - ' + info.event.extendedProps.statusLabel;
                     },
